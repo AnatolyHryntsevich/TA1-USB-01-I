@@ -132,6 +132,7 @@ public slots:
     void connectionButtonSlot();
     void updateCOMListSlot(int index);
     void receivedDataSlot(QByteArray data);
+    void sendByUartDataButtonSlot();
 
 public:
     void closeWindow();

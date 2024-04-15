@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
     lineDForTransmittedUARTDataTextEdit->setFixedSize(550, 23);
     lineDForTransmittedUARTDataTextEdit->setToolTip("введите данные в формате hex16, разделяя точкой с запятой ';'\n[каждая пара чисел(напр: '00;04ff;55' == '0x00', '0x04ff' и '0x55') - это число в hex16]");
     sendUARTDataButton = new QPushButton("отправить");
+    sendUARTDataButton->setEnabled(false);
 
     connectioinUARTLayout = new QGridLayout;
     connectioinUARTLayout->setContentsMargins(5, 5, 5, 5);
@@ -288,6 +289,7 @@ MainWindow::MainWindow(QWidget *parent)
     //____________UART_____TERMITE___________________________________________________________________________
     connect(serialPortsBox, SIGNAL(activated(int)), this, SLOT(updateCOMListSlot(int)));
     connect(connectButton, SIGNAL(clicked()), this, SLOT(connectionButtonSlot()));
+    connect(sendUARTDataButton, SIGNAL(clicked()), this, SLOT(sendByUartDataButtonSlot()));
 }
 
 MainWindow::~MainWindow()
@@ -1474,9 +1476,11 @@ void MainWindow::connectionButtonSlot()
             connectButton->setText("отключить");
             connectionStatusLabel->setText(connectionStatusVariants.at(1));
             connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
+            sendUARTDataButton->setEnabled(true);
             receivedTransmittedUARTDataTextEdit->clear();
         } else {
             qDebug() << "UART-соединение не активно";
+            sendUARTDataButton->setEnabled(false);
             disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
             connectionStatusLabel->setText(connectionStatusVariants.at(0));
             connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
@@ -1489,6 +1493,7 @@ void MainWindow::connectionButtonSlot()
             connectionStatusLabel->setText(connectionStatusVariants.at(0));
             connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
             connectButton->setText("подключить");
+            sendUARTDataButton->setEnabled(false);
         }
     }
 }
@@ -1507,6 +1512,31 @@ void MainWindow::receivedDataSlot(QByteArray data)
 {
     QString dataStrForView = "<<<:" + data.toHex() + "\n";
     receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
+}
+
+void MainWindow::sendByUartDataButtonSlot()
+{
+    QStringList dataStringList = lineDForTransmittedUARTDataTextEdit->toPlainText().split(";");
+
+    unsigned int parseResult;
+    int i = 0;
+    QByteArray ba;
+
+    for(; i < dataStringList.count(); i++)
+    {
+        std::istringstream iss(dataStringList.at(i).toStdString());
+        iss >> std::hex >> parseResult;
+        ba[i] = (uint8_t) parseResult;
+    }
+
+    if(uartTransfer->isInit()) {
+        uartTransfer->write(&ba);
+        qDebug() << "Last line message:" +  ba.toHex();
+        QString dataStrForView = ">>>:" + ba.toHex() + "\n";
+        receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
+    } else {
+        qDebug() << "Send error! UART is not initialized..";
+    }
 }
 
 
