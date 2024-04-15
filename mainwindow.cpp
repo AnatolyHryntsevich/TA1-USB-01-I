@@ -1470,16 +1470,20 @@ void MainWindow::connectionButtonSlot()
 
         if(uartTransfer->isInit()) {
             qDebug() << "UART-соединение активно";
+            connect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
             connectButton->setText("отключить");
             connectionStatusLabel->setText(connectionStatusVariants.at(1));
             connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
+            receivedTransmittedUARTDataTextEdit->clear();
         } else {
             qDebug() << "UART-соединение не активно";
+            disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
             connectionStatusLabel->setText(connectionStatusVariants.at(0));
             connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
         }
     } else {
         if(uartTransfer != nullptr) {
+            disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
             uartTransfer->~UartTransfer();
             uartTransfer = nullptr;
             connectionStatusLabel->setText(connectionStatusVariants.at(0));
@@ -1501,7 +1505,8 @@ void MainWindow::updateCOMListSlot(int index) {
 
 void MainWindow::receivedDataSlot(QByteArray data)
 {
-
+    QString dataStrForView = "<<<:" + data.toHex() + "\n";
+    receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
 }
 
 
