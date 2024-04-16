@@ -60,6 +60,7 @@ public:
     QTextEdit *receivedTransmittedUARTDataTextEdit;
     QTextEdit *lineDForTransmittedUARTDataTextEdit;
     QPushButton *sendUARTDataButton;
+    QPushButton *clearUartDataButton;
 
     QLabel *mainWindowTitle;
     QPushButton *connectionDriverButton;
@@ -129,10 +130,11 @@ public slots:
     void readDataFromSubAddrServentDeviceSlot();
     void cycleSendProcessButtonSlot();
     void cycleSendProcessHandlerSlot();
-    void connectionButtonSlot();
+    void connectionUARTButtonSlot();
     void updateCOMListSlot(int index);
     void receivedDataSlot(QByteArray data);
     void sendByUartDataButtonSlot();
+    void clearUARTDataTextEditButtonSlot();
 
 public:
     void closeWindow();

@@ -52,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent)
     sendUARTDataButton = new QPushButton("отправить");
     sendUARTDataButton->setToolTip("отправить данные по последовательному порту");
     sendUARTDataButton->setEnabled(false);
+    clearUartDataButton = new QPushButton("очистить");
+    clearUartDataButton->setToolTip("очистить поле отображения принятых/отправленных по последовательному порту данных");
 
     connectioinUARTLayout = new QGridLayout;
     connectioinUARTLayout->setContentsMargins(5, 5, 5, 5);
@@ -65,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
     connectioinUARTLayout->addWidget(connectionStatusLabel, 0, 0, Qt::AlignLeft);
     connectioinUARTLayout->addWidget(receivedTransmittedUARTDataTextEdit, 2, 0);
     connectioinUARTLayout->addWidget(lineDForTransmittedUARTDataTextEdit, 3, 0);
+    connectioinUARTLayout->addWidget(clearUartDataButton, 4, 3);
     connectioinUARTLayout->addWidget(sendUARTDataButton, 4, 4);
 
     connectionUARTWidget->setLayout(connectioinUARTLayout);
@@ -290,8 +293,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //____________UART_____TERMITE___________________________________________________________________________
     connect(serialPortsBox, SIGNAL(activated(int)), this, SLOT(updateCOMListSlot(int)));
-    connect(connectButton, SIGNAL(clicked()), this, SLOT(connectionButtonSlot()));
+    connect(connectButton, SIGNAL(clicked()), this, SLOT(connectionUARTButtonSlot()));
     connect(sendUARTDataButton, SIGNAL(clicked()), this, SLOT(sendByUartDataButtonSlot()));
+    connect(clearUartDataButton, SIGNAL(clicked()), this, SLOT(clearUARTDataTextEditButtonSlot()));
 }
 
 MainWindow::~MainWindow()
@@ -1448,7 +1452,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
     CloseHandle(hBcEvent);
     tmkdone(ALL_TMKS);
     TmkClose();
-    connectionButtonSlot();
+    if(connectionStatusLabel->text() == connectionStatusVariants.at(1))
+        connectionUARTButtonSlot();
     this->close();
 }
 
@@ -1463,7 +1468,7 @@ void MainWindow::closeWindow()
     this->closeEvent(event);
 }
 
-void MainWindow::connectionButtonSlot()
+void MainWindow::connectionUARTButtonSlot()
 {
     if(connectionStatusLabel->text() == connectionStatusVariants.at(0)) {
         qint64 baudRate = baudRatesBox->currentText().toInt();
@@ -1479,7 +1484,6 @@ void MainWindow::connectionButtonSlot()
             connectionStatusLabel->setText(connectionStatusVariants.at(1));
             connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
             sendUARTDataButton->setEnabled(true);
-            receivedTransmittedUARTDataTextEdit->clear();
         } else {
             qDebug() << "UART-соединение не активно";
             sendUARTDataButton->setEnabled(false);
@@ -1537,6 +1541,11 @@ void MainWindow::sendByUartDataButtonSlot()
     } else {
         qDebug() << "Send error! UART is not initialized..";
     }
+}
+
+void MainWindow::clearUARTDataTextEditButtonSlot()
+{
+    receivedTransmittedUARTDataTextEdit->clear();
 }
 
 
