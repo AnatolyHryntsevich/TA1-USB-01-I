@@ -55,6 +55,7 @@ void UartTransfer::handleReadyRead()
         int tmp = indexBuffUart;
         indexBuffUart += serial.read(&tmpBuf[indexBuffUart], UART_MAX_MSG_LEN - indexBuffUart);
         QByteArray rrr = QByteArray(&tmpBuf[tmp], indexBuffUart - tmp);
+        indexBuffUart = 0;
         emit receivedNewData(rrr);
     }
 }
