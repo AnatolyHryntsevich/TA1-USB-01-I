@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     connectionStatusLabel = new QLabel(connectionStatusVariants.at(0));
     connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
     connectButton = new QPushButton("подключить");
+    connectButton->setToolTip("активировать линию последовательной передачи");
     receivedTransmittedUARTDataTextEdit = new QTextEdit();
     receivedTransmittedUARTDataTextEdit->setFixedSize(550, 670);
     receivedTransmittedUARTDataTextEdit->setToolTip("поле отображения полученных/отправленных по выбранному порту данных");
@@ -1481,12 +1482,14 @@ void MainWindow::connectionUARTButtonSlot()
             qDebug() << "UART-соединение активно";
             connect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
             connectButton->setText("отключить");
+            connectButton->setToolTip("деактивировать линию последовательной передачи");
             connectionStatusLabel->setText(connectionStatusVariants.at(1));
             connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
             sendUARTDataButton->setEnabled(true);
         } else {
             qDebug() << "UART-соединение не активно";
             sendUARTDataButton->setEnabled(false);
+            connectButton->setToolTip("активировать линию последовательной передачи");
             disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
             connectionStatusLabel->setText(connectionStatusVariants.at(0));
             connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
@@ -1499,6 +1502,7 @@ void MainWindow::connectionUARTButtonSlot()
             connectionStatusLabel->setText(connectionStatusVariants.at(0));
             connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
             connectButton->setText("подключить");
+            connectButton->setToolTip("активировать линию последовательной передачи");
             sendUARTDataButton->setEnabled(false);
         }
     }
