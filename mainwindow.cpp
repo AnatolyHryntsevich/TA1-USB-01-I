@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
         baudRatesBox->addItem(QString::number(rate));
     }
+    baudRatesBox->setToolTip("список доступных значений baudRate");
     serialPortsBoxTitle = new QLabel("COM-port:");
     serialPortsBoxTitle->setFixedSize(100, 20);
     serialPortsBoxTitle->setFrameStyle(QFrame::Box);
@@ -47,8 +48,9 @@ MainWindow::MainWindow(QWidget *parent)
     receivedTransmittedUARTDataTextEdit->setToolTip("поле отображения полученных/отправленных по выбранному порту данных");
     lineDForTransmittedUARTDataTextEdit = new QTextEdit();
     lineDForTransmittedUARTDataTextEdit->setFixedSize(550, 23);
-    lineDForTransmittedUARTDataTextEdit->setToolTip("введите данные в формате hex16, разделяя точкой с запятой ';'\n[каждая пара чисел(напр: '00;04ff;55' == '0x00', '0x04ff' и '0x55') - это число в hex16]");
+    lineDForTransmittedUARTDataTextEdit->setToolTip("поле ввода данных для отправки");
     sendUARTDataButton = new QPushButton("отправить");
+    sendUARTDataButton->setToolTip("отправить данные по последовательному порту");
     sendUARTDataButton->setEnabled(false);
 
     connectioinUARTLayout = new QGridLayout;
@@ -1510,29 +1512,21 @@ void MainWindow::updateCOMListSlot(int index) {
 
 void MainWindow::receivedDataSlot(QByteArray data)
 {
-    QString dataStrForView = "<<<:" + data.toHex() + "\n";
+    QString dataStrForView = "<<<:" + QString::fromUtf8(data) + "\n";
     receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
 }
 
 void MainWindow::sendByUartDataButtonSlot()
 {
-    QStringList dataStringList = lineDForTransmittedUARTDataTextEdit->toPlainText().split(";");
+    QString dataString = lineDForTransmittedUARTDataTextEdit->toPlainText().trimmed();
 
-    unsigned int parseResult;
-    int i = 0;
     QByteArray ba;
-
-    for(; i < dataStringList.count(); i++)
-    {
-        std::istringstream iss(dataStringList.at(i).toStdString());
-        iss >> std::hex >> parseResult;
-        ba[i] = (uint8_t) parseResult;
-    }
+    ba += dataString;
 
     if(uartTransfer->isInit()) {
         uartTransfer->write(&ba);
-        qDebug() << "Last line message:" +  ba.toHex();
-        QString dataStrForView = ">>>:" + ba.toHex() + "\n";
+        qDebug() << "Transmitted data:" +  QString::fromUtf8(ba);
+        QString dataStrForView = ">>>:" + QString::fromUtf8(ba) + "\n";
         receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
     } else {
         qDebug() << "Send error! UART is not initialized..";
