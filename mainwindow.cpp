@@ -271,7 +271,7 @@ MainWindow::MainWindow(QWidget *parent)
     mainWidget->setLayout(mainLayout);
     this->setCentralWidget(mainWidget);
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-    this->setFixedSize(QSize(800, 800));
+    this->setFixedSize(QSize(800, 815));
 
     connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
     connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));
