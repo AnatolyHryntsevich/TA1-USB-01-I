@@ -1514,6 +1514,9 @@ void MainWindow::receivedDataSlot(QByteArray data)
 {
     QString dataStrForView = "<<<:" + QString::fromUtf8(data) + "\n";
     receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
+    QTextCursor cursor = receivedTransmittedUARTDataTextEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    receivedTransmittedUARTDataTextEdit->setTextCursor(cursor);
 }
 
 void MainWindow::sendByUartDataButtonSlot()
@@ -1528,6 +1531,9 @@ void MainWindow::sendByUartDataButtonSlot()
         qDebug() << "Transmitted data:" +  QString::fromUtf8(ba);
         QString dataStrForView = ">>>:" + QString::fromUtf8(ba) + "\n";
         receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
+        QTextCursor cursor = receivedTransmittedUARTDataTextEdit->textCursor();
+        cursor.movePosition(QTextCursor::End);
+        receivedTransmittedUARTDataTextEdit->setTextCursor(cursor);
     } else {
         qDebug() << "Send error! UART is not initialized..";
     }
