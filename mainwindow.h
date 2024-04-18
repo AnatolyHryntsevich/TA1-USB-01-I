@@ -20,6 +20,7 @@
 #include <QFile>
 #include <QDateTime>
 #include <QSerialPortInfo>
+#include <QPlainTextEdit>
 
 #include <windows.h>
 #include <conio.h>

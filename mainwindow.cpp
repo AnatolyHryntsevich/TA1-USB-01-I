@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
     receivedTransmittedUARTDataTextEdit = new QTextEdit();
     receivedTransmittedUARTDataTextEdit->setFixedSize(550, 670);
     receivedTransmittedUARTDataTextEdit->setToolTip("поле отображения полученных/отправленных по выбранному порту данных");
+    receivedTransmittedUARTDataTextEdit->setUndoRedoEnabled(false);
+    receivedTransmittedUARTDataTextEdit->setReadOnly(true);
     lineDForTransmittedUARTDataTextEdit = new QTextEdit();
     lineDForTransmittedUARTDataTextEdit->setFixedSize(550, 23);
     lineDForTransmittedUARTDataTextEdit->setToolTip("поле ввода данных для отправки");
@@ -1486,6 +1488,8 @@ void MainWindow::connectionUARTButtonSlot()
             connectionStatusLabel->setText(connectionStatusVariants.at(1));
             connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
             sendUARTDataButton->setEnabled(true);
+            baudRatesBox->setEnabled(false);
+            serialPortsBox->setEnabled(false);
         } else {
             qDebug() << "UART-соединение не активно";
             sendUARTDataButton->setEnabled(false);
@@ -1493,6 +1497,8 @@ void MainWindow::connectionUARTButtonSlot()
             disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
             connectionStatusLabel->setText(connectionStatusVariants.at(0));
             connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
+            baudRatesBox->setEnabled(true);
+            serialPortsBox->setEnabled(true);
         }
     } else {
         if(uartTransfer != nullptr) {
@@ -1504,6 +1510,8 @@ void MainWindow::connectionUARTButtonSlot()
             connectButton->setText("подключить");
             connectButton->setToolTip("активировать линию последовательной передачи");
             sendUARTDataButton->setEnabled(false);
+            baudRatesBox->setEnabled(true);
+            serialPortsBox->setEnabled(true);
         }
     }
 }
