@@ -23,8 +23,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/uarttransfer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/UartTransfer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/unix/ltmk.c
     )
 
@@ -32,8 +32,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
 
     set(HEADERS
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/uarttransfer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/UartTransfer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/unix/ltmk.h
     )
 
@@ -49,8 +49,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/uarttransfer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/UartTransfer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32/WDMTMKv2.cpp
     )
 
@@ -58,8 +58,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     )
 
     set(HEADERS
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/uarttransfer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/UartTransfer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32/WDMTMKv2.h
     )
 endif()
