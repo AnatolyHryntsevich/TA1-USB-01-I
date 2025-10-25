@@ -7,6 +7,9 @@
 build-*/
 build/
 *.build/
+bin-*/
+bin/
+*.bin/
 Debug/
 Release/
 release/
