@@ -1,73 +1,75 @@
-# This file is used to ignore files which are generated
-# ----------------------------------------------------------------------------
-
-*~
+# Qt Creator
 *.autosave
-*.a
-*.core
+*.pro.user
+*.pro.user.*
+
+# Build directories
+build-*/
+build/
+*.build/
+Debug/
+Release/
+release/
+debug/
+*.xcodeproj/
+*.app/
+*.ipa
+
+# Qt specific
+moc_*
+qrc_*
+ui_*
 *.moc
+*.qmlc
+*.jaml
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Compiled files
 *.o
 *.obj
-*.orig
-*.rej
+*.exe
+*.dll
 *.so
 *.so.*
-*_pch.h.cpp
-*_resource.rc
+*.dylib
+*.a
+*.lib
+
+# Qt
 *.qm
-.#*
-*.*#
-core
-!core/
-tags
-.DS_Store
-.directory
-*.debug
 Makefile*
-*.prl
-*.app
-moc_*.cpp
-ui_*.h
-qrc_*.cpp
-Thumbs.db
-*.res
-*.rc
-/.qmake.cache
-/.qmake.stash
+*.qmake.stash
+.user
+.user.*
 
-# qtcreator generated files
-*.pro.user*
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# xemacs temporary files
-*.flc
+# Logs
+*.log
 
-# Vim temporary files
-.*.swp
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+CMakeLists.txt.user
+CMakeLists.txt.user.*
 
-# Visual Studio generated files
-*.ib_pdb_index
-*.idb
-*.ilk
-*.pdb
-*.sln
-*.suo
-*.vcproj
-*vcproj.*.*.user
-*.ncb
-*.sdf
-*.opensdf
-*.vcxproj
-*vcxproj.*
-
-# MinGW generated files
-*.Debug
-*.Release
-
-# Python byte code
-*.pyc
-
-# Binaries
-# --------
-*.dll
-*.exe
-
+# QMake
+*.pro.user
+*.pro.user.*
