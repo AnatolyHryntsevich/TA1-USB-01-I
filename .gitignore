@@ -59,6 +59,7 @@ Makefile*
 *.swp
 *.swo
 *~
+token
 
 # Logs
 *.log
