@@ -19,6 +19,7 @@
 #include <QDir>
 #include <QFile>
 #include <QDateTime>
+#include <QSerialPortInfo>
 
 #include <windows.h>
 #include <conio.h>
@@ -26,6 +27,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+
+#include "uarttransfer.h"
 
 #define TRY_CONNECT_DEVICE_BUTTON_STRING "подключиться к устройству"
 #define TRY_DISCONNECT_DEVICE_BUTTON_STRING "отключиться от устройства"
@@ -44,6 +47,20 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    QWidget *connectionUARTWidget;
+    QGridLayout *connectioinUARTLayout;
+    QLabel *baudRatesBoxTitle;
+    QComboBox *baudRatesBox;
+    QLabel *serialPortsBoxTitle;
+    QComboBox *serialPortsBox;
+    QList<QString> connectionStatusVariants;
+    QLabel *connectionStatusLabel;
+    QPushButton *connectButton;
+    QTextEdit *receivedTransmittedUARTDataTextEdit;
+    QTextEdit *lineDForTransmittedUARTDataTextEdit;
+    QPushButton *sendUARTDataButton;
+    QPushButton *clearUartDataButton;
 
     QLabel *mainWindowTitle;
     QPushButton *connectionDriverButton;
@@ -83,7 +100,7 @@ public:
     QPushButton *readDataFromSubaddrButton;
     QLabel *readStatusLabel;
     QTextEdit *readDataTextEdit;
-    QGridLayout *mainWidgetLayout;
+    QGridLayout *MIL_STD_WidgetLayout;
 
     static int initTmkEvent();
     static void sleepCurrentThread(int ms);
@@ -96,6 +113,7 @@ private:
     QStringList cycleSendButtonNameList;
     QString fileName;
     QFile fileCycleSendLogs;
+    UartTransfer *uartTransfer;
 
 signals:
     void startCycleSendProcessSignal();
@@ -112,6 +130,11 @@ public slots:
     void readDataFromSubAddrServentDeviceSlot();
     void cycleSendProcessButtonSlot();
     void cycleSendProcessHandlerSlot();
+    void connectionUARTButtonSlot();
+    void updateCOMListSlot(int index);
+    void receivedDataSlot(QByteArray data);
+    void sendByUartDataButtonSlot();
+    void clearUARTDataTextEditButtonSlot();
 
 public:
     void closeWindow();

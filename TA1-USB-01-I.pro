@@ -1,4 +1,5 @@
 QT       += core gui
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,10 +11,12 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    uarttransfer.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    uarttransfer.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

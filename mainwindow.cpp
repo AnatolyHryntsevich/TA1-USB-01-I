@@ -18,10 +18,66 @@ MainWindow::MainWindow(QWidget *parent)
     QString filePath = currentDir.absoluteFilePath(fileName);
     fileCycleSendLogs.setFileName(filePath);
 
+    connectionUARTWidget = new QWidget(this);
+    baudRatesBoxTitle = new QLabel("Baud rate:");
+    baudRatesBoxTitle->setFixedSize(100, 20);
+    baudRatesBoxTitle->setFrameStyle(QFrame::Box);
+    baudRatesBox = new QComboBox;
+    QList<int> boudRates = QSerialPortInfo::standardBaudRates();
+    foreach(int rate, boudRates)
+    {
+        baudRatesBox->addItem(QString::number(rate));
+    }
+    baudRatesBox->setToolTip("список доступных значений baudRate");
+    serialPortsBoxTitle = new QLabel("COM-port:");
+    serialPortsBoxTitle->setFixedSize(100, 20);
+    serialPortsBoxTitle->setFrameStyle(QFrame::Box);
+    serialPortsBox = new QComboBox;
+    const QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
+    for(const QSerialPortInfo &info : ports)
+    {
+        serialPortsBox ->addItem(info.portName());
+    }
+    serialPortsBox->setToolTip("для обновления выберите любой из доступных портов, а затем откройте список заново");
+    connectionStatusVariants << "порт не активен" << "порт активен";
+    connectionStatusLabel = new QLabel(connectionStatusVariants.at(0));
+    connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
+    connectButton = new QPushButton("подключить");
+    connectButton->setToolTip("активировать линию последовательной передачи");
+    receivedTransmittedUARTDataTextEdit = new QTextEdit();
+    receivedTransmittedUARTDataTextEdit->setFixedSize(550, 670);
+    receivedTransmittedUARTDataTextEdit->setToolTip("поле отображения полученных/отправленных по выбранному порту данных");
+    lineDForTransmittedUARTDataTextEdit = new QTextEdit();
+    lineDForTransmittedUARTDataTextEdit->setFixedSize(550, 23);
+    lineDForTransmittedUARTDataTextEdit->setToolTip("поле ввода данных для отправки");
+    sendUARTDataButton = new QPushButton("отправить");
+    sendUARTDataButton->setToolTip("отправить данные по последовательному порту");
+    sendUARTDataButton->setEnabled(false);
+    clearUartDataButton = new QPushButton("очистить");
+    clearUartDataButton->setToolTip("очистить поле отображения принятых/отправленных по последовательному порту данных");
+
+    connectioinUARTLayout = new QGridLayout;
+    connectioinUARTLayout->setContentsMargins(5, 5, 5, 5);
+    connectioinUARTLayout->setSpacing(5);
+
+    connectioinUARTLayout->addWidget(serialPortsBoxTitle, 0, 0, Qt::AlignRight);
+    connectioinUARTLayout->addWidget(serialPortsBox, 0, 1, Qt::AlignLeft);
+    connectioinUARTLayout->addWidget(baudRatesBoxTitle, 0, 2, Qt::AlignLeft);
+    connectioinUARTLayout->addWidget(baudRatesBox, 0, 3, Qt::AlignLeft);
+    connectioinUARTLayout->addWidget(connectButton, 0, 4, Qt::AlignLeft);
+    connectioinUARTLayout->addWidget(connectionStatusLabel, 0, 0, Qt::AlignLeft);
+    connectioinUARTLayout->addWidget(receivedTransmittedUARTDataTextEdit, 2, 0);
+    connectioinUARTLayout->addWidget(lineDForTransmittedUARTDataTextEdit, 3, 0);
+    connectioinUARTLayout->addWidget(clearUartDataButton, 4, 3);
+    connectioinUARTLayout->addWidget(sendUARTDataButton, 4, 4);
+
+    connectionUARTWidget->setLayout(connectioinUARTLayout);
+
+
     statusList << "отправлено" << "не отправлено" << "прочитано" << "не прочитано" << "без ошибок" << "ошибка";
     cycleSendButtonNameList << "начать" << "завершить";
 
-    QWidget *mainWidget = new QWidget;
+    QWidget *MIL_STD_Widget = new QWidget;
     mainWindowTitle = new QLabel("Активируйте драйвер устройства:");
     mainWindowTitle->setFixedSize(185, 20);
     mainWindowTitle->setFrameStyle(QFrame::Box);
@@ -162,55 +218,61 @@ MainWindow::MainWindow(QWidget *parent)
 
     disconnectDriverButtonSlot();
 
-    mainWidgetLayout = new QGridLayout;
-    mainWidgetLayout->setContentsMargins(10, 3, 10, 3);
-    mainWidgetLayout->setSpacing(10);
-    mainWidgetLayout->setHorizontalSpacing(3);
+    MIL_STD_WidgetLayout = new QGridLayout;
+    MIL_STD_WidgetLayout->setContentsMargins(10, 3, 10, 3);
+    MIL_STD_WidgetLayout->setSpacing(10);
+    MIL_STD_WidgetLayout->setHorizontalSpacing(3);
 
-    mainWidgetLayout->addWidget(mainWindowTitle);
-    mainWidgetLayout->addWidget(connectResultText);
-    mainWidgetLayout->addWidget(connectionDriverButton, 2, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(disconnectionDriverButton, 2, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(devicesNumbersTitleLabel, 3, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(devicesNumbersListBox, 3, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(connectionDeviceButton, 4, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(waitAnswerIntervalValueBoxTitleLabel, 5, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(waitAnswerIntervalValueBox, 5, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(setWaitAnswerIntervalButton, 6, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(selectModeTitleLabel, 7, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(bcModeSelectButton, 8, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(rtModeSelectButton, 8, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(mtModeSelectButton, 8, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(selectBaseForWorkTitleLabel, 9, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(baseForWorkValueBox, 10, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(selectBaseForWorkButton, 10, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(addrOYTitleLabel, 11, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(addrYOValueBox, 11, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(subAddrOYTitleLabel, 12, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(subAddrYOValueBox, 12, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(inputYourMessageTitleLabel, 13, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(lineSentMessageTextEdit, 14, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(sendStatusLabel, 15, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(sendButton, 15, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(lastSendDescriptionTitleLabel, 16, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(lastSendDescriptionTextEdit, 17, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(cycleSendTitleLabel, 18, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(cycleSendIntervalValuesBoxTitleLabel, 19, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(cycleSendIntervalValueBox, 19, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(cycleSendButton, 20, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(cycleSendStatusLabel, 20, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(readDataFromSubaddrTitleLabel, 21, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(dataWordNumberLabel, 22, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(dataWordValueBox, 22, 0, Qt::AlignRight);
-    mainWidgetLayout->addWidget(readDataTextEdit, 23, 0, Qt::AlignHCenter);
-    mainWidgetLayout->addWidget(readStatusLabel, 24, 0, Qt::AlignLeft);
-    mainWidgetLayout->addWidget(readDataFromSubaddrButton, 24, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(mainWindowTitle);
+    MIL_STD_WidgetLayout->addWidget(connectResultText);
+    MIL_STD_WidgetLayout->addWidget(connectionDriverButton, 2, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(disconnectionDriverButton, 2, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(devicesNumbersTitleLabel, 3, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(devicesNumbersListBox, 3, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(connectionDeviceButton, 4, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(waitAnswerIntervalValueBoxTitleLabel, 5, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(waitAnswerIntervalValueBox, 5, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(setWaitAnswerIntervalButton, 6, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(selectModeTitleLabel, 7, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(bcModeSelectButton, 8, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(rtModeSelectButton, 8, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(mtModeSelectButton, 8, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(selectBaseForWorkTitleLabel, 9, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(baseForWorkValueBox, 10, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(selectBaseForWorkButton, 10, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(addrOYTitleLabel, 11, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(addrYOValueBox, 11, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(subAddrOYTitleLabel, 12, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(subAddrYOValueBox, 12, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(inputYourMessageTitleLabel, 13, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(lineSentMessageTextEdit, 14, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(sendStatusLabel, 15, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(sendButton, 15, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(lastSendDescriptionTitleLabel, 16, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(lastSendDescriptionTextEdit, 17, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(cycleSendTitleLabel, 18, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(cycleSendIntervalValuesBoxTitleLabel, 19, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(cycleSendIntervalValueBox, 19, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(cycleSendButton, 20, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(cycleSendStatusLabel, 20, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(readDataFromSubaddrTitleLabel, 21, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(dataWordNumberLabel, 22, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(dataWordValueBox, 22, 0, Qt::AlignRight);
+    MIL_STD_WidgetLayout->addWidget(readDataTextEdit, 23, 0, Qt::AlignHCenter);
+    MIL_STD_WidgetLayout->addWidget(readStatusLabel, 24, 0, Qt::AlignLeft);
+    MIL_STD_WidgetLayout->addWidget(readDataFromSubaddrButton, 24, 0, Qt::AlignRight);
+    MIL_STD_Widget->setLayout(MIL_STD_WidgetLayout);
 
-
-    mainWidget->setLayout(mainWidgetLayout);
+    QWidget *mainWidget = new QWidget;
+    QHBoxLayout *mainLayout = new QHBoxLayout();
+    mainLayout->setContentsMargins(10, 3, 10, 3);
+    mainLayout->setSpacing(10);
+    mainLayout->addWidget(connectionUARTWidget, 0);
+    mainLayout->addWidget(MIL_STD_Widget, 1);
+    mainWidget->setLayout(mainLayout);
     this->setCentralWidget(mainWidget);
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-    this->setFixedSize(QSize(200, 800));
+    this->setFixedSize(QSize(800, 815));
 
     connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
     connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));
@@ -229,6 +291,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sendButton, SIGNAL(clicked()), this, SLOT(singleSendButtonSlot()));
     connect(readDataFromSubaddrButton, SIGNAL(clicked()), this, SLOT(readDataFromSubAddrServentDeviceSlot()));
     connect(selectBaseForWorkButton, SIGNAL(clicked()), this, SLOT(selectBaseValueButtonSlot()));
+
+    //____________UART_____TERMITE___________________________________________________________________________
+    connect(serialPortsBox, SIGNAL(activated(int)), this, SLOT(updateCOMListSlot(int)));
+    connect(connectButton, SIGNAL(clicked()), this, SLOT(connectionUARTButtonSlot()));
+    connect(sendUARTDataButton, SIGNAL(clicked()), this, SLOT(sendByUartDataButtonSlot()));
+    connect(clearUartDataButton, SIGNAL(clicked()), this, SLOT(clearUARTDataTextEditButtonSlot()));
 }
 
 MainWindow::~MainWindow()
@@ -1385,6 +1453,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
     CloseHandle(hBcEvent);
     tmkdone(ALL_TMKS);
     TmkClose();
+    if(connectionStatusLabel->text() == connectionStatusVariants.at(1))
+        connectionUARTButtonSlot();
     this->close();
 }
 
@@ -1399,10 +1469,88 @@ void MainWindow::closeWindow()
     this->closeEvent(event);
 }
 
+void MainWindow::connectionUARTButtonSlot()
+{
+    if(connectionStatusLabel->text() == connectionStatusVariants.at(0)) {
+        qint64 baudRate = baudRatesBox->currentText().toInt();
+        QString portName = serialPortsBox->currentText();
 
+        uartTransfer = new UartTransfer();
+        uartTransfer->init(portName, baudRate);
 
+        if(uartTransfer->isInit()) {
+            qDebug() << "UART-соединение активно";
+            connect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
+            connectButton->setText("отключить");
+            connectButton->setToolTip("деактивировать линию последовательной передачи");
+            connectionStatusLabel->setText(connectionStatusVariants.at(1));
+            connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
+            sendUARTDataButton->setEnabled(true);
+        } else {
+            qDebug() << "UART-соединение не активно";
+            sendUARTDataButton->setEnabled(false);
+            connectButton->setToolTip("активировать линию последовательной передачи");
+            disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
+            connectionStatusLabel->setText(connectionStatusVariants.at(0));
+            connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
+        }
+    } else {
+        if(uartTransfer != nullptr) {
+            disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
+            uartTransfer->~UartTransfer();
+            uartTransfer = nullptr;
+            connectionStatusLabel->setText(connectionStatusVariants.at(0));
+            connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
+            connectButton->setText("подключить");
+            connectButton->setToolTip("активировать линию последовательной передачи");
+            sendUARTDataButton->setEnabled(false);
+        }
+    }
+}
 
+void MainWindow::updateCOMListSlot(int index) {
+    serialPortsBox->blockSignals(true);
+    serialPortsBox->clear();
+    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
+        serialPortsBox->addItem(info.portName());
+    }
+    serialPortsBox->setCurrentIndex(index);
+    serialPortsBox->blockSignals(false);
+}
 
+void MainWindow::receivedDataSlot(QByteArray data)
+{
+    QString dataStrForView = "<<<:" + QString::fromUtf8(data) + "\n";
+    receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
+    QTextCursor cursor = receivedTransmittedUARTDataTextEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    receivedTransmittedUARTDataTextEdit->setTextCursor(cursor);
+}
+
+void MainWindow::sendByUartDataButtonSlot()
+{
+    QString dataString = lineDForTransmittedUARTDataTextEdit->toPlainText().trimmed();
+
+    QByteArray ba;
+    ba += dataString;
+
+    if(uartTransfer->isInit()) {
+        uartTransfer->write(&ba);
+        qDebug() << "Transmitted data:" +  QString::fromUtf8(ba);
+        QString dataStrForView = ">>>:" + QString::fromUtf8(ba) + "\n";
+        receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
+        QTextCursor cursor = receivedTransmittedUARTDataTextEdit->textCursor();
+        cursor.movePosition(QTextCursor::End);
+        receivedTransmittedUARTDataTextEdit->setTextCursor(cursor);
+    } else {
+        qDebug() << "Send error! UART is not initialized..";
+    }
+}
+
+void MainWindow::clearUARTDataTextEditButtonSlot()
+{
+    receivedTransmittedUARTDataTextEdit->clear();
+}
 
 
 
