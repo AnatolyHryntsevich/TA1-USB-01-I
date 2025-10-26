@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.25)
 project(TA1-USB-01-I VERSION 0.1 LANGUAGES CXX)
 
 include(ProcessorCount)
@@ -40,6 +40,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     add_compile_options(-finput-charset=UTF-8)
     add_link_options(-Wl,-rpath-link,/usr/lib)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    message(STATUS "Building for Windows")
     find_package(Qt5 COMPONENTS Core Gui Widgets SerialPort)
 
     if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
