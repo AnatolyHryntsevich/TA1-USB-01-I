@@ -29,6 +29,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
 
     set(FORMS
+        ${CMAKE_CURRENT_SOURCE_DIR}/ui/MainWindow.ui
     )
 
     set(HEADERS
@@ -56,6 +57,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     )
 
     set(FORMS
+        ${CMAKE_CURRENT_SOURCE_DIR}/ui/MainWindow.ui
     )
 
     set(HEADERS
@@ -78,6 +80,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/serial
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/unix
+    ${CMAKE_CURRENT_SOURCE_DIR}/ui
     ${CMAKE_CURRENT_SOURCE_DIR}/resources
     ${CMAKE_CURRENT_SOURCE_DIR}/docs
     ${CMAKE_CURRENT_BINARY_DIR}

@@ -15,6 +15,10 @@ class QTextEdit;
 class QSpinBox;
 class UartTransfer;
 
+namespace Ui {
+class MainWindow;
+}
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -88,6 +92,7 @@ public:
     static void sleepCurrentThread(int ms);
 
 private:
+    Ui::MainWindow *ui;
     int deviceMode;
     QThread *cycleSendOperationThread;
     bool cycleSendIsActive;

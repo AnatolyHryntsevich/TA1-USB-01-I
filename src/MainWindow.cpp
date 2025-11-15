@@ -38,6 +38,7 @@ HANDLE hBcEvent;
 #endif
 
 #include "UartTransfer.h"
+#include "ui_MainWindow.h"
 
 TTmkEventData tmkEvD;
 unsigned short awBuf[32]; //в linux размерность может равняться 64
@@ -48,8 +49,11 @@ unsigned long dwStarts = 0L;
 #define RT_ADDR wAddr /* RT address */
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+      ui(new Ui::MainWindow)
 {
+    ui->setupUi(this);
+
     QDir currentDir;
     QString fileName = "cycleSendLogs.txt";
     QString filePath = currentDir.absoluteFilePath(fileName);
@@ -309,9 +313,9 @@ MainWindow::MainWindow(QWidget *parent)
     mainLayout->addWidget(connectionUARTWidget, 0);
     mainLayout->addWidget(MIL_STD_Widget, 1);
     mainWidget->setLayout(mainLayout);
-    this->setCentralWidget(mainWidget);
-    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-    this->setFixedSize(QSize(800, 815));
+//    this->setCentralWidget(mainWidget);
+//    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+//    this->setFixedSize(QSize(800, 815));
 
     connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
     connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));
