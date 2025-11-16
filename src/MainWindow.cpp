@@ -50,9 +50,15 @@ unsigned long dwStarts = 0L;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::MainWindow)
+      ui(new Ui::MainWindow),
+      m_driverSettingsDialog(nullptr),
+      m_interfaceSettingsDialog(nullptr)
 {
     ui->setupUi(this);
+    m_driverSettingsDialog = new DriverSettingsDialog(this);
+    m_driverSettingsDialog->setModal(false);
+    m_interfaceSettingsDialog = new InterfaceParamenetsDialog(this);
+    m_interfaceSettingsDialog->setModal(false);
 
     QDir currentDir;
     QString fileName = "cycleSendLogs.txt";
@@ -313,9 +319,9 @@ MainWindow::MainWindow(QWidget *parent)
     mainLayout->addWidget(connectionUARTWidget, 0);
     mainLayout->addWidget(MIL_STD_Widget, 1);
     mainWidget->setLayout(mainLayout);
-//    this->setCentralWidget(mainWidget);
-//    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-//    this->setFixedSize(QSize(800, 815));
+    //    this->setCentralWidget(mainWidget);
+    //    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+    //    this->setFixedSize(QSize(800, 815));
 
     connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
     connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));
@@ -340,6 +346,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(connectButton, SIGNAL(clicked()), this, SLOT(connectionUARTButtonSlot()));
     connect(sendUARTDataButton, SIGNAL(clicked()), this, SLOT(sendByUartDataButtonSlot()));
     connect(clearUartDataButton, SIGNAL(clicked()), this, SLOT(clearUARTDataTextEditButtonSlot()));
+
+
+
+
+
+    connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::openDriverSettingsDialogSlot);
+    connect(m_driverSettingsDialog, &DriverSettingsDialog::setDriverSettingsSignal, this, &MainWindow::setDriverSettingsSlot);
+    connect(ui->interfaceSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::openInterfaceSettingsDialogSlot);
+    connect(m_interfaceSettingsDialog, &InterfaceParamenetsDialog::setInterfaceSettingsSignal, this, &MainWindow::setInterfaceSettingsSlot);
 }
 
 MainWindow::~MainWindow()
@@ -496,7 +511,7 @@ void MainWindow::connectDriverButtonSlot()
         lastSendDescriptionTextEdit->setEnabled(false);
         deviceMode = UNKNOW_DEVICE_MODE;
 #ifdef __unix__
-                hTmk = UNKNOW_DEVICE_MODE;
+        hTmk = UNKNOW_DEVICE_MODE;
 #endif
     } else if (result == 1) {
         connectResultText->setText("            driver is not activated!");
@@ -554,7 +569,7 @@ void MainWindow::disconnectDriverButtonSlot()
         cycleSendProcessButtonSlot();
     }
 #ifdef _WIN32
-        CloseHandle(hBcEvent);
+    CloseHandle(hBcEvent);
 #endif
     bcreset();
     tmkdone(ALL_TMKS);
@@ -1509,7 +1524,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
     bcreset();
 #ifdef _WIN32
-        CloseHandle(hBcEvent);
+    CloseHandle(hBcEvent);
 #endif
     tmkdone(ALL_TMKS);
     TmkClose();
@@ -1616,6 +1631,44 @@ void MainWindow::sendByUartDataButtonSlot()
 void MainWindow::clearUARTDataTextEditButtonSlot()
 {
     receivedTransmittedUARTDataTextEdit->clear();
+}
+
+void MainWindow::openDriverSettingsDialogSlot()
+{
+    m_driverSettingsDialog->reloadSettingsBeforeView();
+
+    if (m_driverSettingsDialog->isVisible()) {
+        m_driverSettingsDialog->hide();
+    } else {
+        m_driverSettingsDialog->show();
+        m_driverSettingsDialog->raise();
+        m_driverSettingsDialog->activateWindow();
+    }
+}
+
+void MainWindow::setDriverSettingsSlot(const DriverSettingsDialog::DriverSettingsStruct newDriverSettings)
+{
+    m_currentDriverSettings = newDriverSettings;
+    m_driverSettingsDialog->setVisible(false);
+}
+
+void MainWindow::openInterfaceSettingsDialogSlot()
+{
+    m_interfaceSettingsDialog->reloadSettingsBeforeView();
+
+    if (m_interfaceSettingsDialog->isVisible()) {
+        m_interfaceSettingsDialog->hide();
+    } else {
+        m_interfaceSettingsDialog->show();
+        m_interfaceSettingsDialog->raise();
+        m_interfaceSettingsDialog->activateWindow();
+    }
+}
+
+void MainWindow::setInterfaceSettingsSlot(const InterfaceParamenetsDialog::InterfaceSettingsStruct newInterfaceSettings)
+{
+    m_currentInterfaceSettings = newInterfaceSettings;
+    m_interfaceSettingsDialog->setVisible(false);
 }
 
 

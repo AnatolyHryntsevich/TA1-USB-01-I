@@ -3,6 +3,9 @@
 #include <QMainWindow>
 #include <QFile>
 
+#include "DriverSettingsDialog.h"
+#include "InterfaceParamenetsDialog.h"
+
 #define TRY_CONNECT_DEVICE_BUTTON_STRING "подключиться к устройству"
 #define TRY_DISCONNECT_DEVICE_BUTTON_STRING "отключиться от устройства"
 
@@ -93,6 +96,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    DriverSettingsDialog *m_driverSettingsDialog;
+    DriverSettingsDialog::DriverSettingsStruct m_currentDriverSettings;
+    InterfaceParamenetsDialog *m_interfaceSettingsDialog;
+    InterfaceParamenetsDialog::InterfaceSettingsStruct m_currentInterfaceSettings;
+
     int deviceMode;
     QThread *cycleSendOperationThread;
     bool cycleSendIsActive;
@@ -122,6 +130,12 @@ public slots:
     void receivedDataSlot(QByteArray data);
     void sendByUartDataButtonSlot();
     void clearUARTDataTextEditButtonSlot();
+
+    //Новый функционал:
+    void openDriverSettingsDialogSlot();
+    void setDriverSettingsSlot(const DriverSettingsDialog::DriverSettingsStruct newDriverSettings);
+    void openInterfaceSettingsDialogSlot();
+    void setInterfaceSettingsSlot(const InterfaceParamenetsDialog::InterfaceSettingsStruct newInterfaceSettings);
 
 public:
     void closeWindow();
