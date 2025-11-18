@@ -17,6 +17,7 @@ class QPushButton;
 class QTextEdit;
 class QSpinBox;
 class UartTransfer;
+class QTranslator;
 
 namespace Ui {
 class MainWindow;
@@ -37,59 +38,59 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QWidget *connectionUARTWidget;
-    QGridLayout *connectioinUARTLayout;
-    QLabel *baudRatesBoxTitle;
-    QComboBox *baudRatesBox;
-    QLabel *serialPortsBoxTitle;
-    QComboBox *serialPortsBox;
-    QList<QString> connectionStatusVariants;
-    QLabel *connectionStatusLabel;
-    QPushButton *connectButton;
-    QTextEdit *receivedTransmittedUARTDataTextEdit;
-    QTextEdit *lineDForTransmittedUARTDataTextEdit;
-    QPushButton *sendUARTDataButton;
-    QPushButton *clearUartDataButton;
+//    QWidget *connectionUARTWidget;
+//    QGridLayout *connectioinUARTLayout;
+//    QLabel *baudRatesBoxTitle;
+//    QComboBox *baudRatesBox;
+//    QLabel *serialPortsBoxTitle;
+//    QComboBox *serialPortsBox;
+//    QList<QString> connectionStatusVariants;
+//    QLabel *connectionStatusLabel;
+//    QPushButton *connectButton;
+//    QTextEdit *receivedTransmittedUARTDataTextEdit;
+//    QTextEdit *lineDForTransmittedUARTDataTextEdit;
+//    QPushButton *sendUARTDataButton;
+//    QPushButton *clearUartDataButton;
 
-    QLabel *mainWindowTitle;
-    QPushButton *connectionDriverButton;
-    QPushButton *disconnectionDriverButton;
-    QLabel *connectResultText;
-    QLabel *devicesNumbersTitleLabel;
-    QPushButton *connectionDeviceButton;
-    QComboBox *devicesNumbersListBox;
-    QLabel *waitAnswerIntervalValueBoxTitleLabel;
-    QComboBox *waitAnswerIntervalValueBox;
-    QPushButton *setWaitAnswerIntervalButton;
-    QLabel *selectModeTitleLabel;
-    QPushButton *bcModeSelectButton;
-    QPushButton *rtModeSelectButton;
-    QPushButton *mtModeSelectButton;
-    QLabel *selectBaseForWorkTitleLabel;
-    QSpinBox *baseForWorkValueBox;
-    QPushButton *selectBaseForWorkButton;
-    QLabel *inputYourMessageTitleLabel;
-    QLabel *addrOYTitleLabel;
-    QSpinBox *addrYOValueBox;
-    QLabel *subAddrOYTitleLabel;
-    QSpinBox *subAddrYOValueBox;
-    QTextEdit *lineSentMessageTextEdit;
-    QLabel *lastSendDescriptionTitleLabel;
-    QTextEdit *lastSendDescriptionTextEdit;
-    QPushButton *sendButton;
-    QLabel *sendStatusLabel;
-    QLabel *cycleSendTitleLabel;
-    QPushButton *cycleSendButton;
-    QLabel *cycleSendIntervalValuesBoxTitleLabel;
-    QSpinBox *cycleSendIntervalValueBox;
-    QLabel *cycleSendStatusLabel;
-    QLabel *readDataFromSubaddrTitleLabel;
-    QLabel *dataWordNumberLabel;
-    QSpinBox *dataWordValueBox;
-    QPushButton *readDataFromSubaddrButton;
-    QLabel *readStatusLabel;
-    QTextEdit *readDataTextEdit;
-    QGridLayout *MIL_STD_WidgetLayout;
+//    QLabel *mainWindowTitle;
+//    QPushButton *connectionDriverButton;
+//    QPushButton *disconnectionDriverButton;
+//    QLabel *connectResultText;
+//    QLabel *devicesNumbersTitleLabel;
+//    QPushButton *connectionDeviceButton;
+//    QComboBox *devicesNumbersListBox;
+//    QLabel *waitAnswerIntervalValueBoxTitleLabel;
+//    QComboBox *waitAnswerIntervalValueBox;
+//    QPushButton *setWaitAnswerIntervalButton;
+//    QLabel *selectModeTitleLabel;
+//    QPushButton *bcModeSelectButton;
+//    QPushButton *rtModeSelectButton;
+//    QPushButton *mtModeSelectButton;
+//    QLabel *selectBaseForWorkTitleLabel;
+//    QSpinBox *baseForWorkValueBox;
+//    QPushButton *selectBaseForWorkButton;
+//    QLabel *inputYourMessageTitleLabel;
+//    QLabel *addrOYTitleLabel;
+//    QSpinBox *addrYOValueBox;
+//    QLabel *subAddrOYTitleLabel;
+//    QSpinBox *subAddrYOValueBox;
+//    QTextEdit *lineSentMessageTextEdit;
+//    QLabel *lastSendDescriptionTitleLabel;
+//    QTextEdit *lastSendDescriptionTextEdit;
+//    QPushButton *sendButton;
+//    QLabel *sendStatusLabel;
+//    QLabel *cycleSendTitleLabel;
+//    QPushButton *cycleSendButton;
+//    QLabel *cycleSendIntervalValuesBoxTitleLabel;
+//    QSpinBox *cycleSendIntervalValueBox;
+//    QLabel *cycleSendStatusLabel;
+//    QLabel *readDataFromSubaddrTitleLabel;
+//    QLabel *dataWordNumberLabel;
+//    QSpinBox *dataWordValueBox;
+//    QPushButton *readDataFromSubaddrButton;
+//    QLabel *readStatusLabel;
+//    QTextEdit *readDataTextEdit;
+//    QGridLayout *MIL_STD_WidgetLayout;
 
     static int initTmkEvent();
     static void sleepCurrentThread(int ms);
@@ -99,7 +100,7 @@ private:
     DriverSettingsDialog *m_driverSettingsDialog;
     DriverSettingsDialog::DriverSettingsStruct m_currentDriverSettings;
     InterfaceParamenetsDialog *m_interfaceSettingsDialog;
-    InterfaceParamenetsDialog::InterfaceSettingsStruct m_currentInterfaceSettings;
+    QTranslator* m_translator;
 
     int deviceMode;
     QThread *cycleSendOperationThread;
@@ -113,6 +114,7 @@ private:
 signals:
     void startCycleSendProcessSignal();
     void cycleSendProcessFinish();
+    void retranslateUiSignal();
 
 public slots:
     void connectDriverButtonSlot();
@@ -135,7 +137,9 @@ public slots:
     void openDriverSettingsDialogSlot();
     void setDriverSettingsSlot(const DriverSettingsDialog::DriverSettingsStruct newDriverSettings);
     void openInterfaceSettingsDialogSlot();
-    void setInterfaceSettingsSlot(const InterfaceParamenetsDialog::InterfaceSettingsStruct newInterfaceSettings);
+    void setInterfaceSettingsSlot();
+    void switchToEnglish();
+    void switchToRussian();
 
 public:
     void closeWindow();

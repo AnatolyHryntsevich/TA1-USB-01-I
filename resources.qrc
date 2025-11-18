@@ -3,4 +3,8 @@
         <file>resources/icons/app.ico</file>
         <file>resources/media/warning.png</file>
     </qresource>
+    <qresource prefix="/translations">
+        <file>translations/app_ru.qm</file>
+        <file>translations/app_en.qm</file>
+    </qresource>
 </RCC>

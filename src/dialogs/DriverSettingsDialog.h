@@ -2,6 +2,8 @@
 
 #include <QDialog>
 
+#include "InterfaceParamenetsDialog.h"
+
 namespace Ui {
 class DriverSettingsDialog;
 }
@@ -21,10 +23,13 @@ public:
         QString workModeName;
     } DriverSettingsStruct;
 
-    void reloadSettingsBeforeView();
+    void reloadSettingsUiBeforeView();
 
 signals:
     void setDriverSettingsSignal(const DriverSettingsStruct newDriverSettings);
+
+public slots:
+    void retranslateUiSlot();
 
 private slots:
     void on_okButton_clicked();

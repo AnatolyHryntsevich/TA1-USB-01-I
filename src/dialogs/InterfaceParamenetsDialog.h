@@ -1,5 +1,4 @@
-#ifndef INTERFACEPARAMENETSDIALOG_H
-#define INTERFACEPARAMENETSDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -25,10 +24,15 @@ public:
         LanguageEnum language;
     } InterfaceSettingsStruct;
 
-    void reloadSettingsBeforeView();
+    void reloadSettingsUiBeforeView();
+
+    InterfaceSettingsStruct getCurrentInterfaceSettings() const;
 
 signals:
-    void setInterfaceSettingsSignal(const InterfaceSettingsStruct newInterfaceSettings);
+    void setInterfaceSettingsSignal();
+
+public slots:
+    void retranslateUiSlot();
 
 private slots:
     void on_okButton_clicked();
@@ -37,5 +41,3 @@ private:
     Ui::InterfaceParamenetsDialog *ui;
     InterfaceSettingsStruct currentInterfaceSettings;
 };
-
-#endif // INTERFACEPARAMENETSDIALOG_H

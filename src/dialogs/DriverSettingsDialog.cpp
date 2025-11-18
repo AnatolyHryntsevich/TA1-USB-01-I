@@ -41,7 +41,7 @@ DriverSettingsDialog::~DriverSettingsDialog()
     delete ui;
 }
 
-void DriverSettingsDialog::reloadSettingsBeforeView()
+void DriverSettingsDialog::reloadSettingsUiBeforeView()
 {
     ui->answerTimeoutComboBox->setCurrentText(QString::number(currentDriverSettings.answerWaitTimeout));
     ui->workModeComboBox->setCurrentText(currentDriverSettings.workModeName);
@@ -56,5 +56,10 @@ void DriverSettingsDialog::on_okButton_clicked()
     currentDriverSettings.answerWaitTimeout = ui->answerTimeoutComboBox->currentText().toInt();
     currentDriverSettings.workModeName = ui->workModeComboBox->currentText().toInt();
     emit setDriverSettingsSignal(currentDriverSettings);
+}
+
+void DriverSettingsDialog::retranslateUiSlot()
+{
+    ui->retranslateUi(this);
 }
 
