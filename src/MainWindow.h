@@ -16,7 +16,7 @@ class QComboBox;
 class QPushButton;
 class QTextEdit;
 class QSpinBox;
-class UartTransfer;
+class SerialMonitorWindow;
 class QTranslator;
 
 namespace Ui {
@@ -96,10 +96,11 @@ public:
     static void sleepCurrentThread(int ms);
 
 private:
-    Ui::MainWindow *ui;
-    DriverSettingsDialog *m_driverSettingsDialog;
+    Ui::MainWindow* ui;
+    DriverSettingsDialog* m_driverSettingsDialog;
     DriverSettingsDialog::DriverSettingsStruct m_currentDriverSettings;
-    InterfaceParamenetsDialog *m_interfaceSettingsDialog;
+    InterfaceParamenetsDialog* m_interfaceSettingsDialog;
+    SerialMonitorWindow* m_serialMonitorWindow;
     QTranslator* m_translator;
 
     int deviceMode;
@@ -109,7 +110,6 @@ private:
     QStringList cycleSendButtonNameList;
     QString fileName;
     QFile fileCycleSendLogs;
-    UartTransfer *uartTransfer;
 
 signals:
     void startCycleSendProcessSignal();
@@ -127,6 +127,7 @@ public slots:
     void readDataFromSubAddrServentDeviceSlot();
     void cycleSendProcessButtonSlot();
     void cycleSendProcessHandlerSlot();
+
     void connectionUARTButtonSlot();
     void updateCOMListSlot(int index);
     void receivedDataSlot(QByteArray data);
@@ -138,6 +139,7 @@ public slots:
     void setDriverSettingsSlot(const DriverSettingsDialog::DriverSettingsStruct newDriverSettings);
     void openInterfaceSettingsDialogSlot();
     void setInterfaceSettingsSlot();
+    void openSerialMonitorWindowSlot();
     void switchToEnglish();
     void switchToRussian();
 

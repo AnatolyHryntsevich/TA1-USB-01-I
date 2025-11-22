@@ -43,19 +43,19 @@ DriverSettingsDialog::~DriverSettingsDialog()
 
 void DriverSettingsDialog::reloadSettingsUiBeforeView()
 {
-    ui->answerTimeoutComboBox->setCurrentText(QString::number(currentDriverSettings.answerWaitTimeout));
-    ui->workModeComboBox->setCurrentText(currentDriverSettings.workModeName);
-    ui->memNumberComboBox->setCurrentText(QString::number(currentDriverSettings.memoryNumber));
-    ui->deviceNumberComboBox->setCurrentText(QString::number(currentDriverSettings.deviceNumber));
+    ui->answerTimeoutComboBox->setCurrentText(QString::number(m_currentDriverSettings.answerWaitTimeout));
+    ui->workModeComboBox->setCurrentText(m_currentDriverSettings.workModeName);
+    ui->memNumberComboBox->setCurrentText(QString::number(m_currentDriverSettings.memoryNumber));
+    ui->deviceNumberComboBox->setCurrentText(QString::number(m_currentDriverSettings.deviceNumber));
 }
 
 void DriverSettingsDialog::on_okButton_clicked()
 {
-    currentDriverSettings.deviceNumber = ui->deviceNumberComboBox->currentText().toInt();
-    currentDriverSettings.memoryNumber = ui->memNumberComboBox->currentText().toInt();
-    currentDriverSettings.answerWaitTimeout = ui->answerTimeoutComboBox->currentText().toInt();
-    currentDriverSettings.workModeName = ui->workModeComboBox->currentText().toInt();
-    emit setDriverSettingsSignal(currentDriverSettings);
+    m_currentDriverSettings.deviceNumber = ui->deviceNumberComboBox->currentText().toInt();
+    m_currentDriverSettings.memoryNumber = ui->memNumberComboBox->currentText().toInt();
+    m_currentDriverSettings.answerWaitTimeout = ui->answerTimeoutComboBox->currentText().toInt();
+    m_currentDriverSettings.workModeName = ui->workModeComboBox->currentText().toInt();
+    emit setDriverSettingsSignal(m_currentDriverSettings);
 }
 
 void DriverSettingsDialog::retranslateUiSlot()

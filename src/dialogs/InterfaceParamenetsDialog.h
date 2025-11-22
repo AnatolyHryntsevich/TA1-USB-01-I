@@ -39,5 +39,5 @@ private slots:
 
 private:
     Ui::InterfaceParamenetsDialog *ui;
-    InterfaceSettingsStruct currentInterfaceSettings;
+    InterfaceSettingsStruct m_currentInterfaceSettings;
 };

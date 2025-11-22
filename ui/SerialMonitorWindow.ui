@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SerialMonitorWindow</class>
+ <widget class="QWidget" name="SerialMonitorWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>497</width>
+    <height>469</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <stylestrategy>PreferAntialias</stylestrategy>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Последовательный порт</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="mainGroupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,15,2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="connectionLayout_2">
+        <item>
+         <layout class="QVBoxLayout" name="mainConnectionLayout">
+          <item>
+           <widget class="QGroupBox" name="connectionGroupBox">
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="connectionLayout">
+               <property name="rightMargin">
+                <number>5</number>
+               </property>
+               <item>
+                <spacer name="connectionSpacer2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item alignment="Qt::AlignHCenter">
+                <widget class="QLabel" name="connectionStatusLabel">
+                 <property name="font">
+                  <font>
+                   <bold>true</bold>
+                   <stylestrategy>PreferAntialias</stylestrategy>
+                  </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Состояние соединения</string>
+                 </property>
+                 <property name="text">
+                  <string>Не готов</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="connectionSpacer1">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item alignment="Qt::AlignHCenter">
+                <widget class="QComboBox" name="portNameComboBox">
+                 <property name="toolTip">
+                  <string>Список доступных портов</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    margin-left: 0px;
+    margin-right: 2px;
+    min-width: 40px;
+    padding: 2px 12px; 
+}</string>
+                 </property>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignHCenter">
+                <widget class="QComboBox" name="baudRateComboBox">
+                 <property name="toolTip">
+                  <string>Список поддерживаемых скоростей передачи данных</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox {
+    margin-left: 0px;
+    margin-right: 2px;
+    min-width: 40px;
+    padding: 2px 12px; 
+}</string>
+                 </property>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignHCenter">
+                <widget class="QPushButton" name="connectionButton">
+                 <property name="toolTip">
+                  <string>Активировать линию последовательной передачи</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
+    margin-left: 0px;
+    margin-right: 0px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Подключить</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="mainLogLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="logGroupBox">
+          <property name="styleSheet">
+           <string notr="true">QGroupBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    margin-top: 0.5em;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 8px;
+    background-color: palette(window);
+}</string>
+          </property>
+          <property name="title">
+           <string>Лог</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <layout class="QGridLayout" name="logLayout">
+             <property name="verticalSpacing">
+              <number>6</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QTextEdit" name="logTextEdit">
+               <property name="toolTip">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" alignment="Qt::AlignRight">
+              <widget class="QPushButton" name="clearButton">
+               <property name="toolTip">
+                <string>Очистить лог</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    margin-left: 0px;
+    margin-right: 0px;
+}</string>
+               </property>
+               <property name="text">
+                <string>Очистить</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="mainSendLayout" stretch="0">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="sendGroupBox">
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="sendLayout">
+             <property name="leftMargin">
+              <number>5</number>
+             </property>
+             <property name="rightMargin">
+              <number>5</number>
+             </property>
+             <item alignment="Qt::AlignHCenter">
+              <widget class="QLabel" name="sendPleaseLabel">
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                 <stylestrategy>PreferAntialias</stylestrategy>
+                </font>
+               </property>
+               <property name="text">
+                <string>&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="sendInputLineEdit">
+               <property name="toolTip">
+                <string>hex16: &quot;ff ff ff ff ff ...&quot;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLineEdit {
+    margin-left: 0px;
+    margin-right: 2px;
+}</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="sendButton">
+               <property name="toolTip">
+                <string>Отправить введенные данные</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    margin-left: 0px;
+    margin-right: 0px;
+}</string>
+               </property>
+               <property name="text">
+                <string>Отправить</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -25,14 +25,14 @@ InterfaceParamenetsDialog::~InterfaceParamenetsDialog()
 
 void InterfaceParamenetsDialog::reloadSettingsUiBeforeView()
 {
-    ui->fontSizeComboBox->setCurrentText(QString::number(currentInterfaceSettings.fontSize));
-    ui->languageComboBox->setCurrentText(currentInterfaceSettings.language == Russian_language ? "Русский" : "English");
+    ui->fontSizeComboBox->setCurrentText(QString::number(m_currentInterfaceSettings.fontSize));
+    ui->languageComboBox->setCurrentText(m_currentInterfaceSettings.language == Russian_language ? "Русский" : "English");
 }
 
 void InterfaceParamenetsDialog::on_okButton_clicked()
 {
-    currentInterfaceSettings.fontSize = ui->fontSizeComboBox->currentText().toInt();
-    currentInterfaceSettings.language = ui->languageComboBox->currentText() == "Русский" ? Russian_language : English_language;
+    m_currentInterfaceSettings.fontSize = ui->fontSizeComboBox->currentText().toInt();
+    m_currentInterfaceSettings.language = ui->languageComboBox->currentText() == "Русский" ? Russian_language : English_language;
     emit setInterfaceSettingsSignal();
 }
 
@@ -43,6 +43,6 @@ void InterfaceParamenetsDialog::retranslateUiSlot()
 
 InterfaceParamenetsDialog::InterfaceSettingsStruct InterfaceParamenetsDialog::getCurrentInterfaceSettings() const
 {
-    return currentInterfaceSettings;
+    return m_currentInterfaceSettings;
 }
 

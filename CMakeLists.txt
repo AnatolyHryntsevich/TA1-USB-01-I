@@ -24,19 +24,22 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/DriverSettingsDialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/UartTransfer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialMonitorWindow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/unix/ltmk.c
     )
     set(FORMS
         ${CMAKE_CURRENT_SOURCE_DIR}/ui/MainWindow.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/ui/DriverSettingsDialog.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/ui/InterfaceParamenetsDialog.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/ui/SerialMonitorWindow.ui
     )
     set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/DriverSettingsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/UartTransfer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialMonitorWindow.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/unix/ltmk.h
     )
     add_compile_options(-finput-charset=UTF-8)
@@ -53,19 +56,22 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/DriverSettingsDialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/UartTransfer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialMonitorWindow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32/WDMTMKv2.cpp
     )
     set(FORMS
         ${CMAKE_CURRENT_SOURCE_DIR}/ui/MainWindow.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/ui/DriverSettingsDialog.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/ui/InterfaceParamenetsDialog.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/ui/SerialMonitorWindow.ui
     )
     set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/DriverSettingsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/UartTransfer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialMonitorWindow.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32/WDMTMKv2.h
     )
 endif()

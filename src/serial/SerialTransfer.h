@@ -5,13 +5,13 @@
 
 #define UART_MAX_MSG_LEN 1500
 
-class UartTransfer : public QObject
+class SerialTransfer : public QObject
 {
     Q_OBJECT
 
 public:
-    UartTransfer(QObject *parent = nullptr);
-    ~UartTransfer() override;
+    SerialTransfer(QObject *parent = nullptr);
+    ~SerialTransfer() override;
 
     bool init(const QString &portName, qint32 baudRate);
     bool isInit();

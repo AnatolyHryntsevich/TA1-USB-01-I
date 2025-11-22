@@ -39,8 +39,9 @@ int hTmk;
 HANDLE hBcEvent;
 #endif
 
-#include "UartTransfer.h"
 #include "ui_MainWindow.h"
+
+#include "SerialMonitorWindow.h"
 
 TTmkEventData tmkEvD;
 unsigned short awBuf[32]; //в linux размерность может равняться 64
@@ -55,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
       ui(new Ui::MainWindow),
       m_driverSettingsDialog(nullptr),
       m_interfaceSettingsDialog(nullptr),
+      m_serialMonitorWindow(nullptr),
       m_translator(nullptr)
 {
     ui->setupUi(this);
@@ -62,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_driverSettingsDialog->setModal(false);
     m_interfaceSettingsDialog = new InterfaceParamenetsDialog(this);
     m_interfaceSettingsDialog->setModal(false);
+    m_serialMonitorWindow = new SerialMonitorWindow();
 
     QDir currentDir;
     QString fileName = "cycleSendLogs.txt";
@@ -353,17 +356,24 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-
+    // Настройки драйвера и интерфейса программы
     connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::openDriverSettingsDialogSlot);
     connect(m_driverSettingsDialog, &DriverSettingsDialog::setDriverSettingsSignal, this, &MainWindow::setDriverSettingsSlot);
     connect(ui->interfaceSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::openInterfaceSettingsDialogSlot);
     connect(m_interfaceSettingsDialog, &InterfaceParamenetsDialog::setInterfaceSettingsSignal, this, &MainWindow::setInterfaceSettingsSlot);
     connect(this, &MainWindow::retranslateUiSignal, m_driverSettingsDialog, &DriverSettingsDialog::retranslateUiSlot);
     connect(this, &MainWindow::retranslateUiSignal, m_interfaceSettingsDialog, &InterfaceParamenetsDialog::retranslateUiSlot);
+
+    connect(ui->serialMonitorAction, &QAction::triggered, this, &MainWindow::openSerialMonitorWindowSlot);
 }
 
 MainWindow::~MainWindow()
 {
+    delete ui;
+    delete m_driverSettingsDialog;
+    delete m_interfaceSettingsDialog;
+    delete m_serialMonitorWindow;
+    delete m_translator;
 }
 
 int MainWindow::initTmkEvent()
@@ -1523,6 +1533,11 @@ void MainWindow::cycleSendProcessHandlerSlot()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    if (m_serialMonitorWindow && m_serialMonitorWindow->isVisible()) {
+            m_serialMonitorWindow->close();
+        }
+
+        event->accept();
     //    Q_UNUSED(event);
     //    if(cycleSendButton->text() == cycleSendButtonNameList.at(1)) {
     //        cycleSendProcessButtonSlot();
@@ -1693,9 +1708,20 @@ void MainWindow::setInterfaceSettingsSlot()
         switchToEnglish();
     }
     else if (m_interfaceSettingsDialog->getCurrentInterfaceSettings().language
-               == InterfaceParamenetsDialog::LanguageEnum::Russian_language)
+             == InterfaceParamenetsDialog::LanguageEnum::Russian_language)
     {
         switchToRussian();
+    }
+}
+
+void MainWindow::openSerialMonitorWindowSlot()
+{
+    if (m_serialMonitorWindow->isVisible()) {
+        m_serialMonitorWindow->hide();
+    } else {
+        m_serialMonitorWindow->show();
+        m_serialMonitorWindow->raise();
+        m_serialMonitorWindow->activateWindow();
     }
 }
 

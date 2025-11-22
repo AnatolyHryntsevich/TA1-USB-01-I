@@ -1,4 +1,4 @@
-#include "UartTransfer.h"
+#include "SerialTransfer.h"
 
 #include <QObject>
 #include <QDebug>
@@ -6,13 +6,13 @@
 
 #include <cstdint>
 
-UartTransfer::UartTransfer(QObject *parent) : QObject(parent)
+SerialTransfer::SerialTransfer(QObject *parent) : QObject(parent)
 {
     memset(msgBuf, 0, UART_MAX_MSG_LEN);
     memset(tmpBuf, 0, UART_MAX_MSG_LEN);
 }
 
-UartTransfer::~UartTransfer()
+SerialTransfer::~SerialTransfer()
 {
     if(initFlag) {
         serial.close();
@@ -20,7 +20,7 @@ UartTransfer::~UartTransfer()
     }
 }
 
-void UartTransfer::errorOccurred(QSerialPort::SerialPortError error)
+void SerialTransfer::errorOccurred(QSerialPort::SerialPortError error)
 {
     Q_UNUSED(error);
     qDebug() << "Error occured on serial port" << serial.portName() << "Error:" << serial.errorString();
@@ -30,7 +30,7 @@ void UartTransfer::errorOccurred(QSerialPort::SerialPortError error)
     emit serialPortError(serial.errorString());
 }
 
-void UartTransfer::handleReadyRead()
+void SerialTransfer::handleReadyRead()
 {
     if(doCheck) {
         int tmp = indexBuffUart;
@@ -41,7 +41,7 @@ void UartTransfer::handleReadyRead()
     }
 }
 
-void UartTransfer::processSendData(QByteArray data)
+void SerialTransfer::processSendData(QByteArray data)
 {
     if(!initFlag)
         return;
@@ -57,7 +57,7 @@ void UartTransfer::processSendData(QByteArray data)
  * @param baudRate Скорость передачи данных, бод
  * @return Результат инициализации
  */
-bool UartTransfer::init(const QString &portName, qint32 baudRate) //-V688
+bool SerialTransfer::init(const QString &portName, qint32 baudRate) //-V688
 {
     try {
         qDebug() << "connecting to " << portName;
@@ -71,9 +71,9 @@ bool UartTransfer::init(const QString &portName, qint32 baudRate) //-V688
 
         initFlag = true;
         this->portName = portName;
-        connect(this, &UartTransfer::sendData, this, &UartTransfer::processSendData);
-        connect(&serial, &QSerialPort::errorOccurred, this, &UartTransfer::errorOccurred);
-        connect(&serial, &QSerialPort::readyRead, this, &UartTransfer::handleReadyRead);
+        connect(this, &SerialTransfer::sendData, this, &SerialTransfer::processSendData);
+        connect(&serial, &QSerialPort::errorOccurred, this, &SerialTransfer::errorOccurred);
+        connect(&serial, &QSerialPort::readyRead, this, &SerialTransfer::handleReadyRead);
         return initFlag;
     }
     catch (const QString &errorMsg) {
@@ -88,7 +88,7 @@ bool UartTransfer::init(const QString &portName, qint32 baudRate) //-V688
  * @brief UartTransfer::isInit Метод, который возвращает состояние инициализации порта UART
  * @return Флаг инициализации порта UART
  */
-bool UartTransfer::isInit()
+bool SerialTransfer::isInit()
 {
     return initFlag;
 }
@@ -98,7 +98,7 @@ bool UartTransfer::isInit()
  * @param dataBits Бит данных
  * @return Результат установки
  */
-bool UartTransfer::setDataBits(QSerialPort::DataBits dataBits)
+bool SerialTransfer::setDataBits(QSerialPort::DataBits dataBits)
 {
     if(!initFlag)
         return false;
@@ -115,7 +115,7 @@ bool UartTransfer::setDataBits(QSerialPort::DataBits dataBits)
  * @param parity Четность
  * @return Результат установки
  */
-bool UartTransfer::setParity(QSerialPort::Parity parity)
+bool SerialTransfer::setParity(QSerialPort::Parity parity)
 {
     if(!initFlag)
         return false;
@@ -132,7 +132,7 @@ bool UartTransfer::setParity(QSerialPort::Parity parity)
  * @param stopBits Стоповый бит
  * @return Результат установки
  */
-bool UartTransfer::setStopBits(QSerialPort::StopBits stopBits)
+bool SerialTransfer::setStopBits(QSerialPort::StopBits stopBits)
 {
     if(!initFlag)
         return false;
@@ -149,7 +149,7 @@ bool UartTransfer::setStopBits(QSerialPort::StopBits stopBits)
  * содержит информацию о длине пакета
  * @param byteNum Номер байта (нумерация начиная с нуля)
  */
-void UartTransfer::setNumLenByte(int byteNum)
+void SerialTransfer::setNumLenByte(int byteNum)
 {
     if(byteNum == 2 || byteNum == 3)
         numLenByte = byteNum;
@@ -161,7 +161,7 @@ void UartTransfer::setNumLenByte(int byteNum)
  * @param len Длина отправляемых данных
  * @return Количество записанных байт
  */
-qint64 UartTransfer::write(const char *data, qint64 len)
+qint64 SerialTransfer::write(const char *data, qint64 len)
 {
     if(!initFlag) {
         qDebug() << "Serial port wasn't initialized, cant write data to it";
@@ -175,7 +175,7 @@ qint64 UartTransfer::write(const char *data, qint64 len)
     return 0;
 }
 
-qint64 UartTransfer::write(const QByteArray *data)
+qint64 SerialTransfer::write(const QByteArray *data)
 {
     if(!initFlag) {
         qDebug() << "Serial port wasn't initialized, cant write data to it";
@@ -195,7 +195,7 @@ qint64 UartTransfer::write(const QByteArray *data)
  * @param len Длина отправляемых данных
  * @return Количество записанных байт
  */
-qint64 UartTransfer::writeSR(char *data, qint64 len)
+qint64 SerialTransfer::writeSR(char *data, qint64 len)
 {
     if(!initFlag) {
         qDebug() << "Serial port wasn't initialized, cant write data to it";
@@ -251,7 +251,7 @@ qint64 UartTransfer::writeSR(char *data, qint64 len)
  * @param len Максимальная длина буфера
  * @return Количество записанных байт данных
  */
-qint64 UartTransfer::read(char *data, qint64 len)
+qint64 SerialTransfer::read(char *data, qint64 len)
 {
     if(!initFlag) {
         qDebug() << "Serial port wasn't initialized, cant read anything from it";
@@ -270,7 +270,7 @@ qint64 UartTransfer::read(char *data, qint64 len)
  * @param len Максимальная длина буфера
  * @return Количество записанных полезный байт данных
  */
-qint64 UartTransfer::readSR(char *data, qint64 len)
+qint64 SerialTransfer::readSR(char *data, qint64 len)
 {
     if(!initFlag) {
         qDebug() << "Serial port wasn't initialized, cant read anything from it";

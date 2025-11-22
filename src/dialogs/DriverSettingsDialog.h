@@ -36,5 +36,5 @@ private slots:
 
 private:
     Ui::DriverSettingsDialog *ui;
-    DriverSettingsStruct currentDriverSettings;
+    DriverSettingsStruct m_currentDriverSettings;
 };
