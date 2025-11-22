@@ -24,7 +24,6 @@ SerialMonitorWindow::SerialMonitorWindow(QWidget *parent) :
                 parent
                 );
     ui->sendInputLineEdit->setValidator(validator);
-    ui->sendInputLineEdit->setPlaceholderText("Введите данные для отправки здесь...");
 
     connectionGuiSlot(false);
 
@@ -37,6 +36,41 @@ SerialMonitorWindow::~SerialMonitorWindow()
 {
     delete ui;
     delete m_serialTransfer;
+}
+
+void SerialMonitorWindow::retranslateUiSlot()
+{
+    ui->retranslateUi(this);
+    if(ui->clearButton->text() == "Clear")
+    {
+        if(m_serialTransfer)
+        {
+            ui->connectionButton->setText("Disable");
+            ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(2));
+            ui->connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
+        }
+        else
+        {
+            ui->connectionButton->setText("Connect");
+            ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(3));
+            ui->connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
+        }
+    }
+    else if (ui->clearButton->text() == "Очистить")
+    {
+        if(m_serialTransfer)
+        {
+            ui->connectionButton->setText("Отключить");
+            ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(0));
+            ui->connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
+        }
+        else
+        {
+            ui->connectionButton->setText("Подключить");
+            ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(1));
+            ui->connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
+        }
+    }
 }
 
 void SerialMonitorWindow::connectionGuiSlot(const bool connected)
@@ -61,6 +95,7 @@ void SerialMonitorWindow::connectionGuiSlot(const bool connected)
         ui->baudRateComboBox->setEnabled(true);
         ui->portNameComboBox->setEnabled(true);
     }
+    retranslateUiSlot();
 }
 
 void SerialMonitorWindow::updatePortNameListSlot(const int index)
@@ -86,7 +121,7 @@ void SerialMonitorWindow::receivedDataSlot(QByteArray data)
 
 void SerialMonitorWindow::on_connectionButton_clicked()
 {
-    if(ui->connectionStatusLabel->text() == m_connectionStatusVariants.at(1)) {
+    if(!m_serialTransfer) {
         qint64 baudRate = ui->baudRateComboBox->currentText().toInt();
         QString portName = ui->portNameComboBox->currentText();
 
@@ -110,13 +145,10 @@ void SerialMonitorWindow::on_connectionButton_clicked()
         return;
     }
 
-    if(m_serialTransfer) {
-        qDebug() << "Serial port is disabled";
-        disconnect(m_serialTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
-        m_serialTransfer->~SerialTransfer();
-        m_serialTransfer = nullptr;
-    }
-
+    qDebug() << "Serial port is disabled";
+    disconnect(m_serialTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
+    m_serialTransfer->~SerialTransfer();
+    m_serialTransfer = nullptr;
     emit connectionGuiSignal(false);
 }
 

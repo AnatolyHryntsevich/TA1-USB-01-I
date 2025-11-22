@@ -363,6 +363,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_interfaceSettingsDialog, &InterfaceParamenetsDialog::setInterfaceSettingsSignal, this, &MainWindow::setInterfaceSettingsSlot);
     connect(this, &MainWindow::retranslateUiSignal, m_driverSettingsDialog, &DriverSettingsDialog::retranslateUiSlot);
     connect(this, &MainWindow::retranslateUiSignal, m_interfaceSettingsDialog, &InterfaceParamenetsDialog::retranslateUiSlot);
+    connect(this, &MainWindow::retranslateUiSignal, m_serialMonitorWindow, &SerialMonitorWindow::retranslateUiSlot);
 
     connect(ui->serialMonitorAction, &QAction::triggered, this, &MainWindow::openSerialMonitorWindowSlot);
 }

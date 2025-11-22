@@ -19,6 +19,9 @@ public:
 signals:
     void connectionGuiSignal(const bool connected);
 
+public slots:
+    void retranslateUiSlot();
+
 private slots:
     void connectionGuiSlot(const bool connected);
     void updatePortNameListSlot(const int index);
@@ -31,5 +34,5 @@ private slots:
 private:
     Ui::SerialMonitorWindow *ui;
     SerialTransfer *m_serialTransfer;
-    QList<QString> m_connectionStatusVariants {"Готов", "Не готов"};
+    QList<QString> m_connectionStatusVariants {"Готов", "Не готов", "Ready", "Not ready"};
 };

@@ -303,6 +303,9 @@ QGroupBox::title {
     margin-right: 2px;
 }</string>
                </property>
+               <property name="placeholderText">
+                <string>Введите данные для отправки здесь...</string>
+               </property>
               </widget>
              </item>
              <item>
