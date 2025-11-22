@@ -1533,11 +1533,30 @@ void MainWindow::cycleSendProcessHandlerSlot()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (m_serialMonitorWindow && m_serialMonitorWindow->isVisible()) {
+    QMessageBox ms(this);
+    ms.setWindowTitle("Подтверждение закрытия");
+    ms.setText("Вы уверены, что хотите закрыть программу?");
+    ms.setIcon(QMessageBox::Question);
+
+    QPushButton *yesButton = ms.addButton("Да", QMessageBox::YesRole);
+    QPushButton *noButton = ms.addButton("Нет", QMessageBox::NoRole);
+    ms.setDefaultButton(noButton);
+    ms.setEscapeButton(noButton);
+
+    ms.exec();
+
+    if (ms.clickedButton() == yesButton)
+    {
+        if (m_serialMonitorWindow)
+        {
             m_serialMonitorWindow->close();
         }
-
         event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
     //    Q_UNUSED(event);
     //    if(cycleSendButton->text() == cycleSendButtonNameList.at(1)) {
     //        cycleSendProcessButtonSlot();
@@ -1716,13 +1735,19 @@ void MainWindow::setInterfaceSettingsSlot()
 
 void MainWindow::openSerialMonitorWindowSlot()
 {
-    if (m_serialMonitorWindow->isVisible()) {
-        m_serialMonitorWindow->hide();
-    } else {
-        m_serialMonitorWindow->show();
-        m_serialMonitorWindow->raise();
-        m_serialMonitorWindow->activateWindow();
+    if(!m_serialMonitorWindow)
+        return;
+
+    if (m_serialMonitorWindow->isMinimized()) {
+        m_serialMonitorWindow->showNormal();
     }
+
+    if (!m_serialMonitorWindow->isVisible()) {
+        m_serialMonitorWindow->setVisible(true);
+    }
+
+    m_serialMonitorWindow->raise();
+    m_serialMonitorWindow->activateWindow();
 }
 
 void MainWindow::switchToEnglish()
