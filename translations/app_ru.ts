@@ -47,6 +47,18 @@
         <source>ОК</source>
         <translation>ОК</translation>
     </message>
+    <message>
+        <source>КК</source>
+        <translation>КК</translation>
+    </message>
+    <message>
+        <source>ОУ</source>
+        <translation>ОУ</translation>
+    </message>
+    <message>
+        <source>МТ</source>
+        <translation>МТ</translation>
+    </message>
 </context>
 <context>
     <name>InterfaceParamenetsDialog</name>
@@ -119,7 +131,7 @@
     </message>
     <message>
         <source>Введите слова для отправки, разделяя их пробелами</source>
-        <translation>Введите слова для отправки, разделяя их пробелами</translation>
+        <translation type="vanished">Введите слова для отправки, разделяя их пробелами</translation>
     </message>
     <message>
         <source>Циклическая запись данных в подадрес</source>
@@ -233,6 +245,26 @@
         <source>Введите данные для отправки здесь...</source>
         <translation>Введите данные для отправки здесь...</translation>
     </message>
+    <message>
+        <source>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Программа управления шиной MIL-STD-1553 (ГОСТ Р 52070-2003) через USB-интерфейс&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначена для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Сохранение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</source>
+        <translation>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Программа управления шиной MIL-STD-1553 (ГОСТ Р 52070-2003) через USB-интерфейс&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначена для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Сохранение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Подтверждение закрытия</source>
+        <translation>Подтверждение закрытия</translation>
+    </message>
+    <message>
+        <source>Вы уверены, что хотите закрыть программу?</source>
+        <translation>Вы уверены, что хотите закрыть программу?</translation>
+    </message>
+    <message>
+        <source>Да</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <source>Нет</source>
+        <translation>Нет</translation>
+    </message>
 </context>
 <context>
     <name>SerialMonitorWindow</name>
@@ -295,6 +327,38 @@
     <message>
         <source>Введите данные для отправки здесь...</source>
         <translation>Введите данные для отправки здесь...</translation>
+    </message>
+    <message>
+        <source>Отключить</source>
+        <translation>Отключить</translation>
+    </message>
+    <message>
+        <source>Деактивировать линию последовательной передачи</source>
+        <translation>Деактивировать линию последовательной передачи</translation>
+    </message>
+    <message>
+        <source>Готов</source>
+        <translation>Готов</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Очистить</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation>Отключить</translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation>Подключить</translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation>Готов</translation>
+    </message>
+    <message>
+        <source>Not ready</source>
+        <translation>Не готов</translation>
     </message>
 </context>
 </TS>

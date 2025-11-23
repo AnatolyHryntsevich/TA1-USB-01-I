@@ -95,16 +95,16 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    // Настройки драйвера и интерфейса программы
-    connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::openDriverSettingsDialogSlot);
+    // Пункты главного меню
+    connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::driverSettingsDialogOpenActionSlot);
     connect(m_driverSettingsDialog, &DriverSettingsDialog::setDriverSettingsSignal, this, &MainWindow::setDriverSettingsSlot);
-    connect(ui->interfaceSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::openInterfaceSettingsDialogSlot);
+    connect(ui->interfaceSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::interfaceSettingsDialogOpenActionSlot);
     connect(m_interfaceSettingsDialog, &InterfaceParamenetsDialog::setInterfaceSettingsSignal, this, &MainWindow::setInterfaceSettingsSlot);
     connect(this, &MainWindow::retranslateUiSignal, m_driverSettingsDialog, &DriverSettingsDialog::retranslateUiSlot);
     connect(this, &MainWindow::retranslateUiSignal, m_interfaceSettingsDialog, &InterfaceParamenetsDialog::retranslateUiSlot);
     connect(this, &MainWindow::retranslateUiSignal, m_serialMonitorWindow, &SerialMonitorWindow::retranslateUiSlot);
-
-    connect(ui->serialMonitorAction, &QAction::triggered, this, &MainWindow::openSerialMonitorWindowSlot);
+    connect(ui->serialMonitorOpenAction, &QAction::triggered, this, &MainWindow::serialMonitorOpenActionSlot);
+    connect(ui->aboutProgramAction, &QAction::triggered, this, &MainWindow::aboutProgramActionSlot);
 }
 
 MainWindow::~MainWindow()
@@ -1276,24 +1276,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QMessageBox ms(this);
     QPushButton *yesButton;
     QPushButton *noButton;
-    if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
-            InterfaceParamenetsDialog::LanguageEnum::English_language)
-    {
-        ms.setWindowTitle("Closing confirmation");
-        ms.setText("Are you sure you want to close the program?");
-        ms.setIcon(QMessageBox::Question);
-        yesButton = ms.addButton("Yes", QMessageBox::YesRole);
-        noButton = ms.addButton("No", QMessageBox::NoRole);
-    }
-    else if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
-            InterfaceParamenetsDialog::LanguageEnum::Russian_language)
-    {
-        ms.setWindowTitle("Подтверждение закрытия");
-        ms.setText("Вы уверены, что хотите закрыть программу?");
-        ms.setIcon(QMessageBox::Question);
-        yesButton = ms.addButton("Да", QMessageBox::YesRole);
-        noButton = ms.addButton("Нет", QMessageBox::NoRole);
-    }
+    ms.setWindowTitle(tr("Подтверждение закрытия"));
+    ms.setText(tr("Вы уверены, что хотите закрыть программу?"));
+    ms.setIcon(QMessageBox::Question);
+    yesButton = ms.addButton(tr("Да"), QMessageBox::YesRole);
+    noButton = ms.addButton(tr("Нет"), QMessageBox::NoRole);
     ms.setDefaultButton(noButton);
     ms.setEscapeButton(noButton);
 
@@ -1426,7 +1413,7 @@ void MainWindow::clearUARTDataTextEditButtonSlot()
     //    receivedTransmittedUARTDataTextEdit->clear();
 }
 
-void MainWindow::openDriverSettingsDialogSlot()
+void MainWindow::driverSettingsDialogOpenActionSlot()
 {
     if(!m_driverSettingsDialog)
         return;
@@ -1444,7 +1431,7 @@ void MainWindow::setDriverSettingsSlot(const DriverSettingsDialog::DriverSetting
     m_driverSettingsDialog->setVisible(false);
 }
 
-void MainWindow::openInterfaceSettingsDialogSlot()
+void MainWindow::interfaceSettingsDialogOpenActionSlot()
 { 
     if(!m_interfaceSettingsDialog)
         return;
@@ -1485,7 +1472,7 @@ void MainWindow::setInterfaceSettingsSlot()
     }
 }
 
-void MainWindow::openSerialMonitorWindowSlot()
+void MainWindow::serialMonitorOpenActionSlot()
 {
     if(!m_serialMonitorWindow)
         return;
@@ -1513,7 +1500,6 @@ void MainWindow::switchToEnglish()
 
     m_translator = new QTranslator;
 
-    // Пробуем загрузить из разных мест
     if (m_translator->load("translations/app_en.qm") ||
             m_translator->load("app_en.qm") ||
             m_translator->load("../translations/app_en.qm"))
@@ -1542,7 +1528,6 @@ void MainWindow::switchToRussian()
 
     m_translator = new QTranslator;
 
-    // Пробуем загрузить из разных мест
     if (m_translator->load("translations/app_ru.qm") ||
             m_translator->load("app_ru.qm") ||
             m_translator->load("../translations/app_ru.qm")) {
@@ -1560,6 +1545,36 @@ void MainWindow::switchToRussian()
         delete m_translator;
         m_translator = nullptr;
     }
+}
+
+void MainWindow::aboutProgramActionSlot()
+{
+    QMessageBox aboutBox(this);
+    aboutBox.setWindowTitle(tr("О программе"));
+    aboutBox.setIconPixmap(QPixmap(":resources/icons/app.ico").scaled(64, 64));
+
+    aboutBox.setText(tr(
+                         "<h3>mil-std-1553b-usb-terminal</h3>"
+                         "<p><b>Программа управления шиной MIL-STD-1553 (ГОСТ Р 52070-2003) через USB-интерфейс</b></p>"
+                         "<p>Предназначена для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API "
+                         "драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» "
+                         "(<a href='http://www.elcus.ru'>http://www.elcus.ru/boards.php</a>)</p>"
+                         "<hr>"
+                         "<p><b>Возможности:</b></p>"
+                         "<ul>"
+                         "<li>Сопряжение USB с резервированным мультиплексным каналом "
+                         "посредством модуля TA1-USB в режиме КК (Контроллер канала)</li>"
+                         "<li>Запись данных в подадреса ОУ (Оконечных устройств)</li>"
+                         "<li>Чтение данных из подадресов ОУ</li>"
+                         "<li>Сохранение лога работы</li>"
+                         "</ul>"
+                         "<p><b>Описание модуля на сайте производителя:</b> "
+                         "<a href='http://www.elcus.ru/boards.php?ID=ta1-usb'>http://www.elcus.ru/boards.php?ID=ta1-usb</a></p>"
+                         "<p><b>Версия программы:</b> %1</p>"
+                         "<b>Дата сборки:</b> %2</p>"
+                         ).arg(VERSION_NUMBER).arg(QDateTime::currentDateTime().toString("dd.MM.yyyy")));
+
+    aboutBox.exec();
 }
 
 

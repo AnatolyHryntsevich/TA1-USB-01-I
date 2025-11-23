@@ -8,6 +8,7 @@
 
 #define TRY_CONNECT_DEVICE_BUTTON_STRING "подключиться к устройству"
 #define TRY_DISCONNECT_DEVICE_BUTTON_STRING "отключиться от устройства"
+#define VERSION_NUMBER "1.0.0"
 
 class QWidget;
 class QGridLayout;
@@ -81,13 +82,14 @@ public slots:
     void clearUARTDataTextEditButtonSlot();
 
     //Новый функционал:
-    void openDriverSettingsDialogSlot();
+    void driverSettingsDialogOpenActionSlot();
     void setDriverSettingsSlot(const DriverSettingsDialog::DriverSettingsStruct newDriverSettings);
-    void openInterfaceSettingsDialogSlot();
+    void interfaceSettingsDialogOpenActionSlot();
     void setInterfaceSettingsSlot();
-    void openSerialMonitorWindowSlot();
+    void serialMonitorOpenActionSlot();
     void switchToEnglish();
     void switchToRussian();
+    void aboutProgramActionSlot();
 
 public:
     void closeWindow();

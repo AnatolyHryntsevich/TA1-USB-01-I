@@ -41,32 +41,32 @@ SerialMonitorWindow::~SerialMonitorWindow()
 void SerialMonitorWindow::retranslateUiSlot()
 {
     ui->retranslateUi(this);
-    if(ui->clearButton->text() == "Clear")
+    if(ui->clearButton->text() == tr("Clear"))
     {
         if(m_serialTransfer)
         {
-            ui->connectionButton->setText("Disable");
+            ui->connectionButton->setText(tr("Disable"));
             ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(2));
             ui->connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
         }
         else
         {
-            ui->connectionButton->setText("Connect");
+            ui->connectionButton->setText(tr("Connect"));
             ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(3));
             ui->connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
         }
     }
-    else if (ui->clearButton->text() == "Очистить")
+    else if (ui->clearButton->text() == tr("Очистить"))
     {
         if(m_serialTransfer)
         {
-            ui->connectionButton->setText("Отключить");
+            ui->connectionButton->setText(tr("Отключить"));
             ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(0));
             ui->connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
         }
         else
         {
-            ui->connectionButton->setText("Подключить");
+            ui->connectionButton->setText(tr("Подключить"));
             ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(1));
             ui->connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
         }
@@ -77,8 +77,8 @@ void SerialMonitorWindow::connectionGuiSlot(const bool connected)
 {
     if(connected)
     {
-        ui->connectionButton->setText("Отключить");
-        ui->connectionButton->setToolTip("Деактивировать линию последовательной передачи");
+        ui->connectionButton->setText(tr("Отключить"));
+        ui->connectionButton->setToolTip(tr("Деактивировать линию последовательной передачи"));
         ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(0));
         ui->connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
         ui->sendButton->setEnabled(true);
@@ -87,8 +87,8 @@ void SerialMonitorWindow::connectionGuiSlot(const bool connected)
     }
     else
     {
-        ui->connectionButton->setText("Подключить");
-        ui->connectionButton->setToolTip("Активировать линию последовательной передачи");
+        ui->connectionButton->setText(tr("Подключить"));
+        ui->connectionButton->setToolTip(tr("Активировать линию последовательной передачи"));
         ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(1));
         ui->connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
         ui->sendButton->setEnabled(false);

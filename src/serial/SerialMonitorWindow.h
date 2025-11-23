@@ -34,5 +34,5 @@ private slots:
 private:
     Ui::SerialMonitorWindow *ui;
     SerialTransfer *m_serialTransfer;
-    QList<QString> m_connectionStatusVariants {"Готов", "Не готов", "Ready", "Not ready"};
+    QList<QString> m_connectionStatusVariants {tr("Готов"), tr("Не готов"), tr("Ready"), tr("Not ready")};
 };

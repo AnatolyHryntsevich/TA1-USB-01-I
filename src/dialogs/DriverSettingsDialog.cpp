@@ -28,9 +28,9 @@ DriverSettingsDialog::DriverSettingsDialog(QWidget *parent) :
     ui->answerTimeoutComboBox->addItem(QString::number(18));
     ui->answerTimeoutComboBox->addItem(QString::number(26));
     ui->answerTimeoutComboBox->addItem(QString::number(63));
-    ui->workModeComboBox->addItem("КК");
-    ui->workModeComboBox->addItem("ОУ");
-    ui->workModeComboBox->addItem("МТ");
+    ui->workModeComboBox->addItem(tr("КК"));
+    ui->workModeComboBox->addItem(tr("ОУ"));
+    ui->workModeComboBox->addItem(tr("МТ"));
     ui->workModeComboBox->setCurrentIndex(0);
     ui->workModeComboBox->setEnabled(false);
     ui->memNumberComboBox->addItems(QString("1 2 3 4 5 6 7 8 9 10").split(" "));
