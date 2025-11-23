@@ -54,280 +54,19 @@ unsigned long dwStarts = 0L;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      m_driverSettingsDialog(nullptr),
-      m_interfaceSettingsDialog(nullptr),
-      m_serialMonitorWindow(nullptr),
+      m_driverSettingsDialog(new DriverSettingsDialog(this)),
+      m_interfaceSettingsDialog(new InterfaceParamenetsDialog(this)),
+      m_serialMonitorWindow(new SerialMonitorWindow()),
       m_translator(nullptr)
 {
     ui->setupUi(this);
-    m_driverSettingsDialog = new DriverSettingsDialog(this);
-    m_driverSettingsDialog->setModal(false);
-    m_interfaceSettingsDialog = new InterfaceParamenetsDialog(this);
-    m_interfaceSettingsDialog->setModal(false);
-    m_serialMonitorWindow = new SerialMonitorWindow();
 
     QDir currentDir;
     QString fileName = "cycleSendLogs.txt";
     QString filePath = currentDir.absoluteFilePath(fileName);
     fileCycleSendLogs.setFileName(filePath);
 
-    //    connectionUARTWidget = new QWidget(this);
-    //    baudRatesBoxTitle = new QLabel("Baud rate:");
-    //    baudRatesBoxTitle->setFixedSize(100, 20);
-    //    baudRatesBoxTitle->setFrameStyle(QFrame::Box);
-    //    baudRatesBox = new QComboBox;
-    //    QList<int> boudRates = QSerialPortInfo::standardBaudRates();
-    //    foreach(int rate, boudRates)
-    //    {
-    //        baudRatesBox->addItem(QString::number(rate));
-    //    }
-    //    baudRatesBox->setToolTip("список доступных значений baudRate");
-    //    serialPortsBoxTitle = new QLabel("COM-port:");
-    //    serialPortsBoxTitle->setFixedSize(100, 20);
-    //    serialPortsBoxTitle->setFrameStyle(QFrame::Box);
-    //    serialPortsBox = new QComboBox;
-    //    const QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
-    //    for(const QSerialPortInfo &info : ports)
-    //    {
-    //        serialPortsBox ->addItem(info.portName());
-    //    }
-    //    serialPortsBox->setToolTip("для обновления выберите любой из доступных портов, а затем откройте список заново");
-    //    connectionStatusVariants << "порт не активен" << "порт активен";
-    //    connectionStatusLabel = new QLabel(connectionStatusVariants.at(0));
-    //    connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //    connectButton = new QPushButton("подключить");
-    //    connectButton->setToolTip("активировать линию последовательной передачи");
-    //    receivedTransmittedUARTDataTextEdit = new QTextEdit();
-    //    receivedTransmittedUARTDataTextEdit->setFixedSize(550, 670);
-    //    receivedTransmittedUARTDataTextEdit->setToolTip("поле отображения полученных/отправленных по выбранному порту данных");
-    //    receivedTransmittedUARTDataTextEdit->setUndoRedoEnabled(false);
-    //    receivedTransmittedUARTDataTextEdit->setReadOnly(true);
-    //    lineDForTransmittedUARTDataTextEdit = new QTextEdit();
-    //    lineDForTransmittedUARTDataTextEdit->setFixedSize(550, 23);
-    //    lineDForTransmittedUARTDataTextEdit->setToolTip("поле ввода данных для отправки");
-    //    sendUARTDataButton = new QPushButton("отправить");
-    //    sendUARTDataButton->setToolTip("отправить данные по последовательному порту");
-    //    sendUARTDataButton->setEnabled(false);
-    //    clearUartDataButton = new QPushButton("очистить");
-    //    clearUartDataButton->setToolTip("очистить поле отображения принятых/отправленных по последовательному порту данных");
 
-    //    connectioinUARTLayout = new QGridLayout;
-    //    connectioinUARTLayout->setContentsMargins(5, 5, 5, 5);
-    //    connectioinUARTLayout->setSpacing(5);
-
-    //    connectioinUARTLayout->addWidget(serialPortsBoxTitle, 0, 0, Qt::AlignRight);
-    //    connectioinUARTLayout->addWidget(serialPortsBox, 0, 1, Qt::AlignLeft);
-    //    connectioinUARTLayout->addWidget(baudRatesBoxTitle, 0, 2, Qt::AlignLeft);
-    //    connectioinUARTLayout->addWidget(baudRatesBox, 0, 3, Qt::AlignLeft);
-    //    connectioinUARTLayout->addWidget(connectButton, 0, 4, Qt::AlignLeft);
-    //    connectioinUARTLayout->addWidget(connectionStatusLabel, 0, 0, Qt::AlignLeft);
-    //    connectioinUARTLayout->addWidget(receivedTransmittedUARTDataTextEdit, 2, 0);
-    //    connectioinUARTLayout->addWidget(lineDForTransmittedUARTDataTextEdit, 3, 0);
-    //    connectioinUARTLayout->addWidget(clearUartDataButton, 4, 3);
-    //    connectioinUARTLayout->addWidget(sendUARTDataButton, 4, 4);
-
-    //    connectionUARTWidget->setLayout(connectioinUARTLayout);
-
-
-    //    statusList << "отправлено" << "не отправлено" << "прочитано" << "не прочитано" << "без ошибок" << "ошибка";
-    //    cycleSendButtonNameList << "начать" << "завершить";
-
-    //    QWidget *MIL_STD_Widget = new QWidget;
-    //    mainWindowTitle = new QLabel("Активируйте драйвер устройства:");
-    //    mainWindowTitle->setFixedSize(185, 20);
-    //    mainWindowTitle->setFrameStyle(QFrame::Box);
-    //    mainWindowTitle->setToolTip("активация драйвера system32\\drivers\\ezusb.sys");
-    //    connectionDriverButton = new QPushButton("активировать");
-    //    connectionDriverButton->setToolTip("активация драйвера устройства");
-    //    disconnectionDriverButton = new QPushButton("деактивировать");
-    //    disconnectionDriverButton->setToolTip("деактивация драйвера устройства");
-    //    connectResultText = new QLabel();
-    //    connectResultText->setFixedSize(180, 20);
-    //    connectResultText->setFrameStyle(QFrame::Box);
-    //    connectResultText->setEnabled(true);
-    //    connectResultText->setToolTip("статус работы драйвера system32\\drivers\\ezusb.sys");
-    //    QList<int> devicesNumbersList;
-    //    for(int i = 0; i < MAX_TMK_NUMBER; i++)
-    //    {
-    //        devicesNumbersList << i;
-    //    }
-    //    devicesNumbersTitleLabel = new QLabel("Номер устройства:");
-    //    devicesNumbersListBox = new QComboBox();
-    //    foreach(int number, devicesNumbersList)
-    //    {
-    //        devicesNumbersListBox->addItem(QString::number(number));
-    //    }
-    //    devicesNumbersListBox->setToolTip("выбранный номер будет назначен устройству\n[доступен любой свободный от 0 до максимального]");
-    //    devicesNumbersTitleLabel->setEnabled(false);
-    //    devicesNumbersListBox->setEnabled(false);
-    //    connectionDeviceButton = new QPushButton(TRY_CONNECT_DEVICE_BUTTON_STRING);
-    //    connectionDeviceButton->setEnabled(false);
-    //    connectionDeviceButton->setToolTip("подключить/отключить устройство");
-    //    waitAnswerIntervalValueBoxTitleLabel = new QLabel("Таймаут ожидания:");
-    //    waitAnswerIntervalValueBox = new QComboBox();
-    //    waitAnswerIntervalValueBox->setToolTip("Интервалы ожидания ответного слова(мкс)");
-    //    waitAnswerIntervalValueBox->addItem(QString::number(14));
-    //    waitAnswerIntervalValueBox->addItem(QString::number(18));
-    //    waitAnswerIntervalValueBox->addItem(QString::number(26));
-    //    waitAnswerIntervalValueBox->addItem(QString::number(63));
-    //    setWaitAnswerIntervalButton = new QPushButton("применить");
-    //    setWaitAnswerIntervalButton->setToolTip("изменить значение таймаута ожидания ответного слова");
-    //    selectModeTitleLabel = new QLabel("         Выберите режим работы:");
-    //    selectModeTitleLabel->setFixedSize(180, 20);
-    //    selectModeTitleLabel->setFrameStyle(QFrame::Box);
-    //    selectModeTitleLabel->setToolTip("выбор режима работы подключенного устройства:\nКК - контроллер канала, ОУ - оконечное устройство, МТ - монитор");
-    //    bcModeSelectButton = new QPushButton("KK");
-    //    bcModeSelectButton->setFixedSize(50, 20);
-    //    bcModeSelectButton->setToolTip("контроллер канала\n[зеленый - текущий режим]");
-    //    rtModeSelectButton = new QPushButton("ОУ");
-    //    rtModeSelectButton->setFixedSize(50, 20);
-    //    rtModeSelectButton->setToolTip("оконечное устройство\n[зеленый - текущий режим]");
-    //    mtModeSelectButton = new QPushButton("MT");
-    //    mtModeSelectButton->setFixedSize(50, 20);
-    //    mtModeSelectButton->setToolTip("монитор\n[зеленый - текущий режим]");
-    //    deviceMode = UNKNOW_DEVICE_MODE;
-    //    selectBaseForWorkTitleLabel = new QLabel("  Выберите номер базы ДОЗУ:");
-    //    selectBaseForWorkTitleLabel->setFixedSize(180, 20);
-    //    selectBaseForWorkTitleLabel->setFrameStyle(QFrame::Box);
-    //    selectBaseForWorkTitleLabel->setToolTip("выбор базы ДОЗУ для дальнейшего использования в качестве буфера приема/передачи");
-    //    baseForWorkValueBox = new QSpinBox();
-    //    baseForWorkValueBox->setToolTip("номера баз ДОЗУ");
-    //    baseForWorkValueBox->setRange(0, 10);
-    //    baseForWorkValueBox->setSuffix("-ая");
-    //    baseForWorkValueBox->setButtonSymbols(QSpinBox::PlusMinus);
-    //    baseForWorkValueBox->setWrapping(true);
-    //    baseForWorkValueBox->setValue(0);
-    //    selectBaseForWorkButton = new QPushButton("применить");
-    //    selectBaseForWorkButton->setToolTip("использовать указанную базу");
-    //    inputYourMessageTitleLabel = new QLabel("Отправка одиночного сообщения:");
-    //    inputYourMessageTitleLabel->setFixedSize(180, 20);
-    //    inputYourMessageTitleLabel->setFrameStyle(QFrame::Box);
-    //    inputYourMessageTitleLabel->setToolTip("запись отправляемых данных в подадрес указанного ОУ");
-    //    addrOYTitleLabel = new QLabel("Адрес ОУ-получателя:");
-    //    addrOYTitleLabel->setFixedSize(130, 20);
-    //    addrYOValueBox = new QSpinBox();
-    //    addrYOValueBox->setFixedSize(60, 20);
-    //    addrYOValueBox->setToolTip("адреса ОУ");
-    //    addrYOValueBox->setRange(0, 2147483647);
-    //    addrYOValueBox->setButtonSymbols(QSpinBox::PlusMinus);
-    //    addrYOValueBox->setWrapping(true);
-    //    addrYOValueBox->setValue(0);
-    //    subAddrOYTitleLabel = new QLabel("Субадрес получателя:");
-    //    subAddrOYTitleLabel->setFixedSize(130, 20);
-    //    subAddrYOValueBox = new QSpinBox();
-    //    subAddrYOValueBox->setFixedSize(60, 20);
-    //    subAddrYOValueBox->setToolTip("субадреса ОУ");
-    //    subAddrYOValueBox->setRange(0, 2147483647);
-    //    subAddrYOValueBox->setButtonSymbols(QSpinBox::PlusMinus);
-    //    subAddrYOValueBox->setWrapping(true);
-    //    subAddrYOValueBox->setValue(0);
-    //    lineSentMessageTextEdit = new QTextEdit();
-    //    lineSentMessageTextEdit->setFixedSize(180, 23);
-    //    lineSentMessageTextEdit->setToolTip("введите данные в формате hex16, разделяя точкой с запятой ';'\n[каждая пара чисел(напр: '00;04ff;55' == '0x00', '0x04ff' и '0x55') - это число в hex16]");
-    //    lastSendDescriptionTitleLabel = new QLabel("Описание последней операции:");
-    //    lastSendDescriptionTextEdit = new QTextEdit();
-    //    lastSendDescriptionTextEdit->setFixedSize(180, 50);
-    //    lastSendDescriptionTextEdit->setFrameStyle(QFrame::Box);
-    //    lastSendDescriptionTextEdit->setToolTip("поле вывода описания(буквально, лог) каждой последней операции одиночной отправки данных на запись в подадрес ОУ");
-    //    sendButton = new QPushButton("отправить");
-    //    sendButton->setToolTip("отправить одиночное сообщение");
-    //    sendStatusLabel = new QLabel(statusList.at(0));
-    //    sendStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //    cycleSendTitleLabel = new QLabel("          Циклическая отправка:");
-    //    cycleSendTitleLabel->setFixedSize(180, 20);
-    //    cycleSendTitleLabel->setFrameStyle(QFrame::Box);
-    //    cycleSendTitleLabel->setToolTip("запуск циклической отправки сообщений(на запись данных в подадрес ОУ)");
-    //    cycleSendButton = new QPushButton(cycleSendButtonNameList.at(0));
-    //    cycleSendButton->setToolTip("запуск/остановка цикла отправки с указанным интервалом между пакетами");
-    //    cycleSendIntervalValuesBoxTitleLabel = new QLabel("Время от->до отправки:");
-    //    cycleSendIntervalValueBox = new QSpinBox();
-    //    cycleSendIntervalValueBox->setToolTip("временные интервалы между циклически отправляемыми сообщениями(мс)");
-    //    cycleSendIntervalValueBox->setRange(1, 5000);
-    //    cycleSendIntervalValueBox->setButtonSymbols(QSpinBox::PlusMinus);
-    //    cycleSendIntervalValueBox->setWrapping(true);
-    //    cycleSendIntervalValueBox->setValue(0);
-    //    cycleSendIntervalValueBox->setSuffix("мс");
-    //    cycleSendStatusLabel = new QLabel();
-    //    cycleSendStatusLabel->setStyleSheet("QLabel{color:green;}");
-    //    readDataFromSubaddrTitleLabel = new QLabel("Прочесть данные в подадресе:");
-    //    readDataFromSubaddrTitleLabel->setFixedSize(180, 20);
-    //    readDataFromSubaddrTitleLabel->setFrameStyle(QFrame::Box);
-    //    readDataFromSubaddrTitleLabel->setToolTip("отправка запроса в ОУ на выдачу определенного количества слов данных из указанного подадреса");
-    //    dataWordNumberLabel = new QLabel("Количество слов данных");
-    //    dataWordNumberLabel->setToolTip("количество запрашиваемых из подадреса слов данных(16-bits целое)");
-    //    dataWordValueBox = new QSpinBox();
-    //    dataWordValueBox->setFixedSize(50, 20);
-    //    dataWordValueBox->setToolTip("количество запрашиваемых слов данных");
-    //    dataWordValueBox->setRange(1, 32);
-    //    dataWordValueBox->setButtonSymbols(QSpinBox::PlusMinus);
-    //    dataWordValueBox->setWrapping(true);
-    //    dataWordValueBox->setValue(0);
-    //    readDataFromSubaddrButton = new QPushButton("прочесть");
-    //    readDataFromSubaddrButton->setToolTip("отправить запрос на чтение в ОУ");
-    //    readStatusLabel = new QLabel(statusList.at(2));
-    //    readStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //    readDataTextEdit = new QTextEdit();
-    //    readDataTextEdit->setFixedSize(180, 50);
-    //    readDataTextEdit->setFrameStyle(QFrame::Box);
-    //    readDataTextEdit->setToolTip("поле отображения полученных от ОУ данных из указанного подадреса\nв hex16 через точку с запятой");
-
-    //    disconnectDriverButtonSlot();
-
-    //    MIL_STD_WidgetLayout = new QGridLayout;
-    //    MIL_STD_WidgetLayout->setContentsMargins(10, 3, 10, 3);
-    //    MIL_STD_WidgetLayout->setSpacing(10);
-    //    MIL_STD_WidgetLayout->setHorizontalSpacing(3);
-
-    //    MIL_STD_WidgetLayout->addWidget(mainWindowTitle);
-    //    MIL_STD_WidgetLayout->addWidget(connectResultText);
-    //    MIL_STD_WidgetLayout->addWidget(connectionDriverButton, 2, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(disconnectionDriverButton, 2, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(devicesNumbersTitleLabel, 3, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(devicesNumbersListBox, 3, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(connectionDeviceButton, 4, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(waitAnswerIntervalValueBoxTitleLabel, 5, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(waitAnswerIntervalValueBox, 5, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(setWaitAnswerIntervalButton, 6, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(selectModeTitleLabel, 7, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(bcModeSelectButton, 8, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(rtModeSelectButton, 8, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(mtModeSelectButton, 8, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(selectBaseForWorkTitleLabel, 9, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(baseForWorkValueBox, 10, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(selectBaseForWorkButton, 10, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(addrOYTitleLabel, 11, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(addrYOValueBox, 11, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(subAddrOYTitleLabel, 12, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(subAddrYOValueBox, 12, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(inputYourMessageTitleLabel, 13, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(lineSentMessageTextEdit, 14, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(sendStatusLabel, 15, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(sendButton, 15, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(lastSendDescriptionTitleLabel, 16, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(lastSendDescriptionTextEdit, 17, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(cycleSendTitleLabel, 18, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(cycleSendIntervalValuesBoxTitleLabel, 19, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(cycleSendIntervalValueBox, 19, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(cycleSendButton, 20, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(cycleSendStatusLabel, 20, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(readDataFromSubaddrTitleLabel, 21, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(dataWordNumberLabel, 22, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(dataWordValueBox, 22, 0, Qt::AlignRight);
-    //    MIL_STD_WidgetLayout->addWidget(readDataTextEdit, 23, 0, Qt::AlignHCenter);
-    //    MIL_STD_WidgetLayout->addWidget(readStatusLabel, 24, 0, Qt::AlignLeft);
-    //    MIL_STD_WidgetLayout->addWidget(readDataFromSubaddrButton, 24, 0, Qt::AlignRight);
-    //    MIL_STD_Widget->setLayout(MIL_STD_WidgetLayout);
-
-    //    QWidget *mainWidget = new QWidget;
-    //    QHBoxLayout *mainLayout = new QHBoxLayout();
-    //    mainLayout->setContentsMargins(10, 3, 10, 3);
-    //    mainLayout->setSpacing(10);
-    //    mainLayout->addWidget(connectionUARTWidget, 0);
-    //    mainLayout->addWidget(MIL_STD_Widget, 1);
-    //    mainWidget->setLayout(mainLayout);
-    //    this->setCentralWidget(mainWidget);
-    //    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-    //    this->setFixedSize(QSize(800, 815));
 
     //    connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
     //    connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));
@@ -1689,14 +1428,13 @@ void MainWindow::clearUARTDataTextEditButtonSlot()
 
 void MainWindow::openDriverSettingsDialogSlot()
 {
+    if(!m_driverSettingsDialog)
+        return;
+
     m_driverSettingsDialog->reloadSettingsUiBeforeView();
 
-    if (m_driverSettingsDialog->isVisible()) {
-        m_driverSettingsDialog->hide();
-    } else {
-        m_driverSettingsDialog->show();
-        m_driverSettingsDialog->raise();
-        m_driverSettingsDialog->activateWindow();
+    if (!m_driverSettingsDialog->isVisible()) {
+        m_driverSettingsDialog->setVisible(true);
     }
 }
 
@@ -1707,15 +1445,14 @@ void MainWindow::setDriverSettingsSlot(const DriverSettingsDialog::DriverSetting
 }
 
 void MainWindow::openInterfaceSettingsDialogSlot()
-{
+{ 
+    if(!m_interfaceSettingsDialog)
+        return;
+
     m_interfaceSettingsDialog->reloadSettingsUiBeforeView();
 
-    if (m_interfaceSettingsDialog->isVisible()) {
-        m_interfaceSettingsDialog->hide();
-    } else {
-        m_interfaceSettingsDialog->show();
-        m_interfaceSettingsDialog->raise();
-        m_interfaceSettingsDialog->activateWindow();
+    if (!m_interfaceSettingsDialog->isVisible()) {
+        m_interfaceSettingsDialog->setVisible(true);
     }
 }
 
