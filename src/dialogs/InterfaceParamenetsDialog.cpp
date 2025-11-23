@@ -3,7 +3,8 @@
 
 InterfaceParamenetsDialog::InterfaceParamenetsDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::InterfaceParamenetsDialog)
+    ui(new Ui::InterfaceParamenetsDialog),
+    m_currentInterfaceSettings{10, Russian_language}
 {
     ui->setupUi(this);
 

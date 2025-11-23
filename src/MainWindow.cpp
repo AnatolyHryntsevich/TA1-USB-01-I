@@ -1535,12 +1535,26 @@ void MainWindow::cycleSendProcessHandlerSlot()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     QMessageBox ms(this);
-    ms.setWindowTitle("Подтверждение закрытия");
-    ms.setText("Вы уверены, что хотите закрыть программу?");
-    ms.setIcon(QMessageBox::Question);
-
-    QPushButton *yesButton = ms.addButton("Да", QMessageBox::YesRole);
-    QPushButton *noButton = ms.addButton("Нет", QMessageBox::NoRole);
+    QPushButton *yesButton;
+    QPushButton *noButton;
+    if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
+            InterfaceParamenetsDialog::LanguageEnum::English_language)
+    {
+        ms.setWindowTitle("Closing confirmation");
+        ms.setText("Are you sure you want to close the program?");
+        ms.setIcon(QMessageBox::Question);
+        yesButton = ms.addButton("Yes", QMessageBox::YesRole);
+        noButton = ms.addButton("No", QMessageBox::NoRole);
+    }
+    else if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
+            InterfaceParamenetsDialog::LanguageEnum::Russian_language)
+    {
+        ms.setWindowTitle("Подтверждение закрытия");
+        ms.setText("Вы уверены, что хотите закрыть программу?");
+        ms.setIcon(QMessageBox::Question);
+        yesButton = ms.addButton("Да", QMessageBox::YesRole);
+        noButton = ms.addButton("Нет", QMessageBox::NoRole);
+    }
     ms.setDefaultButton(noButton);
     ms.setEscapeButton(noButton);
 

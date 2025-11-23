@@ -424,7 +424,7 @@ QGroupBox::title {
                            </font>
                           </property>
                           <property name="toolTip">
-                           <string>Введите слова для отправки, разделяя их пробелами</string>
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;hex16: &amp;quot;ff ff ff ff ff ...&amp;quot; или dec: &amp;quot;1 12  123 1234 12345 ...&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                           </property>
                           <property name="toolTipDuration">
                            <number>-1</number>
@@ -434,6 +434,9 @@ QGroupBox::title {
     margin-left: 0px;
     margin-right: 2px;
 }</string>
+                          </property>
+                          <property name="placeholderText">
+                           <string>Введите данные для отправки здесь...</string>
                           </property>
                          </widget>
                         </item>
@@ -821,7 +824,7 @@ QGroupBox::title {
                        <widget class="QLabel" name="mpiReadWordsNumberTitleLabel">
                         <property name="font">
                          <font>
-                          <pointsize>12</pointsize>
+                          <pointsize>10</pointsize>
                           <stylestrategy>PreferAntialias</stylestrategy>
                          </font>
                         </property>
