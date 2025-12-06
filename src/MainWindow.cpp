@@ -27,7 +27,9 @@
 #include <sstream>
 
 #ifdef __unix__
-#include "ltmk.c" //в хедере не размещать, дабы не нарваться на multiple definition
+extern "C" {
+#include "ltmk.h"
+}
 int events;
 int hTmk;
 #endif
@@ -68,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
     fileCycleSendLogs.setFileName(filePath);
 
     m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
-//    connectionGuiSlot(true);
+    //    connectionGuiSlot(true);
 
     //    connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
     //    connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));

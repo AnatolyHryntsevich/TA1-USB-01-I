@@ -7,6 +7,8 @@
 #ifndef _TMK1553B_
 #define _TMK1553B_
 
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <unistd.h>
 #include <sched.h>
