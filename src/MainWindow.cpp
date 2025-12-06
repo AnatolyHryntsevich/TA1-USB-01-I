@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
     fileCycleSendLogs.setFileName(filePath);
 
     m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
-    //    connectionGuiSlot(true);
+        connectionGuiSlot(true);
 
     //    connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
     //    connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));
@@ -1587,7 +1587,7 @@ void MainWindow::aboutProgramActionSlot()
 void MainWindow::connectionGuiSlot(const bool connected)
 {
     ui->mpiWorkGroupBox->setEnabled(connected);
-    m_driverSettingsDialog->setGuiSate(connected);
+    m_driverSettingsDialog->setGuiSate(!connected);
 
     if(connected)
     {
