@@ -78,6 +78,8 @@ protected:
 
 private slots:
     void on_connectionButton_clicked();
+    void on_logWriteClearButton_clicked();
+    void on_logReadClearButton_clicked();
 
 private:
     Ui::MainWindow* ui;

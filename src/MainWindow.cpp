@@ -1714,3 +1714,15 @@ void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
     msgBox.exec();
 }
 
+
+void MainWindow::on_logWriteClearButton_clicked()
+{
+    ui->logWriteMpiViewTextEdit->clear();
+}
+
+
+void MainWindow::on_logReadClearButton_clicked()
+{
+    ui->logReadMpiViewTextEdit->clear();
+}
+
