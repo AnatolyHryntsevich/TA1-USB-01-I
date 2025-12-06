@@ -17,6 +17,7 @@ class QTextEdit;
 class QSpinBox;
 class SerialMonitorWindow;
 class QTranslator;
+class UndoBlocker;
 
 namespace Ui {
 class MainWindow;
@@ -41,13 +42,7 @@ signals:
     void qMessageBoxNeedShowSignal(const QString& message);
 
 public slots:
-    void connectDriverButtonSlot();
-    void disconnectDriverButtonSlot();
-    void connectDeviceButtonSlot();
-    void setWaitAnswerIntervalButtonSlot();
-    void clickDeviceModeButtonsSlot();
     void singleSendButtonSlot();
-    void selectBaseValueButtonSlot();
     void readDataFromSubAddrServentDeviceSlot();
     void cycleSendProcessButtonSlot();
     void cycleSendProcessHandlerSlot();
@@ -73,16 +68,20 @@ public:
     void closeWindow();
 
 protected:
-    void closeEvent(QCloseEvent *event);
-    void resizeEvent(QResizeEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private slots:
     void on_connectionButton_clicked();
     void on_logWriteClearButton_clicked();
     void on_logReadClearButton_clicked();
+    void on_inputMpiWriteDataButton_clicked();
+    void on_decimalFormatCheckBox_stateChanged(int arg1);
+    void on_hexFormatCheckBox_stateChanged(int arg1);
 
 private:
     Ui::MainWindow* ui;
+    UndoBlocker* m_undoBlocker;
     DriverSettingsDialog* m_driverSettingsDialog;
     DriverSettingsDialog::DriverSettingsStruct m_currentDriverSettings;
     InterfaceParamenetsDialog* m_interfaceSettingsDialog;
@@ -99,7 +98,7 @@ private:
     /*!
      * \brief Флаг состояния модуля сопряжения (вкл / выкл)
      */
-    bool m_isMpiStarted;
+    bool m_isMpiStarted = false;
     QList<QString> m_connectionStatusVariants {tr("Готов"), tr("Не готов"), tr("Ready"), tr("Not ready")};
 
     /*!

@@ -21,6 +21,7 @@
 #include <QPlainTextEdit>
 #include <QTranslator>
 #include <QSettings>
+#include <QShortcut>
 
 #include <iostream>
 #include <string>
@@ -30,6 +31,7 @@
 extern "C" {
 #include "ltmk.h"
 }
+extern int tmkError;
 int events;
 int hTmk;
 #endif
@@ -44,6 +46,7 @@ HANDLE hBcEvent;
 #include "ui_MainWindow.h"
 
 #include "SerialMonitorWindow.h"
+#include "UndoBlocker.h"
 
 TTmkEventData tmkEvD;
 unsigned short awBuf[32]; //в linux размерность может равняться 64
@@ -60,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_interfaceSettingsDialog(new InterfaceParamenetsDialog(this)),
       m_serialMonitorWindow(new SerialMonitorWindow()),
       m_translator(nullptr),
-      m_isMpiStarted(false)
+      m_undoBlocker(new UndoBlocker(this))
 {
     ui->setupUi(this);
 
@@ -70,34 +73,16 @@ MainWindow::MainWindow(QWidget *parent)
     fileCycleSendLogs.setFileName(filePath);
 
     m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
-        connectionGuiSlot(true);
+    on_hexFormatCheckBox_stateChanged(true);
+    ui->inputMpiWriteDataLineEdit->installEventFilter(m_undoBlocker);
+    //    connectionGuiSlot(true);
 
-    //    connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
-    //    connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));
-    //    connect(connectionDeviceButton, SIGNAL(clicked()), this, SLOT(connectDeviceButtonSlot()));
-    //    connect(setWaitAnswerIntervalButton, SIGNAL(clicked()), this, SLOT(setWaitAnswerIntervalButtonSlot()));
-    //    connect(bcModeSelectButton, SIGNAL(clicked()), this, SLOT(clickDeviceModeButtonsSlot()));
-    //    connect(rtModeSelectButton, SIGNAL(clicked()), this, SLOT(clickDeviceModeButtonsSlot()));
-    //    connect(mtModeSelectButton, SIGNAL(clicked()), this, SLOT(clickDeviceModeButtonsSlot()));
     //    //_______________________________________________________________________________________________________
     //    cycleSendOperationThread = new QThread();
     //    connect(cycleSendButton, SIGNAL(clicked()), this, SLOT(cycleSendProcessButtonSlot()));
     //    connect(this, SIGNAL(startCycleSendProcessSignal()), cycleSendOperationThread, SLOT(start()));
     //    connect(cycleSendOperationThread, SIGNAL(started()), this, SLOT(cycleSendProcessHandlerSlot()));
     //    connect(this, SIGNAL(cycleSendProcessFinish()), cycleSendOperationThread, SLOT(quit()));
-    //    //_______________________________________________________________________________________________________
-    //    connect(sendButton, SIGNAL(clicked()), this, SLOT(singleSendButtonSlot()));
-    //    connect(readDataFromSubaddrButton, SIGNAL(clicked()), this, SLOT(readDataFromSubAddrServentDeviceSlot()));
-    //    connect(selectBaseForWorkButton, SIGNAL(clicked()), this, SLOT(selectBaseValueButtonSlot()));
-
-    //    //____________UART_____TERMITE___________________________________________________________________________
-    //    connect(serialPortsBox, SIGNAL(activated(int)), this, SLOT(updateCOMListSlot(int)));
-    //    connect(connectButton, SIGNAL(clicked()), this, SLOT(connectionUARTButtonSlot()));
-    //    connect(sendUARTDataButton, SIGNAL(clicked()), this, SLOT(sendByUartDataButtonSlot()));
-    //    connect(clearUartDataButton, SIGNAL(clicked()), this, SLOT(clearUARTDataTextEditButtonSlot()));
-
-
-
 
     // Пункты главного меню
     connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::driverSettingsDialogOpenActionSlot);
@@ -121,6 +106,7 @@ MainWindow::~MainWindow()
     delete m_interfaceSettingsDialog;
     delete m_serialMonitorWindow;
     delete m_translator;
+    delete m_undoBlocker;
 }
 
 int MainWindow::initTmkEvent()
@@ -220,458 +206,6 @@ static int WaitInt(TMK_DATA wCtrlCode)
     }
     ++dwStarts;
     return 0;
-}
-
-void MainWindow::connectDriverButtonSlot()
-{
-    //    DWORD result;
-    //    if(cycleSendButton->text() == cycleSendButtonNameList.at(1)) {
-    //        cycleSendProcessButtonSlot();
-    //    }
-    //    result = TmkOpen();
-    //    if(result == 0) {
-    //        connectResultText->setText("              driver is activated!");
-    //        connectResultText->setStyleSheet("QLabel{color:green;}");
-    //        connectionDeviceButton->setEnabled(true);
-    //        connectionDeviceButton->setText(TRY_CONNECT_DEVICE_BUTTON_STRING);
-    //        connectionDeviceButton->setStyleSheet("QPushButton{color:green;}");
-    //        devicesNumbersListBox->setEnabled(true);
-    //        devicesNumbersTitleLabel->setEnabled(true);
-    //        selectModeTitleLabel->setEnabled(false);
-    //        bcModeSelectButton->setEnabled(false);
-    //        rtModeSelectButton->setEnabled(false);
-    //        mtModeSelectButton->setEnabled(false);
-    //        bcModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //        rtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //        mtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //        inputYourMessageTitleLabel->setEnabled(false);
-    //        lineSentMessageTextEdit->setEnabled(false);
-    //        sendButton->setEnabled(false);
-    //        selectBaseForWorkTitleLabel->setEnabled(false);
-    //        baseForWorkValueBox->setEnabled(false);
-    //        selectBaseForWorkButton->setEnabled(false);
-    //        addrOYTitleLabel->setEnabled(false);
-    //        addrYOValueBox->setEnabled(false);
-    //        subAddrOYTitleLabel->setEnabled(false);
-    //        subAddrYOValueBox->setEnabled(false);
-    //        readDataFromSubaddrTitleLabel->setEnabled(false);
-    //        dataWordNumberLabel->setEnabled(false);
-    //        dataWordValueBox->setEnabled(false);
-    //        readDataFromSubaddrButton->setEnabled(false);
-    //        readDataTextEdit->setEnabled(false);
-    //        sendStatusLabel->setEnabled(false);
-    //        readStatusLabel->setEnabled(false);
-    //        sendStatusLabel->setHidden(true);
-    //        readStatusLabel->setHidden(true);
-    //        cycleSendTitleLabel->setEnabled(false);
-    //        cycleSendButton->setEnabled(false);
-    //        cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //        cycleSendIntervalValueBox->setEnabled(false);
-    //        cycleSendStatusLabel->setEnabled(false);
-    //        cycleSendStatusLabel->setHidden(true);
-    //        lastSendDescriptionTitleLabel->setEnabled(false);
-    //        lastSendDescriptionTextEdit->setEnabled(false);
-    //        deviceMode = UNKNOW_DEVICE_MODE;
-    //#ifdef __unix__
-    //        hTmk = UNKNOW_DEVICE_MODE;
-    //#endif
-    //    } else if (result == 1) {
-    //        connectResultText->setText("            driver is not activated!");
-    //        connectResultText->setStyleSheet("QLabel{color:red;}");
-    //        connectionDeviceButton->setEnabled(false);
-    //        waitAnswerIntervalValueBoxTitleLabel->setEnabled(false);
-    //        waitAnswerIntervalValueBox->setEnabled(false);
-    //        setWaitAnswerIntervalButton->setEnabled(false);
-    //        selectModeTitleLabel->setEnabled(false);
-    //        bcModeSelectButton->setEnabled(false);
-    //        rtModeSelectButton->setEnabled(false);
-    //        mtModeSelectButton->setEnabled(false);
-    //        devicesNumbersTitleLabel->setEnabled(false);
-    //        devicesNumbersListBox->setEnabled(false);
-    //        bcModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //        rtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //        mtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //        inputYourMessageTitleLabel->setEnabled(false);
-    //        lineSentMessageTextEdit->setEnabled(false);
-    //        sendButton->setEnabled(false);
-    //        selectBaseForWorkTitleLabel->setEnabled(false);
-    //        baseForWorkValueBox->setEnabled(false);
-    //        selectBaseForWorkButton->setEnabled(false);
-    //        addrOYTitleLabel->setEnabled(false);
-    //        addrYOValueBox->setEnabled(false);
-    //        subAddrOYTitleLabel->setEnabled(false);
-    //        subAddrYOValueBox->setEnabled(false);
-    //        readDataFromSubaddrTitleLabel->setEnabled(false);
-    //        dataWordNumberLabel->setEnabled(false);
-    //        dataWordValueBox->setEnabled(false);
-    //        readDataFromSubaddrButton->setEnabled(false);
-    //        readDataTextEdit->setEnabled(false);
-    //        sendStatusLabel->setEnabled(false);
-    //        readStatusLabel->setEnabled(false);
-    //        sendStatusLabel->setHidden(true);
-    //        readStatusLabel->setHidden(true);
-    //        cycleSendTitleLabel->setEnabled(false);
-    //        cycleSendButton->setEnabled(false);
-    //        cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //        cycleSendIntervalValueBox->setEnabled(false);
-    //        cycleSendStatusLabel->setEnabled(false);
-    //        cycleSendStatusLabel->setHidden(true);
-    //        lastSendDescriptionTitleLabel->setEnabled(false);
-    //        lastSendDescriptionTextEdit->setEnabled(false);
-    //        deviceMode = UNKNOW_DEVICE_MODE;
-    //        connectionDeviceButton->setText(TRY_CONNECT_DEVICE_BUTTON_STRING);
-    //        connectionDeviceButton->setStyleSheet("QPushButton{color:gray;}");
-    //    }
-
-}
-
-void MainWindow::disconnectDriverButtonSlot()
-{
-    //    if(cycleSendButton->text() == cycleSendButtonNameList.at(1)) {
-    //        cycleSendProcessButtonSlot();
-    //    }
-    //#ifdef _WIN32
-    //    CloseHandle(hBcEvent);
-    //#endif
-    //    bcreset();
-    //    tmkdone(ALL_TMKS);
-    //    TmkClose();
-    //    connectResultText->setText("            driver is not activated!");
-    //    connectResultText->setStyleSheet("QLabel{color:red;}");
-    //    connectionDeviceButton->setEnabled(false);
-    //    waitAnswerIntervalValueBoxTitleLabel->setEnabled(false);
-    //    waitAnswerIntervalValueBox->setEnabled(false);
-    //    setWaitAnswerIntervalButton->setEnabled(false);
-    //    selectModeTitleLabel->setEnabled(false);
-    //    bcModeSelectButton->setEnabled(false);
-    //    rtModeSelectButton->setEnabled(false);
-    //    mtModeSelectButton->setEnabled(false);
-    //    bcModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //    rtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //    mtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //    inputYourMessageTitleLabel->setEnabled(false);
-    //    lineSentMessageTextEdit->setEnabled(false);
-    //    sendButton->setEnabled(false);
-    //    selectBaseForWorkTitleLabel->setEnabled(false);
-    //    baseForWorkValueBox->setEnabled(false);
-    //    selectBaseForWorkButton->setEnabled(false);
-    //    devicesNumbersTitleLabel->setEnabled(false);
-    //    devicesNumbersListBox->setEnabled(false);
-    //    addrOYTitleLabel->setEnabled(false);
-    //    addrYOValueBox->setEnabled(false);
-    //    subAddrOYTitleLabel->setEnabled(false);
-    //    subAddrYOValueBox->setEnabled(false);
-    //    readDataFromSubaddrTitleLabel->setEnabled(false);
-    //    dataWordNumberLabel->setEnabled(false);
-    //    dataWordValueBox->setEnabled(false);
-    //    readDataFromSubaddrButton->setEnabled(false);
-    //    readDataTextEdit->setEnabled(false);
-    //    sendStatusLabel->setEnabled(false);
-    //    readStatusLabel->setEnabled(false);
-    //    sendStatusLabel->setHidden(true);
-    //    readStatusLabel->setHidden(true);
-    //    cycleSendTitleLabel->setEnabled(false);
-    //    cycleSendButton->setEnabled(false);
-    //    cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //    cycleSendIntervalValueBox->setEnabled(false);
-    //    cycleSendStatusLabel->setEnabled(false);
-    //    cycleSendStatusLabel->setHidden(true);
-    //    lastSendDescriptionTitleLabel->setEnabled(false);
-    //    lastSendDescriptionTextEdit->setEnabled(false);
-    //    deviceMode = UNKNOW_DEVICE_MODE;
-    //    connectionDeviceButton->setText(TRY_CONNECT_DEVICE_BUTTON_STRING);
-    //    connectionDeviceButton->setStyleSheet("QPushButton{color:gray;}");
-}
-
-void MainWindow::connectDeviceButtonSlot()
-{
-    //    unsigned result;
-    //    if(cycleSendButton->text() == cycleSendButtonNameList.at(1)) {
-    //        cycleSendProcessButtonSlot();
-    //    }
-    //    if(connectionDeviceButton->text() == TRY_DISCONNECT_DEVICE_BUTTON_STRING) {
-    //        result = tmkdone(ALL_TMKS);
-    //        if(result == 0) {
-    //            connectionDeviceButton->setText(TRY_CONNECT_DEVICE_BUTTON_STRING);
-    //            connectionDeviceButton->setStyleSheet("QPushButton{color:green;}");
-    //            devicesNumbersListBox->setEnabled(true);
-    //            waitAnswerIntervalValueBoxTitleLabel->setEnabled(false);
-    //            waitAnswerIntervalValueBox->setEnabled(false);
-    //            setWaitAnswerIntervalButton->setEnabled(false);
-    //            selectModeTitleLabel->setEnabled(false);
-    //            bcModeSelectButton->setEnabled(false);
-    //            rtModeSelectButton->setEnabled(false);
-    //            mtModeSelectButton->setEnabled(false);
-    //            bcModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            rtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            mtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            deviceMode = UNKNOW_DEVICE_MODE;
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            selectBaseForWorkTitleLabel->setEnabled(false);
-    //            baseForWorkValueBox->setEnabled(false);
-    //            selectBaseForWorkButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(false);
-    //            addrYOValueBox->setEnabled(false);
-    //            subAddrOYTitleLabel->setEnabled(false);
-    //            subAddrYOValueBox->setEnabled(false);
-    //            readDataFromSubaddrTitleLabel->setEnabled(false);
-    //            dataWordNumberLabel->setEnabled(false);
-    //            dataWordValueBox->setEnabled(false);
-    //            readDataFromSubaddrButton->setEnabled(false);
-    //            readDataTextEdit->setEnabled(false);
-    //            sendStatusLabel->setEnabled(false);
-    //            readStatusLabel->setEnabled(false);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(false);
-    //            cycleSendButton->setEnabled(false);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //            cycleSendIntervalValueBox->setEnabled(false);
-    //            cycleSendStatusLabel->setHidden(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(false);
-    //            lastSendDescriptionTextEdit->setEnabled(false);
-    //        } else {
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось освободить ресурс!\nПовторите попытку позже...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //        }
-    //    } else if (connectionDeviceButton->text() == TRY_CONNECT_DEVICE_BUTTON_STRING) {
-    //        result = tmkconfig(devicesNumbersListBox->currentData().toInt());
-    //        if(result == 0) {
-    //            if(initTmkEvent() == 0) {
-    //                if(result == 0) {
-    //                    connectionDeviceButton->setText(TRY_DISCONNECT_DEVICE_BUTTON_STRING);
-    //                    connectionDeviceButton->setStyleSheet("QPushButton{color:red;}");
-    //                    devicesNumbersListBox->setEnabled(false);
-    //                    waitAnswerIntervalValueBoxTitleLabel->setEnabled(true);
-    //                    waitAnswerIntervalValueBox->setEnabled(true);
-    //                    setWaitAnswerIntervalButton->setEnabled(true);
-    //                    selectModeTitleLabel->setEnabled(true);
-    //                    bcModeSelectButton->setEnabled(false);
-    //                    bcModeSelectButton->setStyleSheet("QPushButton{color:green;}");
-    //                    rtModeSelectButton->setEnabled(true);
-    //                    mtModeSelectButton->setEnabled(true);
-    //                    deviceMode = KK_DEVICE_MODE;
-    //                    selectBaseForWorkTitleLabel->setEnabled(true);
-    //                    wMaxBase = bcgetmaxbase();
-    //                    baseForWorkValueBox->setRange(0, wMaxBase);
-    //                    baseForWorkValueBox->setEnabled(true);
-    //                    selectBaseForWorkButton->setEnabled(true);
-    //                } else {
-    //                    QMessageBox *msgBox = new QMessageBox(this);
-    //                    msgBox->setText("Не удалось получить доступ к устройству!\nПовторите попытку позже...");
-    //                    msgBox->setDefaultButton(QMessageBox::Ok);
-    //                    msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //                    msgBox->show();
-    //                    connectionDeviceButton->setText(TRY_CONNECT_DEVICE_BUTTON_STRING);
-    //                    connectionDeviceButton->setStyleSheet("QPushButton{color:green;}");
-    //                }
-    //                result = tmkselect(devicesNumbersListBox->currentData().toInt());
-    //            } else {
-    //                QMessageBox *msgBox = new QMessageBox(this);
-    //                msgBox->setText("Не удалось инициализировать событие приема/передачи tmk!\nПовторите попытку позже...");
-    //                msgBox->setDefaultButton(QMessageBox::Ok);
-    //                msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //                msgBox->show();
-    //                connectionDeviceButton->setText(TRY_CONNECT_DEVICE_BUTTON_STRING);
-    //                connectionDeviceButton->setStyleSheet("QPushButton{color:green;}");
-    //            }
-    //        } else {
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось получить доступ к устройству!\nПовторите попытку позже...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //            connectionDeviceButton->setText(TRY_CONNECT_DEVICE_BUTTON_STRING);
-    //            connectionDeviceButton->setStyleSheet("QPushButton{color:green;}");
-    //        }
-    //    }
-}
-
-void MainWindow::setWaitAnswerIntervalButtonSlot()
-{
-    //    unsigned short result;
-    //    result = tmktimeout((unsigned short) waitAnswerIntervalValueBox->currentText().toInt());
-    //    if(result > 0) {
-    //        QMessageBox *msgBox = new QMessageBox(this);
-    //        msgBox->setText("Значение таймаута ожидания ответного слова изменено!\nНаиболее близким к указанному из доступных равно " + QString::number(result) + "мкс");
-    //        msgBox->setDefaultButton(QMessageBox::Ok);
-    //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //        msgBox->show();
-    //    } else if(result == 0) {
-    //        QMessageBox *msgBox = new QMessageBox(this);
-    //        msgBox->setText("Не удалось изменить значение таймаута ожидания ответного слова!\nПовторите попытку позже...");
-    //        msgBox->setDefaultButton(QMessageBox::Ok);
-    //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //        msgBox->show();
-    //    }
-}
-
-void MainWindow::clickDeviceModeButtonsSlot()
-{
-    //    unsigned result;
-    //    if(QObject::sender() == bcModeSelectButton) {
-    //        result = bcreset();
-    //        if(result == 0) {
-    //            bcModeSelectButton->setStyleSheet("QPushButton{color:green;}");
-    //            bcModeSelectButton->setEnabled(false);
-    //            rtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            rtModeSelectButton->setEnabled(true);
-    //            mtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            mtModeSelectButton->setEnabled(true);
-    //            selectBaseForWorkTitleLabel->setEnabled(true);
-    //            baseForWorkValueBox->setEnabled(true);
-    //            selectBaseForWorkButton->setEnabled(true);
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(false);
-    //            addrYOValueBox->setEnabled(false);
-    //            subAddrOYTitleLabel->setEnabled(false);
-    //            subAddrYOValueBox->setEnabled(false);
-    //            readDataFromSubaddrTitleLabel->setEnabled(false);
-    //            dataWordNumberLabel->setEnabled(false);
-    //            dataWordValueBox->setEnabled(false);
-    //            readDataFromSubaddrButton->setEnabled(false);
-    //            readDataTextEdit->setEnabled(false);
-    //            sendStatusLabel->setEnabled(false);
-    //            readStatusLabel->setEnabled(false);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(false);
-    //            cycleSendButton->setEnabled(false);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //            cycleSendIntervalValueBox->setEnabled(false);
-    //            cycleSendStatusLabel->setEnabled(false);
-    //            cycleSendStatusLabel->setHidden(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(false);
-    //            lastSendDescriptionTextEdit->setEnabled(false);
-    //            wMaxBase = bcgetmaxbase();
-    //            baseForWorkValueBox->setRange(0, wMaxBase);
-    //            deviceMode = KK_DEVICE_MODE;
-    //        } else if (result == TMK_BAD_FUNC) {
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Устройство не поддерживает запрашиваемый режим(КК)!");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //        } else {
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось установить запрашиваемый режим(КК)!\nПовторите попытку позже...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //        }
-    //    } else if (QObject::sender() == rtModeSelectButton) {
-    //        result = rtreset();
-    //        if(result == 0) {
-    //            rtModeSelectButton->setStyleSheet("QPushButton{color:green;}");
-    //            rtModeSelectButton->setEnabled(false);
-    //            bcModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            bcModeSelectButton->setEnabled(true);
-    //            mtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            mtModeSelectButton->setEnabled(true);
-    //            selectBaseForWorkTitleLabel->setEnabled(false);
-    //            baseForWorkValueBox->setEnabled(false);
-    //            selectBaseForWorkButton->setEnabled(false);
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(false);
-    //            addrYOValueBox->setEnabled(false);
-    //            subAddrOYTitleLabel->setEnabled(false);
-    //            subAddrYOValueBox->setEnabled(false);
-    //            readDataFromSubaddrTitleLabel->setEnabled(false);
-    //            dataWordNumberLabel->setEnabled(false);
-    //            dataWordValueBox->setEnabled(false);
-    //            readDataFromSubaddrButton->setEnabled(false);
-    //            readDataTextEdit->setEnabled(false);
-    //            sendStatusLabel->setEnabled(false);
-    //            readStatusLabel->setEnabled(false);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(false);
-    //            cycleSendButton->setEnabled(false);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //            cycleSendIntervalValueBox->setEnabled(false);
-    //            cycleSendStatusLabel->setEnabled(false);
-    //            cycleSendStatusLabel->setHidden(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(false);
-    //            lastSendDescriptionTextEdit->setEnabled(false);
-    //            wMaxBase = bcgetmaxbase();
-    //            baseForWorkValueBox->setRange(0, wMaxBase);
-    //            deviceMode = OY_DEVICE_MODE;
-
-    //        } else if (result == TMK_BAD_FUNC) {
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Устройство не поддерживает запрашиваемый режим(ОУ)!");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //        } else {
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось установить запрашиваемый режим(ОУ)!\nПовторите попытку позже...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //        }
-    //    } else if (QObject::sender() == mtModeSelectButton) {
-    //        result = mtreset();
-    //        if(result == 0) {
-    //            mtModeSelectButton->setStyleSheet("QPushButton{color:green;}");
-    //            mtModeSelectButton->setEnabled(false);
-    //            rtModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            rtModeSelectButton->setEnabled(true);
-    //            bcModeSelectButton->setStyleSheet("QPushButton{color:black;}");
-    //            bcModeSelectButton->setEnabled(true);
-    //            selectBaseForWorkTitleLabel->setEnabled(true);
-    //            baseForWorkValueBox->setEnabled(true);
-    //            selectBaseForWorkButton->setEnabled(true);
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(false);
-    //            addrYOValueBox->setEnabled(false);
-    //            subAddrOYTitleLabel->setEnabled(false);
-    //            subAddrYOValueBox->setEnabled(false);
-    //            readDataFromSubaddrTitleLabel->setEnabled(false);
-    //            dataWordNumberLabel->setEnabled(false);
-    //            dataWordValueBox->setEnabled(false);
-    //            readDataFromSubaddrButton->setEnabled(false);
-    //            readDataTextEdit->setEnabled(false);
-    //            sendStatusLabel->setEnabled(false);
-    //            readStatusLabel->setEnabled(false);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(false);
-    //            cycleSendButton->setEnabled(false);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //            cycleSendIntervalValueBox->setEnabled(false);
-    //            cycleSendStatusLabel->setEnabled(false);
-    //            cycleSendStatusLabel->setHidden(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(false);
-    //            lastSendDescriptionTextEdit->setEnabled(false);
-    //            wMaxBase = bcgetmaxbase();
-    //            baseForWorkValueBox->setRange(0, wMaxBase);
-    //            deviceMode = M_DEVICE_MODE;
-    //        } else if (result == TMK_BAD_FUNC) {
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Устройство не поддерживает запрашиваемый режим(МТ)!");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //        } else {
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось установить запрашиваемый режим(МТ)!\nПовторите попытку позже...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //        }
-    //    }
 }
 
 void MainWindow::singleSendButtonSlot()
@@ -796,189 +330,6 @@ void MainWindow::singleSendButtonSlot()
     //    } else {
     //        QMessageBox *msgBox = new QMessageBox(this);
     //        msgBox->setText("Не удалось отправить одиночное сообщение!\nПроверьте передаваемые вами значения и попытайтесь снова...");
-    //        msgBox->setDefaultButton(QMessageBox::Ok);
-    //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //        msgBox->show();
-    //    }
-}
-
-void MainWindow::selectBaseValueButtonSlot()
-{
-    //    unsigned result;
-    //    if(deviceMode == KK_DEVICE_MODE) {
-    //        wMaxBase = bcgetmaxbase();
-    //        wBase = baseForWorkValueBox->value();
-    //        if(wBase > wMaxBase) {
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(false);
-    //            addrYOValueBox->setEnabled(false);
-    //            subAddrOYTitleLabel->setEnabled(false);
-    //            subAddrYOValueBox->setEnabled(false);
-    //            readDataFromSubaddrTitleLabel->setEnabled(false);
-    //            dataWordNumberLabel->setEnabled(false);
-    //            dataWordValueBox->setEnabled(false);
-    //            readDataFromSubaddrButton->setEnabled(false);
-    //            readDataTextEdit->setEnabled(false);
-    //            sendStatusLabel->setEnabled(false);
-    //            readStatusLabel->setEnabled(false);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(false);
-    //            cycleSendButton->setEnabled(false);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //            cycleSendIntervalValueBox->setEnabled(false);
-    //            cycleSendStatusLabel->setEnabled(false);
-    //            cycleSendStatusLabel->setHidden(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(false);
-    //            lastSendDescriptionTextEdit->setEnabled(false);
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось установить номер базы ДОЗУ!\nВыбранное вами значение превышает максимально допустимое...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //            return;
-    //        }
-    //        bcreset();
-    //        result = bcdefbase(wBase);
-    //        if(result == 0) {
-    //            inputYourMessageTitleLabel->setEnabled(true);
-    //            lineSentMessageTextEdit->setEnabled(true);
-    //            sendButton->setEnabled(true);
-    //            addrOYTitleLabel->setEnabled(true);
-    //            addrYOValueBox->setEnabled(true);
-    //            subAddrOYTitleLabel->setEnabled(true);
-    //            subAddrYOValueBox->setEnabled(true);
-    //            readDataFromSubaddrTitleLabel->setEnabled(true);
-    //            dataWordNumberLabel->setEnabled(true);
-    //            dataWordValueBox->setEnabled(true);
-    //            readDataFromSubaddrButton->setEnabled(true);
-    //            readDataTextEdit->setEnabled(true);
-    //            sendStatusLabel->setEnabled(true);
-    //            readStatusLabel->setEnabled(true);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(true);
-    //            cycleSendButton->setEnabled(true);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(true);
-    //            cycleSendIntervalValueBox->setEnabled(true);
-    //            cycleSendStatusLabel->setEnabled(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(true);
-    //            lastSendDescriptionTextEdit->setEnabled(true);
-    //        } else /*if(result == BC_BAD_BASE)*/ {
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(false);
-    //            addrYOValueBox->setEnabled(false);
-    //            subAddrOYTitleLabel->setEnabled(false);
-    //            subAddrYOValueBox->setEnabled(false);
-    //            readDataFromSubaddrTitleLabel->setEnabled(false);
-    //            dataWordNumberLabel->setEnabled(false);
-    //            dataWordValueBox->setEnabled(false);
-    //            readDataFromSubaddrButton->setEnabled(false);
-    //            readDataTextEdit->setEnabled(false);
-    //            sendStatusLabel->setEnabled(false);
-    //            readStatusLabel->setEnabled(false);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(false);
-    //            cycleSendButton->setEnabled(false);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //            cycleSendIntervalValueBox->setEnabled(false);
-    //            cycleSendStatusLabel->setEnabled(false);
-    //            cycleSendStatusLabel->setHidden(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(false);
-    //            lastSendDescriptionTextEdit->setEnabled(false);
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось установить номер базы ДОЗУ!\nПроверьте выбранное вами значение и попытайтесь снова...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //            return;
-    //        }
-    //    } else if (deviceMode == OY_DEVICE_MODE) {
-    //        //операция не предусмотрена
-    //    } else if (deviceMode == M_DEVICE_MODE) {
-    //        wMaxBase = mtgetmaxbase();
-    //        wBase = baseForWorkValueBox->value();
-    //        if(wBase > wMaxBase) {
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(false);
-    //            addrYOValueBox->setEnabled(false);
-    //            subAddrOYTitleLabel->setEnabled(false);
-    //            subAddrYOValueBox->setEnabled(false);
-    //            readDataFromSubaddrTitleLabel->setEnabled(false);
-    //            dataWordNumberLabel->setEnabled(false);
-    //            dataWordValueBox->setEnabled(false);
-    //            readDataFromSubaddrButton->setEnabled(false);
-    //            readDataTextEdit->setEnabled(false);
-    //            sendStatusLabel->setEnabled(false);
-    //            readStatusLabel->setEnabled(false);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(false);
-    //            cycleSendButton->setEnabled(false);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //            cycleSendIntervalValueBox->setEnabled(false);
-    //            cycleSendStatusLabel->setEnabled(false);
-    //            cycleSendStatusLabel->setHidden(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(false);
-    //            lastSendDescriptionTextEdit->setEnabled(false);
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось установить номер базы ДОЗУ!\nВыбранное вами значение превышает максимально допустимое...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //            return;
-    //        }
-    //        result = mtdefbase(wBase);
-    //        if(result == 0) {
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(true);
-    //            addrYOValueBox->setEnabled(true);
-    //            subAddrOYTitleLabel->setEnabled(true);
-    //            subAddrYOValueBox->setEnabled(true);
-    //        } else /*if(result == BC_BAD_BASE)*/ {
-    //            inputYourMessageTitleLabel->setEnabled(false);
-    //            lineSentMessageTextEdit->setEnabled(false);
-    //            sendButton->setEnabled(false);
-    //            addrOYTitleLabel->setEnabled(false);
-    //            addrYOValueBox->setEnabled(false);
-    //            subAddrOYTitleLabel->setEnabled(false);
-    //            subAddrYOValueBox->setEnabled(false);
-    //            readDataFromSubaddrTitleLabel->setEnabled(false);
-    //            dataWordNumberLabel->setEnabled(false);
-    //            dataWordValueBox->setEnabled(false);
-    //            readDataFromSubaddrButton->setEnabled(false);
-    //            readDataTextEdit->setEnabled(false);
-    //            sendStatusLabel->setEnabled(false);
-    //            readStatusLabel->setEnabled(false);
-    //            sendStatusLabel->setHidden(true);
-    //            readStatusLabel->setHidden(true);
-    //            cycleSendTitleLabel->setEnabled(false);
-    //            cycleSendButton->setEnabled(false);
-    //            cycleSendIntervalValuesBoxTitleLabel->setEnabled(false);
-    //            cycleSendIntervalValueBox->setEnabled(false);
-    //            cycleSendStatusLabel->setEnabled(false);
-    //            cycleSendStatusLabel->setHidden(true);
-    //            lastSendDescriptionTitleLabel->setEnabled(false);
-    //            lastSendDescriptionTextEdit->setEnabled(false);
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Не удалось установить номер базы ДОЗУ!\nПроверьте выбранное вами значение и попытайтесь снова...");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //            return;
-    //        }
-    //    } else {
-    //        QMessageBox *msgBox = new QMessageBox(this);
-    //        msgBox->setText("Не удалось установить номер базы ДОЗУ!\nПроверьте выбранное вами значение и попытайтесь снова...");
     //        msgBox->setDefaultButton(QMessageBox::Ok);
     //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
     //        msgBox->show();
@@ -1724,5 +1075,115 @@ void MainWindow::on_logWriteClearButton_clicked()
 void MainWindow::on_logReadClearButton_clicked()
 {
     ui->logReadMpiViewTextEdit->clear();
+}
+
+
+void MainWindow::on_inputMpiWriteDataButton_clicked()
+{
+//    if(bcdefbus(BUS_A)) {
+//        if(bcdefbus(BUS_B)) {
+//            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
+//                                              "\nАктивируйте линию передачи и попытайтесь снова"));
+//            stopMpi();
+//            return;
+//        }
+//    }
+
+    QStringList sentWordsStringList = ui->inputMpiWriteDataLineEdit->text().trimmed().split(" ");
+    if(sentWordsStringList.count() > sizeof(awBuf) / sizeof(unsigned short))
+    {
+        emit qMessageBoxNeedShowSignal(tr("Размер записываемых в ОУ слов превышает установленный лимит\n"
+                                          "[одной транзакцией не более 32-ух 16-битных слов]"));
+        return;
+    }
+    wLen = 0;
+    bool ok;
+    QString hex16SentDataView;
+    QString logLine = tr("КК;") + QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
+    if(ui->decimalFormatCheckBox->isChecked())
+    {
+        for(; wLen < sentWordsStringList.count(); ++wLen) {
+            awBuf[wLen] = static_cast<unsigned short>(sentWordsStringList.at(wLen).trimmed().toInt(&ok));
+            if(!ok)
+            {
+                emit qMessageBoxNeedShowSignal(tr("Ошибка записи слов в ОУ!\n"
+                                                  "Проверьте введенные данные и попробуйте снова..."));
+                return;
+            }
+        }
+        logLine.append(ui->inputMpiWriteDataLineEdit->text().trimmed() + ";");
+    }
+    else if (ui->hexFormatCheckBox->isChecked())
+    {
+        for(; wLen < sentWordsStringList.count(); ++wLen) {
+            awBuf[wLen] = static_cast<unsigned short>(sentWordsStringList.at(wLen).trimmed().toInt(&ok, 16));
+            hex16SentDataView.append((wLen == 0 ? "0x" : " 0x") + sentWordsStringList.at(wLen).trimmed());
+            if(!ok)
+            {
+                emit qMessageBoxNeedShowSignal(tr("Ошибка записи слов в ОУ!\n"
+                                                  "Проверьте введенные данные и попробуйте снова..."));
+                return;
+            }
+        }
+        logLine.append(hex16SentDataView + ";");
+    }
+
+    bcputw(0, CW(RT_ADDR, RT_RECEIVE, wSubAddr, wLen));
+    bcputblk(1, awBuf, wLen);
+    // Отправка
+    bcstartx(wBase, DATA_BC_RT | CX_STOP | CX_BUS_A | CX_NOSIG);
+    if (WaitInt(DATA_BC_RT)) {
+        qWarning() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts)
+                       + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
+        logLine.append(tr("ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
+    }
+    if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0) {
+        logLine.append(tr("ок"));
+        qDebug() << logLine;
+    } else {
+        qWarning() << tmkError;
+        logLine.append(tr("ошибка;данных о приеме/отказе от приема не получено"));
+    }
+
+    ui->logWriteMpiViewTextEdit->append(logLine);
+}
+
+
+void MainWindow::on_decimalFormatCheckBox_stateChanged(int arg1)
+{
+    if(arg1)
+    {
+        const QString DEC_NUMBER =
+                "(6553[0-5]|"          // 65530-65535
+                "655[0-2]\\d|"         // 65500-65529
+                "65[0-4]\\d\\d|"       // 65000-65499
+                "6[0-4]\\d{3}|"        // 60000-64999
+                "[1-5]\\d{4}|"         // 10000-59999
+                "\\d{1,4})";           // 0-9999
+
+        QString pattern = QString("^%1( %1){0,31}$").arg(DEC_NUMBER);
+        QRegularExpressionValidator *validator = new QRegularExpressionValidator(
+                    QRegularExpression(pattern),
+                    this
+                    );
+        ui->inputMpiWriteDataLineEdit->setValidator(validator);
+        ui->inputMpiWriteDataLineEdit->clear();
+        ui->hexFormatCheckBox->setChecked(false);
+    }
+}
+
+
+void MainWindow::on_hexFormatCheckBox_stateChanged(int arg1)
+{
+    if(arg1)
+    {
+        QRegularExpressionValidator *validator = new QRegularExpressionValidator(
+                    QRegularExpression("^([0-9A-Fa-f]{4}( [0-9A-Fa-f]{4}){0,31})?$"),
+                    this
+                    );
+        ui->inputMpiWriteDataLineEdit->setValidator(validator);
+        ui->inputMpiWriteDataLineEdit->clear();
+        ui->decimalFormatCheckBox->setChecked(false);
+    }
 }
 

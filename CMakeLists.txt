@@ -38,6 +38,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
     set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/UndoBlocker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/DriverSettingsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.h
@@ -70,6 +71,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     )
     set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/UndoBlocker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/DriverSettingsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.h
