@@ -95,7 +95,7 @@
     </message>
     <message>
         <source>Не активен</source>
-        <translation>Не активен</translation>
+        <translation type="vanished">Не активен</translation>
     </message>
     <message>
         <source>Активация / деактивация модуля сопряжения</source>
@@ -264,6 +264,10 @@
     <message>
         <source>Нет</source>
         <translation>Нет</translation>
+    </message>
+    <message>
+        <source>Не готов</source>
+        <translation>Не готов</translation>
     </message>
 </context>
 <context>

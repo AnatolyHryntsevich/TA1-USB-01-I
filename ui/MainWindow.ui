@@ -76,7 +76,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Не активен</string>
+              <string>Не готов</string>
              </property>
             </widget>
            </item>

@@ -1572,7 +1572,7 @@ void MainWindow::aboutProgramActionSlot()
                          "<a href='http://www.elcus.ru/boards.php?ID=ta1-usb'>http://www.elcus.ru/boards.php?ID=ta1-usb</a></p>"
                          "<p><b>Версия программы:</b> %1</p>"
                          "<b>Дата сборки:</b> %2</p>"
-                         ).arg(VERSION_NUMBER).arg(QDateTime::currentDateTime().toString("dd.MM.yyyy")));
+                         ).arg(VERSION_NUMBER).arg(__DATE__));
 
     aboutBox.exec();
 }
