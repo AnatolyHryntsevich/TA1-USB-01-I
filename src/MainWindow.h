@@ -6,8 +6,6 @@
 #include "DriverSettingsDialog.h"
 #include "InterfaceParamenetsDialog.h"
 
-#define TRY_CONNECT_DEVICE_BUTTON_STRING "подключиться к устройству"
-#define TRY_DISCONNECT_DEVICE_BUTTON_STRING "отключиться от устройства"
 #define VERSION_NUMBER "1.0.0"
 
 class QWidget;
@@ -28,40 +26,19 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    enum DEVICE_MODE_enum{
-        UNKNOW_DEVICE_MODE = 0,
-        KK_DEVICE_MODE,
-        OY_DEVICE_MODE,
-        M_DEVICE_MODE
-    };
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     static int initTmkEvent();
-    static void sleepCurrentThread(int ms);
-
-private:
-    Ui::MainWindow* ui;
-    DriverSettingsDialog* m_driverSettingsDialog;
-    DriverSettingsDialog::DriverSettingsStruct m_currentDriverSettings;
-    InterfaceParamenetsDialog* m_interfaceSettingsDialog;
-    SerialMonitorWindow* m_serialMonitorWindow;
-    QTranslator* m_translator;
-
-    int deviceMode;
-    QThread *cycleSendOperationThread;
-    bool cycleSendIsActive;
-    QStringList statusList;
-    QStringList cycleSendButtonNameList;
-    QString fileName;
-    QFile fileCycleSendLogs;
+    static void sleepCurrentThread(const int ms);
 
 signals:
     void startCycleSendProcessSignal();
     void cycleSendProcessFinish();
     void retranslateUiSignal();
+    void connectionGuiSignal(const bool connected);
+    void qMessageBoxNeedShowSignal(const QString& message);
 
 public slots:
     void connectDriverButtonSlot();
@@ -90,6 +67,7 @@ public slots:
     void switchToEnglish();
     void switchToRussian();
     void aboutProgramActionSlot();
+    void connectionGuiSlot(const bool connected);
 
 public:
     void closeWindow();
@@ -97,4 +75,42 @@ public:
 protected:
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *event);
+
+private slots:
+    void on_connectionButton_clicked();
+
+private:
+    Ui::MainWindow* ui;
+    DriverSettingsDialog* m_driverSettingsDialog;
+    DriverSettingsDialog::DriverSettingsStruct m_currentDriverSettings;
+    InterfaceParamenetsDialog* m_interfaceSettingsDialog;
+    SerialMonitorWindow* m_serialMonitorWindow;
+    QTranslator* m_translator;
+
+    QThread *cycleSendOperationThread;
+    bool cycleSendIsActive;
+    QStringList statusList;
+    QStringList cycleSendButtonNameList;
+    QString fileName;
+    QFile fileCycleSendLogs;
+
+    /*!
+     * \brief Флаг состояния модуля сопряжения (вкл / выкл)
+     */
+    bool m_isMpiStarted;
+    QList<QString> m_connectionStatusVariants {tr("Готов"), tr("Не готов"), tr("Ready"), tr("Not ready")};
+
+    /*!
+     * \brief Метод активации модуля сопряжения
+     * \param deviceNumber - числовой номер, назначаемый модулю
+     * \param answerWaitTimeout - время ожидания ответного слова ОУ
+     * \param memBaseNumber - номер базы ДОЗУ
+     * \details Вернет true или false в зависимости от того, удалось ли активировать модуль сопряжения с указанными параметрами
+     */
+    bool startMpi(quint64 deviceNumber, quint64 answerWaitTimeout, quint64 memBaseNumber);
+    /*!
+     * \brief Метод деактивации модуля сопряжения
+     */
+    void stopMpi();
+    void qMessageBoxNeedShowSlot(const QString& message);
 };

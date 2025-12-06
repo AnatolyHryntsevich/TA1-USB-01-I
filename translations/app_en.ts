@@ -269,6 +269,50 @@
         <source>Не готов</source>
         <translation>Not ready</translation>
     </message>
+    <message>
+        <source>Деактивировать</source>
+        <translation>Deactivate</translation>
+    </message>
+    <message>
+        <source>Деактивировать модуль сопряжения</source>
+        <translation>Deactivate the coupling module</translation>
+    </message>
+    <message>
+        <source>Deactivate</source>
+        <translation>Деактивировать</translation>
+    </message>
+    <message>
+        <source>Deactivate the coupling module</source>
+        <translation>Деактивировать модуль сопряжения</translation>
+    </message>
+    <message>
+        <source>Активировать модуль сопряжения</source>
+        <translation>Activate the coupling module</translation>
+    </message>
+    <message>
+        <source>Activate</source>
+        <translation>Активировать</translation>
+    </message>
+    <message>
+        <source>Activate the coupling module</source>
+        <translation>Активировать модуль сопряжения</translation>
+    </message>
+    <message>
+        <source>Доступных модулей TA1-USB на хосте не обнаружено!</source>
+        <translation>No available TA1-USB modules found on the host!</translation>
+    </message>
+    <message>
+        <source>Готов</source>
+        <translation>Ready</translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation>Ready</translation>
+    </message>
+    <message>
+        <source>Not ready</source>
+        <translation>Not ready</translation>
+    </message>
 </context>
 <context>
     <name>SerialMonitorWindow</name>

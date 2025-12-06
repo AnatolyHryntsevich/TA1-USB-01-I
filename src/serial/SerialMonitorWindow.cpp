@@ -129,13 +129,13 @@ void SerialMonitorWindow::on_connectionButton_clicked()
         m_serialTransfer->init(portName, baudRate);
 
         if(m_serialTransfer->isInit()) {
-            qDebug() << "Serial port enabled";
+            qDebug() << "Serial port enabled!";
             connect(m_serialTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
             emit connectionGuiSignal(true);
 
         } else {
             if(m_serialTransfer) {
-                qDebug() << "Serial port is disabled";
+                qDebug() << "Serial port is disabled!";
                 disconnect(m_serialTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
                 m_serialTransfer->~SerialTransfer();
                 m_serialTransfer = nullptr;
@@ -145,7 +145,7 @@ void SerialMonitorWindow::on_connectionButton_clicked()
         return;
     }
 
-    qDebug() << "Serial port is disabled";
+    qDebug() << "Serial port is disabled!";
     disconnect(m_serialTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
     m_serialTransfer->~SerialTransfer();
     m_serialTransfer = nullptr;

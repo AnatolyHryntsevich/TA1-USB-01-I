@@ -15,8 +15,10 @@ DriverSettingsDialog::DriverSettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setWindowModality(Qt::WindowModality::WindowModal);
+
     QList<int> devicesNumbersList;
-    for(int i = 0; i < MAX_TMK_NUMBER; i++)
+    for(int i = 1; i < MAX_TMK_NUMBER; i++)
     {
         devicesNumbersList << i;
     }
@@ -45,14 +47,24 @@ void DriverSettingsDialog::reloadSettingsUiBeforeView()
 {
     ui->answerTimeoutComboBox->setCurrentText(QString::number(m_currentDriverSettings.answerWaitTimeout));
     ui->workModeComboBox->setCurrentText(m_currentDriverSettings.workModeName);
-    ui->memNumberComboBox->setCurrentText(QString::number(m_currentDriverSettings.memoryNumber));
+    ui->memNumberComboBox->setCurrentText(QString::number(m_currentDriverSettings.memBaseNumber));
     ui->deviceNumberComboBox->setCurrentText(QString::number(m_currentDriverSettings.deviceNumber));
+}
+
+void DriverSettingsDialog::setGuiSate(const bool factor)
+{
+    ui->settingsGroupBox->setEnabled(factor);
+}
+
+const DriverSettingsDialog::DriverSettingsStruct &DriverSettingsDialog::currentDriverSettings() const
+{
+    return m_currentDriverSettings;
 }
 
 void DriverSettingsDialog::on_okButton_clicked()
 {
     m_currentDriverSettings.deviceNumber = ui->deviceNumberComboBox->currentText().toInt();
-    m_currentDriverSettings.memoryNumber = ui->memNumberComboBox->currentText().toInt();
+    m_currentDriverSettings.memBaseNumber = ui->memNumberComboBox->currentText().toInt();
     m_currentDriverSettings.answerWaitTimeout = ui->answerTimeoutComboBox->currentText().toInt();
     m_currentDriverSettings.workModeName = ui->workModeComboBox->currentText().toInt();
     emit setDriverSettingsSignal(m_currentDriverSettings);

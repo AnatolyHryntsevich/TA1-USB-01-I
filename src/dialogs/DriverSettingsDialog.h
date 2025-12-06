@@ -18,12 +18,15 @@ public:
 
     typedef struct {
         int deviceNumber;
-        int memoryNumber;
+        int memBaseNumber;
         int answerWaitTimeout;
         QString workModeName;
     } DriverSettingsStruct;
 
     void reloadSettingsUiBeforeView();
+    void setGuiSate(const bool factor);
+
+    const DriverSettingsStruct &currentDriverSettings() const;
 
 signals:
     void setDriverSettingsSignal(const DriverSettingsStruct newDriverSettings);

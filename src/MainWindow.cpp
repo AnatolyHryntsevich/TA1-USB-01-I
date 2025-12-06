@@ -57,7 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
       m_driverSettingsDialog(new DriverSettingsDialog(this)),
       m_interfaceSettingsDialog(new InterfaceParamenetsDialog(this)),
       m_serialMonitorWindow(new SerialMonitorWindow()),
-      m_translator(nullptr)
+      m_translator(nullptr),
+      m_isMpiStarted(false)
 {
     ui->setupUi(this);
 
@@ -66,7 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
     QString filePath = currentDir.absoluteFilePath(fileName);
     fileCycleSendLogs.setFileName(filePath);
 
-
+    m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
+//    connectionGuiSlot(true);
 
     //    connect(connectionDriverButton, SIGNAL(clicked()), this, SLOT(connectDriverButtonSlot()));
     //    connect(disconnectionDriverButton, SIGNAL(clicked()), this, SLOT(disconnectDriverButtonSlot()));
@@ -105,6 +107,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::retranslateUiSignal, m_serialMonitorWindow, &SerialMonitorWindow::retranslateUiSlot);
     connect(ui->serialMonitorOpenAction, &QAction::triggered, this, &MainWindow::serialMonitorOpenActionSlot);
     connect(ui->aboutProgramAction, &QAction::triggered, this, &MainWindow::aboutProgramActionSlot);
+
+    connect(this, &MainWindow::qMessageBoxNeedShowSignal, this, &MainWindow::qMessageBoxNeedShowSlot);
+    connect(this, &MainWindow::connectionGuiSignal, this, &MainWindow::connectionGuiSlot);
 }
 
 MainWindow::~MainWindow()
@@ -131,7 +136,7 @@ int MainWindow::initTmkEvent()
     return 0;
 }
 
-void MainWindow::sleepCurrentThread(int ms)
+void MainWindow::sleepCurrentThread(const int ms)
 {
     QEventLoop loop;
     QTimer t;
@@ -1513,7 +1518,7 @@ void MainWindow::switchToEnglish()
     }
     else
     {
-        qDebug() << "Failed to load English translation";
+        qWarning() << "Failed to load English translation";
         delete m_translator;
         m_translator = nullptr;
     }
@@ -1541,7 +1546,7 @@ void MainWindow::switchToRussian()
     }
     else
     {
-        qDebug() << "Failed to load Russian translation";
+        qWarning() << "Failed to load Russian translation";
         delete m_translator;
         m_translator = nullptr;
     }
@@ -1577,6 +1582,48 @@ void MainWindow::aboutProgramActionSlot()
     aboutBox.exec();
 }
 
+void MainWindow::connectionGuiSlot(const bool connected)
+{
+    ui->mpiWorkGroupBox->setEnabled(connected);
+    m_driverSettingsDialog->setGuiSate(connected);
+
+    if(connected)
+    {
+        if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
+                InterfaceParamenetsDialog::Russian_language)
+        {
+            ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(0));
+            ui->connectionButton->setText(tr("Деактивировать"));
+            ui->connectionButton->setToolTip(tr("Деактивировать модуль сопряжения"));
+        }
+        else if (m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
+                 InterfaceParamenetsDialog::English_language)
+        {
+            ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(2));
+            ui->connectionButton->setText(tr("Deactivate"));
+            ui->connectionButton->setToolTip(tr("Deactivate the coupling module"));
+        }
+        ui->connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
+    }
+    else
+    {
+        if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
+                InterfaceParamenetsDialog::Russian_language)
+        {
+            ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(1));
+            ui->connectionButton->setText(tr("Активировать"));
+            ui->connectionButton->setToolTip(tr("Активировать модуль сопряжения"));
+        }
+        else if (m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
+                 InterfaceParamenetsDialog::English_language)
+        {
+            ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(3));
+            ui->connectionButton->setText(tr("Activate"));
+            ui->connectionButton->setToolTip(tr("Activate the coupling module"));
+        }
+        ui->connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
+    }
+}
 
 
 
@@ -1588,4 +1635,80 @@ void MainWindow::aboutProgramActionSlot()
 
 
 
+
+
+
+void MainWindow::on_connectionButton_clicked()
+{
+    if(startMpi(m_driverSettingsDialog->currentDriverSettings().deviceNumber,
+                m_driverSettingsDialog->currentDriverSettings().answerWaitTimeout,
+                m_driverSettingsDialog->currentDriverSettings().memBaseNumber))
+    {
+        emit connectionGuiSignal(true);
+        qDebug() << "MPI module is enabled";
+        return;
+    }
+
+    qDebug() << "MPI module is disabled";
+    stopMpi();
+    emit connectionGuiSignal(false);
+}
+
+bool MainWindow::startMpi(quint64 deviceNumber, quint64 answerWaitTimeout, quint64 memBaseNumber)
+{
+    bool funcResult = false;
+    if(!m_isMpiStarted)
+    {
+        if(!TmkOpen() && !tmkconfig(deviceNumber) && !initTmkEvent())
+        {
+            wMaxBase = bcgetmaxbase();
+            tmktimeout(answerWaitTimeout);
+            wMaxBase = bcgetmaxbase();
+            wBase = memBaseNumber;
+            bcreset();
+            if(!bcdefbase(wBase))
+            {
+                funcResult = true;
+                m_isMpiStarted = true;
+                m_currentDriverSettings.deviceNumber = deviceNumber;
+                m_currentDriverSettings.answerWaitTimeout = answerWaitTimeout;
+                m_currentDriverSettings.memBaseNumber = memBaseNumber;
+#ifdef __unix__
+                hTmk = deviceNumber;
+#endif
+            }
+        }
+        else
+        {
+            funcResult = false;
+            emit qMessageBoxNeedShowSignal(tr("Доступных модулей TA1-USB на хосте не обнаружено!"));
+        }
+    }
+
+    return funcResult;
+}
+
+void MainWindow::stopMpi()
+{
+    if(m_isMpiStarted) {
+        bcreset();
+#ifdef _WIN32
+        CloseHandle(hBcEvent);
+#endif
+        tmkdone(ALL_TMKS);
+        TmkClose();
+        m_isMpiStarted = false;
+    }
+}
+
+void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
+{
+    QMessageBox msgBox(this);
+    msgBox.setText(message);
+    msgBox.setWindowTitle(this->windowTitle());
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.setWindowModality(Qt::WindowModality::WindowModal);
+    msgBox.setWindowFlags (msgBox.windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    msgBox.exec();
+}
 
