@@ -924,7 +924,7 @@ void MainWindow::aboutProgramActionSlot()
                          "посредством модуля TA1-USB в режиме КК (Контроллер канала)</li>"
                          "<li>Запись данных в подадреса ОУ (Оконечных устройств)</li>"
                          "<li>Чтение данных из подадресов ОУ</li>"
-                         "<li>Сохранение лога работы</li>"
+                         "<li>Отображение лога работы</li>"
                          "</ul>"
                          "<p><b>Описание модуля на сайте производителя:</b> "
                          "<a href='http://www.elcus.ru/boards.php?ID=ta1-usb'>http://www.elcus.ru/boards.php?ID=ta1-usb</a></p>"
