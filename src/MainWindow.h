@@ -31,6 +31,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    typedef enum
+    {
+        Tx_MPI = 0,
+        Rx_MPI
+    } MpiOperationType;
+
     static int initTmkEvent();
     static void sleepCurrentThread(const int ms);
 
@@ -40,18 +46,11 @@ signals:
     void retranslateUiSignal();
     void connectionGuiSignal(const bool connected);
     void qMessageBoxNeedShowSignal(const QString& message);
+    void putLogDataSignal(MpiOperationType operationType, const QString& logData);
 
 public slots:
-    void singleSendButtonSlot();
-    void readDataFromSubAddrServentDeviceSlot();
     void cycleSendProcessButtonSlot();
     void cycleSendProcessHandlerSlot();
-
-    void connectionUARTButtonSlot();
-    void updateCOMListSlot(int index);
-    void receivedDataSlot(QByteArray data);
-    void sendByUartDataButtonSlot();
-    void clearUARTDataTextEditButtonSlot();
 
     //Новый функционал:
     void driverSettingsDialogOpenActionSlot();
@@ -63,6 +62,7 @@ public slots:
     void switchToRussian();
     void aboutProgramActionSlot();
     void connectionGuiSlot(const bool connected);
+    void putLogDataSlot(MpiOperationType operationType, const QString& logData);
 
 public:
     void closeWindow();
@@ -78,6 +78,7 @@ private slots:
     void on_inputMpiWriteDataButton_clicked();
     void on_decimalFormatCheckBox_stateChanged(int arg1);
     void on_hexFormatCheckBox_stateChanged(int arg1);
+    void on_mpiReadWordsNumberButton_clicked();
 
 private:
     Ui::MainWindow* ui;

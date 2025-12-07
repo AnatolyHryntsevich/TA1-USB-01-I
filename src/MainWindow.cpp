@@ -97,6 +97,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this, &MainWindow::qMessageBoxNeedShowSignal, this, &MainWindow::qMessageBoxNeedShowSlot);
     connect(this, &MainWindow::connectionGuiSignal, this, &MainWindow::connectionGuiSlot);
+    connect(this, &MainWindow::putLogDataSignal, this, &MainWindow::putLogDataSlot);
 }
 
 MainWindow::~MainWindow()
@@ -206,212 +207,6 @@ static int WaitInt(TMK_DATA wCtrlCode)
     }
     ++dwStarts;
     return 0;
-}
-
-void MainWindow::singleSendButtonSlot()
-{
-    //    int result = bcdefbus(BUS_A);
-    //    if(result != 0) {
-    //        bcdefbus(BUS_B);
-    //    }
-    //    if(result != 0) {
-    //        QMessageBox *msgBox = new QMessageBox(this);
-    //        msgBox->setText("Не удалось пропинговать ни основную, ни резервную ЛПИ");
-    //        msgBox->setDefaultButton(QMessageBox::Ok);
-    //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //        msgBox->show();
-    //        disconnectDriverButtonSlot();
-    //        return;
-    //    }
-
-    //    QStringList dataStringList = lineSentMessageTextEdit->toPlainText().split(";");
-    //    lastSendDescriptionTextEdit->clear();
-    //    wLen = 0;
-    //    for(; wLen < dataStringList.count(); wLen++) {
-    //        if(wLen == (dataStringList.count() - 1)) {
-    //            if(!dataStringList.at(wLen).isEmpty()) {
-    //                if(wLen < 32) {
-    //                    std::istringstream iss(dataStringList.at(wLen).trimmed().toStdString());
-    //                    iss >> std::hex >> awBuf[wLen];
-    //                } else {
-    //                    qDebug() << "Размер отправляемых данных превышает допускаемый для одной транзакции\n[одной транзакцией не более 32-ух 16-битных слов]";
-    //                    QMessageBox *msgBox = new QMessageBox(this);
-    //                    msgBox->setText("Размер отправляемых данных превышает допускаемый для одной транзакции\n[одной транзакцией не более 32-ух 16-битных слов]");
-    //                    msgBox->setDefaultButton(QMessageBox::Ok);
-    //                    msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //                    msgBox->show();
-    //                    return;
-    //                }
-    //            } else {
-    //                break;
-    //            }
-    //        }
-    //        if(wLen < 32) {
-    //            std::istringstream iss(dataStringList.at(wLen).trimmed().toStdString());
-    //            iss >> std::hex >> awBuf[wLen];
-    //        } else {
-    //            qDebug() << "Размер отправляемых данных превышает допускаемый для одной транзакции\n[одной транзакцией не более 32-ух 16-битных слов]";
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Размер отправляемых данных превышает допускаемый для одной транзакции\n[одной транзакцией не более 32-ух 16-битных слов]");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //            return;
-    //        }
-    //    }
-
-    //    if(deviceMode == KK_DEVICE_MODE) {
-    //        RT_ADDR = addrYOValueBox->value();
-    //        wSubAddr = subAddrYOValueBox->value();
-    //        QString logStr;
-
-    //        /* Пытаемся отправить(десять попыток, если что) */
-    //        int tryNumber = 0;
-    //        bcputw(0, CW(RT_ADDR, RT_RECEIVE, wSubAddr, wLen));
-    //        bcputblk(1, awBuf, wLen);
-    //        do
-    //        {
-    //            bcstartx(wBase, DATA_BC_RT | CX_STOP | CX_BUS_A | CX_NOSIG);
-    //            if (WaitInt(DATA_BC_RT)) {
-    //                qDebug() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts) + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
-    //                //_______________________________________________________________________________________________________________
-    //                logStr = "";
-    //                logStr = "WRITE: (Addr:" + QString::number(RT_ADDR) + ";" + "SubAddr:" + QString::number(wSubAddr) + ";"
-    //                        + "data:[" + lineSentMessageTextEdit->toPlainText() + "]" + ";" + QDateTime::currentDateTime().toString() + ")"
-    //                        + " RESULT: INTERRUPT_ERROR";
-    //                lastSendDescriptionTextEdit->setText(logStr);
-    //                //_______________________________________________________________________________________________________________
-    //                sendStatusLabel->setEnabled(true);
-    //                sendStatusLabel->setText(statusList.at(1));
-    //                sendStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //                sendStatusLabel->setHidden(false);
-    //                sendStatusLabel->setToolTip("Ответ от указанного ОУ не получен!\nЗначение tmkError == " + QString::number(tmkError) +
-    //                                            "\nПроверьте введенные вами значения и попытайтесь снова...");
-    //                break;
-    //            }
-    //            if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0) {
-    //                //_______________________________________________________________________________________________________________
-    //                logStr = "";
-    //                logStr = "WRITE: (Addr:" + QString::number(RT_ADDR) + ";" + "SubAddr:" + QString::number(wSubAddr) + ";"
-    //                        + "data:[" + lineSentMessageTextEdit->toPlainText() + "]" + ";" + QDateTime::currentDateTime().toString() + ")"
-    //                        + " RESULT: OK";
-    //                lastSendDescriptionTextEdit->setText(logStr);
-    //                //_______________________________________________________________________________________________________________
-    //                sendStatusLabel->setEnabled(true);
-    //                sendStatusLabel->setText(statusList.at(0));
-    //                sendStatusLabel->setStyleSheet("QLabel{color:green;}");
-    //                sendStatusLabel->setHidden(false);
-    //                sendStatusLabel->setToolTip("Данные успешно переданы в ОУ!");
-    //                break;
-    //            } else {
-    //                qDebug() << tmkError;
-    //                //_______________________________________________________________________________________________________________
-    //                logStr = "";
-    //                logStr = "WRITE: (Addr:" + QString::number(RT_ADDR) + ";" + "SubAddr:" + QString::number(wSubAddr) + ";"
-    //                        + "data:[" + lineSentMessageTextEdit->toPlainText() + "]" + ";" + QDateTime::currentDateTime().toString() + ")"
-    //                        + " RESULT: WRONG_ADDRESS/SUBADDRESS_OR_ERROR_CONNECT_LINE/DEVICE";
-    //                lastSendDescriptionTextEdit->setText(logStr);
-    //                //_______________________________________________________________________________________________________________
-    //                sendStatusLabel->setEnabled(true);
-    //                sendStatusLabel->setText(statusList.at(1));
-    //                sendStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //                sendStatusLabel->setHidden(false);
-    //                sendStatusLabel->setToolTip("В ответном слове ОУ установлен бит!"
-    //                                            "\nПроверьте адрес и/или подадрес выбранного ОУ, состояние приемо-передающего тракта и попытайтесь снова...");
-    //                break;
-    //            }
-    //            tryNumber++;
-    //        }
-    //        while (tryNumber < 10);
-    //    } else if (deviceMode == OY_DEVICE_MODE) {
-
-    //    } else if (deviceMode == M_DEVICE_MODE) {
-
-    //    } else {
-    //        QMessageBox *msgBox = new QMessageBox(this);
-    //        msgBox->setText("Не удалось отправить одиночное сообщение!\nПроверьте передаваемые вами значения и попытайтесь снова...");
-    //        msgBox->setDefaultButton(QMessageBox::Ok);
-    //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //        msgBox->show();
-    //    }
-}
-
-void MainWindow::readDataFromSubAddrServentDeviceSlot()
-{
-    //    int result = bcdefbus(BUS_A);
-    //    if(result != 0) {
-    //        bcdefbus(BUS_B);
-    //    }
-    //    if(result != 0) {
-    //        QMessageBox *msgBox = new QMessageBox(this);
-    //        msgBox->setText("Не удалось пропинговать ни основную, ни резервную ЛПИ");
-    //        msgBox->setDefaultButton(QMessageBox::Ok);
-    //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //        msgBox->show();
-    //        disconnectDriverButtonSlot();
-    //        return;
-    //    }
-
-    //    if(deviceMode == KK_DEVICE_MODE) {
-    //        RT_ADDR = addrYOValueBox->value();
-    //        wSubAddr = subAddrYOValueBox->value();
-    //        wLen = dataWordValueBox->value();
-
-    //        /* Пытаемся получить ответ от ОУ до тех пор, пока не получится */
-    //        int tryNumber = 0;
-    //        bcputw(0, CW(RT_ADDR, RT_TRANSMIT, wSubAddr, wLen));
-    //        do
-    //        {
-    //            bcstartx(wBase, DATA_RT_BC | CX_STOP | CX_BUS_A | CX_NOSIG);
-    //            if (WaitInt(DATA_RT_BC)) {
-    //                qDebug() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts) + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
-    //                readStatusLabel->setEnabled(true);
-    //                readStatusLabel->setText(statusList.at(1));
-    //                readStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //                readStatusLabel->setHidden(false);
-    //                readStatusLabel->setToolTip("Ответ от указанного ОУ не получен!\nЗначение tmkError == " + QString::number(tmkError) +
-    //                                            "\nПроверьте запрашиваемые вами значения и попытайтесь снова...");
-    //                break;
-    //            }
-    //            if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0) {
-    //                readStatusLabel->setEnabled(true);
-    //                readStatusLabel->setText(statusList.at(2));
-    //                readStatusLabel->setStyleSheet("QLabel{color:green;}");
-    //                readStatusLabel->setHidden(false);
-    //                readStatusLabel->setToolTip("Данные из подадреса ОУ успешно получены!");
-    //                /* Check data from RT */
-    //                QString receivedData = "READ: ";
-    //                bcgetblk(2, awBuf, wLen);
-    //                for (int i = 0; i < wLen; ++i)
-    //                {
-    //                    if (awBuf[i] != ((wSubAddr<<8) | i)) {
-    //                        qDebug() << "\nCW:" + QString::number(bcgetw(0)) + " Data error " + "[" + QString::number(i) + "]" + " = " + QString::number(awBuf[i]);
-    //                    }
-    //                    std::ostringstream os;
-    //                    os << std::hex << awBuf[i];
-    //                    if(i != (wLen - 1)) {
-    //                        receivedData.append(QString::fromStdString(os.str()) + ";");
-    //                    } else {
-    //                        receivedData.append(QString::fromStdString(os.str()));
-    //                    }
-    //                }
-    //                readDataTextEdit->clear();
-    //                readDataTextEdit->setText(receivedData);
-    //                break;
-    //            } else {
-    //                qDebug() << tmkError;
-    //                readStatusLabel->setEnabled(true);
-    //                readStatusLabel->setText(statusList.at(3));
-    //                readStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //                readStatusLabel->setHidden(false);
-    //                readStatusLabel->setToolTip("В ответном слове ОУ установлен бит!\ntmkError = " + QString::number(tmkError) +
-    //                                            "\nПроверьте запрашиваемые вами значения и/или состояние ОУ и попытайтесь снова...");
-    //                break;
-    //            }
-    //            tryNumber++;
-    //        }
-    //        while (tryNumber < 10);
-    //    }
 }
 
 void MainWindow::cycleSendProcessButtonSlot()
@@ -682,95 +477,6 @@ void MainWindow::closeWindow()
     this->closeEvent(event);
 }
 
-void MainWindow::connectionUARTButtonSlot()
-{
-    //    if(connectionStatusLabel->text() == connectionStatusVariants.at(0)) {
-    //        qint64 baudRate = baudRatesBox->currentText().toInt();
-    //        QString portName = serialPortsBox->currentText();
-
-    //        uartTransfer = new UartTransfer();
-    //        uartTransfer->init(portName, baudRate);
-
-    //        if(uartTransfer->isInit()) {
-    //            qDebug() << "UART-соединение активно";
-    //            connect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
-    //            connectButton->setText("отключить");
-    //            connectButton->setToolTip("деактивировать линию последовательной передачи");
-    //            connectionStatusLabel->setText(connectionStatusVariants.at(1));
-    //            connectionStatusLabel->setStyleSheet("QLabel{color:green;}");
-    //            sendUARTDataButton->setEnabled(true);
-    //            baudRatesBox->setEnabled(false);
-    //            serialPortsBox->setEnabled(false);
-    //        } else {
-    //            qDebug() << "UART-соединение не активно";
-    //            sendUARTDataButton->setEnabled(false);
-    //            connectButton->setToolTip("активировать линию последовательной передачи");
-    //            disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
-    //            connectionStatusLabel->setText(connectionStatusVariants.at(0));
-    //            connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //            baudRatesBox->setEnabled(true);
-    //            serialPortsBox->setEnabled(true);
-    //        }
-    //    } else {
-    //        if(uartTransfer != nullptr) {
-    //            disconnect(uartTransfer, SIGNAL(receivedNewData(QByteArray)), this, SLOT(receivedDataSlot(QByteArray)));
-    //            uartTransfer->~UartTransfer();
-    //            uartTransfer = nullptr;
-    //            connectionStatusLabel->setText(connectionStatusVariants.at(0));
-    //            connectionStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //            connectButton->setText("подключить");
-    //            connectButton->setToolTip("активировать линию последовательной передачи");
-    //            sendUARTDataButton->setEnabled(false);
-    //            baudRatesBox->setEnabled(true);
-    //            serialPortsBox->setEnabled(true);
-    //        }
-    //    }
-}
-
-void MainWindow::updateCOMListSlot(int index) {
-    //    serialPortsBox->blockSignals(true);
-    //    serialPortsBox->clear();
-    //    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
-    //        serialPortsBox->addItem(info.portName());
-    //    }
-    //    serialPortsBox->setCurrentIndex(index);
-    //    serialPortsBox->blockSignals(false);
-}
-
-void MainWindow::receivedDataSlot(QByteArray data)
-{
-    //    QString dataStrForView = "<<<:" + QString::fromUtf8(data) + "\n";
-    //    receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
-    //    QTextCursor cursor = receivedTransmittedUARTDataTextEdit->textCursor();
-    //    cursor.movePosition(QTextCursor::End);
-    //    receivedTransmittedUARTDataTextEdit->setTextCursor(cursor);
-}
-
-void MainWindow::sendByUartDataButtonSlot()
-{
-    //    QString dataString = lineDForTransmittedUARTDataTextEdit->toPlainText().trimmed();
-
-    //    QByteArray ba;
-    //    ba.append(dataString.toUtf8());
-
-    //    if(uartTransfer->isInit()) {
-    //        uartTransfer->write(&ba);
-    //        qDebug() << "Transmitted data:" +  QString::fromUtf8(ba);
-    //        QString dataStrForView = ">>>:" + QString::fromUtf8(ba) + "\n";
-    //        receivedTransmittedUARTDataTextEdit->setText(receivedTransmittedUARTDataTextEdit->toPlainText() + dataStrForView);
-    //        QTextCursor cursor = receivedTransmittedUARTDataTextEdit->textCursor();
-    //        cursor.movePosition(QTextCursor::End);
-    //        receivedTransmittedUARTDataTextEdit->setTextCursor(cursor);
-    //    } else {
-    //        qDebug() << "Send error! UART is not initialized..";
-    //    }
-}
-
-void MainWindow::clearUARTDataTextEditButtonSlot()
-{
-    //    receivedTransmittedUARTDataTextEdit->clear();
-}
-
 void MainWindow::driverSettingsDialogOpenActionSlot()
 {
     if(!m_driverSettingsDialog)
@@ -978,18 +684,17 @@ void MainWindow::connectionGuiSlot(const bool connected)
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+void MainWindow::putLogDataSlot(MpiOperationType operationType, const QString &logData)
+{
+    switch (operationType) {
+    case Tx_MPI:
+        ui->logWriteMpiViewTextEdit->append(logData);
+        break;
+    case Rx_MPI:
+        ui->logReadMpiViewTextEdit->append(logData);
+        break;
+    }
+}
 
 void MainWindow::on_connectionButton_clicked()
 {
@@ -1064,18 +769,46 @@ void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
     msgBox.exec();
 }
 
-
 void MainWindow::on_logWriteClearButton_clicked()
 {
     ui->logWriteMpiViewTextEdit->clear();
 }
-
 
 void MainWindow::on_logReadClearButton_clicked()
 {
     ui->logReadMpiViewTextEdit->clear();
 }
 
+void MainWindow::on_decimalFormatCheckBox_stateChanged(int arg1)
+{
+    if(arg1)
+    {
+        const QString DEC_NUMBER =
+                "(6553[0-5]|"          // 65530-65535
+                "655[0-2]\\d|"         // 65500-65529
+                "65[0-4]\\d\\d|"       // 65000-65499
+                "6[0-4]\\d{3}|"        // 60000-64999
+                "[1-5]\\d{4}|"         // 10000-59999
+                "\\d{1,4})";           // 0-9999
+
+        QString pattern = QString("^%1( %1){0,31}$").arg(DEC_NUMBER);
+        QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression(pattern), this);
+        ui->inputMpiWriteDataLineEdit->setValidator(validator);
+        ui->inputMpiWriteDataLineEdit->clear();
+        ui->hexFormatCheckBox->setChecked(false);
+    }
+}
+
+void MainWindow::on_hexFormatCheckBox_stateChanged(int arg1)
+{
+    if(arg1)
+    {
+        QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression("^([0-9A-Fa-f]{4}( [0-9A-Fa-f]{4}){0,31})?$"), this);
+        ui->inputMpiWriteDataLineEdit->setValidator(validator);
+        ui->inputMpiWriteDataLineEdit->clear();
+        ui->decimalFormatCheckBox->setChecked(false);
+    }
+}
 
 void MainWindow::on_inputMpiWriteDataButton_clicked()
 {
@@ -1098,10 +831,11 @@ void MainWindow::on_inputMpiWriteDataButton_clicked()
     wLen = 0;
     bool ok;
     QString hex16SentDataView;
-    QString logLine = tr("КК;") + QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
+    QString logLine = QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
     if(ui->decimalFormatCheckBox->isChecked())
     {
-        for(; wLen < sentWordsStringList.count(); ++wLen) {
+        for(; wLen < sentWordsStringList.count(); ++wLen)
+        {
             awBuf[wLen] = static_cast<unsigned short>(sentWordsStringList.at(wLen).trimmed().toInt(&ok));
             if(!ok)
             {
@@ -1114,9 +848,10 @@ void MainWindow::on_inputMpiWriteDataButton_clicked()
     }
     else if (ui->hexFormatCheckBox->isChecked())
     {
-        for(; wLen < sentWordsStringList.count(); ++wLen) {
+        for(; wLen < sentWordsStringList.count(); ++wLen)
+        {
             awBuf[wLen] = static_cast<unsigned short>(sentWordsStringList.at(wLen).trimmed().toInt(&ok, 16));
-            hex16SentDataView.append((wLen == 0 ? "0x" : " 0x") + sentWordsStringList.at(wLen).trimmed());
+            hex16SentDataView.append((wLen == 0 ? "0x" : " 0x") + sentWordsStringList.at(wLen).trimmed().toUpper());
             if(!ok)
             {
                 emit qMessageBoxNeedShowSignal(tr("Ошибка записи слов в ОУ!\n"
@@ -1127,56 +862,101 @@ void MainWindow::on_inputMpiWriteDataButton_clicked()
         logLine.append(hex16SentDataView + ";");
     }
 
+    wAddr = ui->deviceAddrSpinBox->value();
     bcputw(0, CW(RT_ADDR, RT_RECEIVE, wSubAddr, wLen));
     bcputblk(1, awBuf, wLen);
-    // Отправка
+
     bcstartx(wBase, DATA_BC_RT | CX_STOP | CX_BUS_A | CX_NOSIG);
-    if (WaitInt(DATA_BC_RT)) {
+    if (WaitInt(DATA_BC_RT))
+    {
         qWarning() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts)
                        + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
-        logLine.append(tr("ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
+        logLine.append(tr("Ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
+        emit putLogDataSignal(Tx_MPI, logLine);
+        return;
     }
-    if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0) {
-        logLine.append(tr("ок"));
+
+    if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0)
+    {
+        logLine.append(tr("Ок"));
         qDebug() << logLine;
-    } else {
+    }
+    else
+    {
         qWarning() << tmkError;
-        logLine.append(tr("ошибка;данных о приеме/отказе от приема не получено"));
+        logLine.append(tr("Ошибка;данных о приеме/отказе от приема не получено"));
     }
 
-    ui->logWriteMpiViewTextEdit->append(logLine);
+    emit putLogDataSignal(Tx_MPI, logLine);
 }
 
-
-void MainWindow::on_decimalFormatCheckBox_stateChanged(int arg1)
+void MainWindow::on_mpiReadWordsNumberButton_clicked()
 {
-    if(arg1)
+    //    if(bcdefbus(BUS_A)) {
+    //        if(bcdefbus(BUS_B)) {
+    //            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
+    //                                              "\nАктивируйте линию передачи и попытайтесь снова"));
+    //            stopMpi();
+    //            return;
+    //        }
+    //    }
+
+    QString readDataView;
+
+    wAddr = ui->deviceAddrSpinBox->value();
+    wSubAddr = ui->subAddrSpinBox->value();
+    wLen = ui->mpiReadWordsNumberSpinBox->value();
+
+    QString logLine = QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
+
+    bcputw(0, CW(RT_ADDR, RT_TRANSMIT, wSubAddr, wLen));
+    bcstartx(wBase, DATA_RT_BC | CX_STOP | CX_BUS_A | CX_NOSIG);
+    if (WaitInt(DATA_RT_BC))
     {
-        const QString DEC_NUMBER =
-                "(6553[0-5]|"          // 65530-65535
-                "655[0-2]\\d|"         // 65500-65529
-                "65[0-4]\\d\\d|"       // 65000-65499
-                "6[0-4]\\d{3}|"        // 60000-64999
-                "[1-5]\\d{4}|"         // 10000-59999
-                "\\d{1,4})";           // 0-9999
-
-        QString pattern = QString("^%1( %1){0,31}$").arg(DEC_NUMBER);
-        QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression(pattern), this);
-        ui->inputMpiWriteDataLineEdit->setValidator(validator);
-        ui->inputMpiWriteDataLineEdit->clear();
-        ui->hexFormatCheckBox->setChecked(false);
+        qWarning() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts) + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
+        logLine.append(tr(";Ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
+        emit putLogDataSignal(Rx_MPI, logLine);
+        return;
     }
-}
 
-
-void MainWindow::on_hexFormatCheckBox_stateChanged(int arg1)
-{
-    if(arg1)
+    if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0)
     {
-        QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression("^([0-9A-Fa-f]{4}( [0-9A-Fa-f]{4}){0,31})?$"), this);
-        ui->inputMpiWriteDataLineEdit->setValidator(validator);
-        ui->inputMpiWriteDataLineEdit->clear();
-        ui->decimalFormatCheckBox->setChecked(false);
+        bcgetblk(2, awBuf, wLen);
+        for (int i = 0; i < wLen; ++i)
+        {
+            if(i < wLen - 1)
+            {
+                if(ui->decimalFormatCheckBox->isChecked())
+                {
+                    readDataView.append(QString::number(awBuf[i]).toUpper() + " ");
+                }
+                else if (ui->hexFormatCheckBox->isChecked())
+                {
+                    readDataView.append("0x" + QString::number(awBuf[i], 16).toUpper() + " ");
+                }
+
+            }
+            else
+            {
+                if(ui->decimalFormatCheckBox->isChecked())
+                {
+                    readDataView.append(QString::number(awBuf[i]).toUpper() + ";");
+                }
+                else if (ui->hexFormatCheckBox->isChecked())
+                {
+                    readDataView.append("0x" + QString::number(awBuf[i], 16).toUpper() + ";");
+                }
+            }
+
+        }
+        logLine.append(readDataView + tr("Ок"));
     }
+    else
+    {
+        qWarning() << tmkError;
+        logLine.append(tr(";Ошибка;данных о приеме/отказе от приема запроса на чтение не получено"));
+    }
+
+    emit putLogDataSignal(Rx_MPI, logLine);
 }
 
