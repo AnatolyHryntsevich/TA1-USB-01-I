@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(TA1-USB-01-I VERSION 0.1 LANGUAGES C CXX)
+project(mil-std-1553b-usb-terminal VERSION 0.1 LANGUAGES C CXX)
 
 include(ProcessorCount)
 ProcessorCount(N)

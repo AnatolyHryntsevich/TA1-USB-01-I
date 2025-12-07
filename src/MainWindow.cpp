@@ -1058,7 +1058,6 @@ void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
 {
     QMessageBox msgBox(this);
     msgBox.setText(message);
-    msgBox.setWindowTitle(this->windowTitle());
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.setWindowModality(Qt::WindowModality::WindowModal);
     msgBox.setWindowFlags (msgBox.windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -1080,14 +1079,14 @@ void MainWindow::on_logReadClearButton_clicked()
 
 void MainWindow::on_inputMpiWriteDataButton_clicked()
 {
-//    if(bcdefbus(BUS_A)) {
-//        if(bcdefbus(BUS_B)) {
-//            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
-//                                              "\nАктивируйте линию передачи и попытайтесь снова"));
-//            stopMpi();
-//            return;
-//        }
-//    }
+    //    if(bcdefbus(BUS_A)) {
+    //        if(bcdefbus(BUS_B)) {
+    //            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
+    //                                              "\nАктивируйте линию передачи и попытайтесь снова"));
+    //            stopMpi();
+    //            return;
+    //        }
+    //    }
 
     QStringList sentWordsStringList = ui->inputMpiWriteDataLineEdit->text().trimmed().split(" ");
     if(sentWordsStringList.count() > sizeof(awBuf) / sizeof(unsigned short))
@@ -1162,10 +1161,7 @@ void MainWindow::on_decimalFormatCheckBox_stateChanged(int arg1)
                 "\\d{1,4})";           // 0-9999
 
         QString pattern = QString("^%1( %1){0,31}$").arg(DEC_NUMBER);
-        QRegularExpressionValidator *validator = new QRegularExpressionValidator(
-                    QRegularExpression(pattern),
-                    this
-                    );
+        QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression(pattern), this);
         ui->inputMpiWriteDataLineEdit->setValidator(validator);
         ui->inputMpiWriteDataLineEdit->clear();
         ui->hexFormatCheckBox->setChecked(false);
@@ -1177,10 +1173,7 @@ void MainWindow::on_hexFormatCheckBox_stateChanged(int arg1)
 {
     if(arg1)
     {
-        QRegularExpressionValidator *validator = new QRegularExpressionValidator(
-                    QRegularExpression("^([0-9A-Fa-f]{4}( [0-9A-Fa-f]{4}){0,31})?$"),
-                    this
-                    );
+        QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression("^([0-9A-Fa-f]{4}( [0-9A-Fa-f]{4}){0,31})?$"), this);
         ui->inputMpiWriteDataLineEdit->setValidator(validator);
         ui->inputMpiWriteDataLineEdit->clear();
         ui->decimalFormatCheckBox->setChecked(false);
