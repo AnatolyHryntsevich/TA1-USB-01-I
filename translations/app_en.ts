@@ -247,7 +247,7 @@
     </message>
     <message>
         <source>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Программа управления шиной MIL-STD-1553 (ГОСТ Р 52070-2003) через USB-интерфейс&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначена для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Сохранение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</source>
-        <translation>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;MIL-STD-1553 (GOST R 52070-2003) bus control program via USB interface&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to the subaddresses of the SD (Slave devices)&lt;/li&gt;&lt;li&gt;Reading data from SD subaddresses&lt;/li&gt;&lt;li&gt;Saving the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
+        <translation type="vanished">&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;MIL-STD-1553 (GOST R 52070-2003) bus control program via USB interface&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to the subaddresses of the SD (Slave devices)&lt;/li&gt;&lt;li&gt;Reading data from SD subaddresses&lt;/li&gt;&lt;li&gt;Saving the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Подтверждение закрытия</source>
@@ -279,11 +279,11 @@
     </message>
     <message>
         <source>Deactivate</source>
-        <translation>Деактивировать</translation>
+        <translation>Deactivate</translation>
     </message>
     <message>
         <source>Deactivate the coupling module</source>
-        <translation>Деактивировать модуль сопряжения</translation>
+        <translation>Deactivate the coupling module</translation>
     </message>
     <message>
         <source>Активировать модуль сопряжения</source>
@@ -291,11 +291,11 @@
     </message>
     <message>
         <source>Activate</source>
-        <translation>Активировать</translation>
+        <translation>Activate</translation>
     </message>
     <message>
         <source>Activate the coupling module</source>
-        <translation>Активировать модуль сопряжения</translation>
+        <translation>Activate the coupling module</translation>
     </message>
     <message>
         <source>Доступных модулей TA1-USB на хосте не обнаружено!</source>
@@ -312,6 +312,42 @@
     <message>
         <source>Not ready</source>
         <translation>Not ready</translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Программа управления шиной MIL-STD-1553 (ГОСТ Р 52070-2003) через USB-интерфейс&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначена для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Отображение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</source>
+        <translation>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;MIL-STD-1553 (GOST R 52070-2003) bus control program via USB interface&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to the subaddresses of the Slave (Slave devices)&lt;/li&gt;&lt;li&gt;Reading data from Slave subaddresses&lt;/li&gt;&lt;li&gt;Displaying the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Размер записываемых в ОУ слов превышает установленный лимит
+[одной транзакцией не более 32-ух 16-битных слов]</source>
+        <translation>The size of words written to the Slave exceeds the established limit
+[no more than 32 16-bit words per transaction]</translation>
+    </message>
+    <message>
+        <source>Ошибка записи слов в ОУ!
+Проверьте введенные данные и попробуйте снова...</source>
+        <translation>Error writing words to Slave!
+Check your input and try again...</translation>
+    </message>
+    <message>
+        <source>Ошибка;время ожидания ответного события драйвера TA1-USB истекло</source>
+        <translation>Error: TA1-USB driver response event timed out</translation>
+    </message>
+    <message>
+        <source>Ок</source>
+        <translation>Ok</translation>
+    </message>
+    <message>
+        <source>Ошибка;данных о приеме/отказе от приема не получено</source>
+        <translation>Error; no acceptance/rejection data received</translation>
+    </message>
+    <message>
+        <source>;Ошибка;время ожидания ответного события драйвера TA1-USB истекло</source>
+        <translation>;Error; TA1-USB driver response event timed out</translation>
+    </message>
+    <message>
+        <source>;Ошибка;данных о приеме/отказе от приема запроса на чтение не получено</source>
+        <translation>;Error;no data was received regarding acceptance/rejection of the read request</translation>
     </message>
 </context>
 <context>
