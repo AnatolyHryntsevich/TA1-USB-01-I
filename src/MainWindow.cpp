@@ -832,6 +832,7 @@ void MainWindow::on_inputMpiWriteDataButton_clicked()
     bool ok;
     QString hex16SentDataView;
     QString logLine = QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
+    memset(&awBuf, 0, sizeof(awBuf));
     if(ui->decimalFormatCheckBox->isChecked())
     {
         for(; wLen < sentWordsStringList.count(); ++wLen)
@@ -901,13 +902,13 @@ void MainWindow::on_mpiReadWordsNumberButton_clicked()
     //        }
     //    }
 
-    QString readDataView;
-
     wAddr = ui->deviceAddrSpinBox->value();
     wSubAddr = ui->subAddrSpinBox->value();
     wLen = ui->mpiReadWordsNumberSpinBox->value();
+    memset(&awBuf, 0, sizeof(awBuf));
 
     QString logLine = QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
+    QString readDataView;
 
     bcputw(0, CW(RT_ADDR, RT_TRANSMIT, wSubAddr, wLen));
     bcstartx(wBase, DATA_RT_BC | CX_STOP | CX_BUS_A | CX_NOSIG);

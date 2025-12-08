@@ -75,9 +75,9 @@ private slots:
     void on_connectionButton_clicked();
     void on_logWriteClearButton_clicked();
     void on_logReadClearButton_clicked();
-    void on_inputMpiWriteDataButton_clicked();
     void on_decimalFormatCheckBox_stateChanged(int arg1);
     void on_hexFormatCheckBox_stateChanged(int arg1);
+    void on_inputMpiWriteDataButton_clicked();
     void on_mpiReadWordsNumberButton_clicked();
 
 private:
