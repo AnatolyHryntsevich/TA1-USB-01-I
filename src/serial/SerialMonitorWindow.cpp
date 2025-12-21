@@ -4,6 +4,7 @@
 #include <QSerialPortInfo>
 #include <QDebug>
 #include <QDateTime>
+#include <QScrollBar>
 
 #include "SerialTransfer.h"
 
@@ -111,12 +112,32 @@ void SerialMonitorWindow::updatePortNameListSlot(const int index)
 
 void SerialMonitorWindow::receivedDataSlot(QByteArray data)
 {
-    QString dataStrForView = "<<<" + QDateTime::currentDateTime().toString("hh:mm:ss") + ": "
-            + data.toHex(' ').toUpper() + "\n";
-    ui->logTextEdit->setText(ui->logTextEdit->toPlainText() + dataStrForView);
-    QTextCursor cursor = ui->logTextEdit->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    ui->logTextEdit->setTextCursor(cursor);
+    if(!data.isEmpty())
+    {
+        QString dataStrForView = "<<<" + QDateTime::currentDateTime().toString("hh:mm:ss") + ": "
+                + data.toHex(' ').toUpper();
+        putLogLine(dataStrForView);
+    }
+}
+
+void SerialMonitorWindow::putLogLine(const QString &logData)
+{
+    if(!logData.isEmpty())
+    {
+        bool isBottom = ui->logTextEdit->verticalScrollBar()->value() ==
+                ui->logTextEdit->verticalScrollBar()->maximum();
+        int savedScroll = isBottom ? -1 : ui->logTextEdit->verticalScrollBar()->value();
+        ui->logTextEdit->append(logData);
+        QStringList logDataList = ui->logTextEdit->toPlainText().split("\n");
+        if(logDataList.count() > SERIAL_LOG_DATA_LINE_LIMIT) {
+            logDataList = logDataList.mid(SERIAL_LOG_DATA_LINE_LIMIT / 2);
+            ui->logTextEdit->clear();
+            ui->logTextEdit->append(logDataList.join("\n"));
+        }
+        if (!isBottom) {
+            ui->logTextEdit->verticalScrollBar()->setValue(savedScroll);
+        }
+    }
 }
 
 void SerialMonitorWindow::on_connectionButton_clicked()
@@ -173,11 +194,8 @@ void SerialMonitorWindow::on_sendButton_clicked()
                 m_serialTransfer->write(&sendData);
                 qDebug() << "Transmitted data:" +  sendData.toHex(' ').toUpper();
                 QString dataStrForView = ">>>" + QDateTime::currentDateTime().toString("hh:mm:ss") + ": "
-                        + sendData.toHex(' ').toUpper() + "\n";
-                ui->logTextEdit->setText(ui->logTextEdit->toPlainText() + dataStrForView);
-                QTextCursor cursor = ui->logTextEdit->textCursor();
-                cursor.movePosition(QTextCursor::End);
-                ui->logTextEdit->setTextCursor(cursor);
+                        + sendData.toHex(' ').toUpper();
+                putLogLine(dataStrForView);
             } else {
                 qDebug() << "Send error! SerialTransfer is not initialized..";
             }

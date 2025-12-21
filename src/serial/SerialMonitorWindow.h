@@ -2,6 +2,8 @@
 
 #include <QWidget>
 
+#define SERIAL_LOG_DATA_LINE_LIMIT 1000
+
 namespace Ui {
 class SerialMonitorWindow;
 }
@@ -16,15 +18,17 @@ public:
     explicit SerialMonitorWindow(QWidget *parent = nullptr);
     ~SerialMonitorWindow();
 
+    void putLogLine(const QString &logData);
+
 signals:
     void connectionGuiSignal(const bool connected);
 
 public slots:
     void retranslateUiSlot();
+    void updatePortNameListSlot(const int index);
 
 private slots:
     void connectionGuiSlot(const bool connected);
-    void updatePortNameListSlot(const int index);
     void receivedDataSlot(QByteArray data);
 
     void on_connectionButton_clicked();
