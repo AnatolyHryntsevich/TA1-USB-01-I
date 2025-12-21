@@ -22,6 +22,7 @@
 #include <QTranslator>
 #include <QSettings>
 #include <QShortcut>
+#include <QScrollBar>
 
 #include <iostream>
 #include <string>
@@ -63,14 +64,10 @@ MainWindow::MainWindow(QWidget *parent)
       m_interfaceSettingsDialog(new InterfaceParamenetsDialog(this)),
       m_serialMonitorWindow(new SerialMonitorWindow()),
       m_translator(nullptr),
-      m_undoBlocker(new UndoBlocker(this))
+      m_undoBlocker(new UndoBlocker(this)),
+      cycleSendIsActive(false)
 {
     ui->setupUi(this);
-
-    QDir currentDir;
-    QString fileName = "cycleSendLogs.txt";
-    QString filePath = currentDir.absoluteFilePath(fileName);
-    fileCycleSendLogs.setFileName(filePath);
 
     m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
     on_hexFormatCheckBox_stateChanged(true);
@@ -686,13 +683,43 @@ void MainWindow::connectionGuiSlot(const bool connected)
 
 void MainWindow::putLogDataSlot(MpiOperationType operationType, const QString &logData)
 {
-    switch (operationType) {
-    case Tx_MPI:
-        ui->logWriteMpiViewTextEdit->append(logData);
-        break;
-    case Rx_MPI:
-        ui->logReadMpiViewTextEdit->append(logData);
-        break;
+    if(!logData.isEmpty()) {
+        switch (operationType) {
+        case Tx_MPI:
+        {
+            bool isBottom = ui->logWriteMpiViewTextEdit->verticalScrollBar()->value() ==
+                    ui->logWriteMpiViewTextEdit->verticalScrollBar()->maximum();
+            int savedScroll = isBottom ? -1 : ui->logWriteMpiViewTextEdit->verticalScrollBar()->value();
+            ui->logWriteMpiViewTextEdit->append(logData);
+            QStringList logDataList = ui->logWriteMpiViewTextEdit->toPlainText().split("\n");
+            if(logDataList.count() > LOG_DATA_LINE_LIMIT) {
+                logDataList = logDataList.mid(LOG_DATA_LINE_LIMIT / 2);
+                ui->logWriteMpiViewTextEdit->clear();
+                ui->logWriteMpiViewTextEdit->append(logDataList.join("\n"));
+            }
+            if (!isBottom) {
+                ui->logWriteMpiViewTextEdit->verticalScrollBar()->setValue(savedScroll);
+            }
+        }
+            break;
+        case Rx_MPI:
+        {
+            bool isBottom = ui->logReadMpiViewTextEdit->verticalScrollBar()->value() ==
+                    ui->logReadMpiViewTextEdit->verticalScrollBar()->maximum();
+            int savedScroll = isBottom ? -1 : ui->logReadMpiViewTextEdit->verticalScrollBar()->value();
+            ui->logReadMpiViewTextEdit->append(logData);
+            QStringList logDataList = ui->logReadMpiViewTextEdit->toPlainText().split("\n");
+            if(logDataList.count() > LOG_DATA_LINE_LIMIT) {
+                logDataList = logDataList.mid(LOG_DATA_LINE_LIMIT / 2);
+                ui->logReadMpiViewTextEdit->clear();
+                ui->logReadMpiViewTextEdit->append(logDataList.join("\n"));
+            }
+            if (!isBottom) {
+                ui->logReadMpiViewTextEdit->verticalScrollBar()->setValue(savedScroll);
+            }
+        }
+            break;
+        }
     }
 }
 

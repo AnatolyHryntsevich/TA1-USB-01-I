@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>676</width>
-    <height>560</height>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -348,7 +348,7 @@ QGroupBox::title {
                 <number>2</number>
                </property>
                <property name="topMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="rightMargin">
                 <number>2</number>
@@ -407,7 +407,7 @@ QGroupBox::title {
                          <widget class="QLabel" name="inputMpiWriteDataCursorLabel">
                           <property name="font">
                            <font>
-                            <pointsize>14</pointsize>
+                            <pointsize>10</pointsize>
                             <stylestrategy>PreferAntialias</stylestrategy>
                            </font>
                           </property>
@@ -685,7 +685,7 @@ QGroupBox::title {
                      <number>3</number>
                     </property>
                     <property name="topMargin">
-                     <number>6</number>
+                     <number>8</number>
                     </property>
                     <property name="rightMargin">
                      <number>3</number>
@@ -713,6 +713,12 @@ QGroupBox::title {
     padding-left: 2px;
     padding-right: 2px;
 }</string>
+                        </property>
+                        <property name="undoRedoEnabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="readOnly">
+                         <bool>true</bool>
                         </property>
                        </widget>
                       </item>
@@ -807,7 +813,7 @@ QGroupBox::title {
                      <number>0</number>
                     </property>
                     <property name="topMargin">
-                     <number>0</number>
+                     <number>2</number>
                     </property>
                     <property name="rightMargin">
                      <number>3</number>
@@ -964,7 +970,7 @@ QGroupBox::title {
                      <number>3</number>
                     </property>
                     <property name="topMargin">
-                     <number>6</number>
+                     <number>8</number>
                     </property>
                     <property name="rightMargin">
                      <number>3</number>
@@ -989,6 +995,12 @@ QGroupBox::title {
     padding-left: 2px;
     padding-right: 2px;
 }</string>
+                        </property>
+                        <property name="undoRedoEnabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="readOnly">
+                         <bool>true</bool>
                         </property>
                        </widget>
                       </item>

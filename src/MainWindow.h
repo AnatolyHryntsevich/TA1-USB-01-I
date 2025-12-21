@@ -7,6 +7,7 @@
 #include "InterfaceParamenetsDialog.h"
 
 #define VERSION_NUMBER "1.0.0"
+#define LOG_DATA_LINE_LIMIT 1000
 
 class QWidget;
 class QGridLayout;
@@ -93,8 +94,6 @@ private:
     bool cycleSendIsActive;
     QStringList statusList;
     QStringList cycleSendButtonNameList;
-    QString fileName;
-    QFile fileCycleSendLogs;
 
     /*!
      * \brief Флаг состояния модуля сопряжения (вкл / выкл)
