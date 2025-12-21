@@ -23,6 +23,7 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QScrollBar>
+#include <QtConcurrent>
 
 #include <iostream>
 #include <string>
@@ -64,24 +65,15 @@ MainWindow::MainWindow(QWidget *parent)
       m_interfaceSettingsDialog(new InterfaceParamenetsDialog(this)),
       m_serialMonitorWindow(new SerialMonitorWindow()),
       m_translator(nullptr),
-      m_undoBlocker(new UndoBlocker(this)),
-      cycleSendIsActive(false)
+      m_undoBlocker(new UndoBlocker(this))
 {
     ui->setupUi(this);
 
     m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
     on_hexFormatCheckBox_stateChanged(true);
     ui->inputMpiWriteDataLineEdit->installEventFilter(m_undoBlocker);
-    //    connectionGuiSlot(true);
+//    connectionGuiSlot(false);
 
-    //    //_______________________________________________________________________________________________________
-    //    cycleSendOperationThread = new QThread();
-    //    connect(cycleSendButton, SIGNAL(clicked()), this, SLOT(cycleSendProcessButtonSlot()));
-    //    connect(this, SIGNAL(startCycleSendProcessSignal()), cycleSendOperationThread, SLOT(start()));
-    //    connect(cycleSendOperationThread, SIGNAL(started()), this, SLOT(cycleSendProcessHandlerSlot()));
-    //    connect(this, SIGNAL(cycleSendProcessFinish()), cycleSendOperationThread, SLOT(quit()));
-
-    // Пункты главного меню
     connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::driverSettingsDialogOpenActionSlot);
     connect(m_driverSettingsDialog, &DriverSettingsDialog::setDriverSettingsSignal, this, &MainWindow::setDriverSettingsSlot);
     connect(ui->interfaceSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::interfaceSettingsDialogOpenActionSlot);
@@ -95,6 +87,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::qMessageBoxNeedShowSignal, this, &MainWindow::qMessageBoxNeedShowSlot);
     connect(this, &MainWindow::connectionGuiSignal, this, &MainWindow::connectionGuiSlot);
     connect(this, &MainWindow::putLogDataSignal, this, &MainWindow::putLogDataSlot);
+
+    connect(this, &MainWindow::setCycleSendingSignal, this, &MainWindow::cycleSendingThreadSlot);
+    connect(this, &MainWindow::becauseCycleSendingGuiEnabledSignal, this, &MainWindow::becauseCycleSendingGuiEnabledSlot);
+    connect(this, &MainWindow::mpiWriteDataSignal, this, &MainWindow::mpiWriteDataSlot);
 }
 
 MainWindow::~MainWindow()
@@ -159,42 +155,30 @@ static int WaitInt(TMK_DATA wCtrlCode)
         printf("We got very strange interrupt!\n");
 #endif
 
-    /* Get interrupt data */
-    /* We do not need to check tmkEvD.nInt because bcstartx with CX_NOSIG */
-    /* guarantees us only single interrupt of single type nInt == 3       */
     tmkgetevd(&tmkEvD);
 
     if (tmkEvD.bcx.wResultX & SX_IB_MASK)
     {
-        /* We have set bit(s) in Status Word */
         if (((tmkEvD.bcx.wResultX & SX_ERR_MASK) == SX_NOERR) ||
                 ((tmkEvD.bcx.wResultX & SX_ERR_MASK) == SX_TOD))
         {
-            /* We have either no errors or Data Time Out (No Data) error */
             wStatus = bcgetansw(wCtrlCode);
             if (wStatus & BUSY_MASK)
-                /* We have BUSY bit set */
                 ++dwBusyStarts;
             else
-                /* We have unknown bit(s) set */
                 ++dwStatStarts;
-            //          if (kbhit())
-            //            return 1;
         }
         else
         {
-            /* We have an error */
             ++dwErrStarts;
         }
     }
     else if (tmkEvD.bcx.wResultX & SX_ERR_MASK)
     {
-        /* We have an error */
         ++dwErrStarts;
     }
     else
     {
-        /* We have a completed message */
         ++dwGoodStarts;
     }
 
@@ -202,223 +186,10 @@ static int WaitInt(TMK_DATA wCtrlCode)
     {
         qDebug() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts) + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
     }
+
     ++dwStarts;
+
     return 0;
-}
-
-void MainWindow::cycleSendProcessButtonSlot()
-{
-    //    if(cycleSendButton->text() == cycleSendButtonNameList.at(0)) {
-    //        cycleSendIsActive = true;
-    //        cycleSendButton->setText(cycleSendButtonNameList.at(1));
-    //        selectModeTitleLabel->setEnabled(false);
-    //        bcModeSelectButton->setEnabled(false);
-    //        rtModeSelectButton->setEnabled(false);
-    //        mtModeSelectButton->setEnabled(false);
-    //        waitAnswerIntervalValueBoxTitleLabel->setEnabled(false);
-    //        waitAnswerIntervalValueBox->setEnabled(false);
-    //        setWaitAnswerIntervalButton->setEnabled(false);
-    //        selectBaseForWorkTitleLabel->setEnabled(false);
-    //        baseForWorkValueBox->setEnabled(false);
-    //        selectBaseForWorkButton->setEnabled(false);
-    //        inputYourMessageTitleLabel->setEnabled(false);
-    //        lineSentMessageTextEdit->setEnabled(false);
-    //        sendButton->setEnabled(false);
-    //        addrOYTitleLabel->setEnabled(false);
-    //        addrYOValueBox->setEnabled(false);
-    //        subAddrOYTitleLabel->setEnabled(false);
-    //        subAddrYOValueBox->setEnabled(false);
-    //        readDataFromSubaddrTitleLabel->setEnabled(false);
-    //        dataWordNumberLabel->setEnabled(false);
-    //        dataWordValueBox->setEnabled(false);
-    //        readDataFromSubaddrButton->setEnabled(false);
-    //        readDataTextEdit->setEnabled(false);
-    //        sendStatusLabel->setEnabled(false);
-    //        readStatusLabel->setEnabled(false);
-    //        sendStatusLabel->setHidden(true);
-    //        readStatusLabel->setHidden(true);
-    //        cycleSendStatusLabel->setHidden(false);
-    //        lastSendDescriptionTitleLabel->setEnabled(false);
-    //        lastSendDescriptionTextEdit->setEnabled(false);
-    //        lastSendDescriptionTextEdit->clear();
-    //        cycleSendStatusLabel->setText(statusList.at(4));
-    //        emit startCycleSendProcessSignal();
-    //    } else if (cycleSendButton->text() == cycleSendButtonNameList.at(1)) {
-    //        cycleSendIsActive = false;
-    //        cycleSendButton->setText(cycleSendButtonNameList.at(0));
-    //        selectModeTitleLabel->setEnabled(true);
-    //        bcModeSelectButton->setEnabled(true);
-    //        rtModeSelectButton->setEnabled(true);
-    //        mtModeSelectButton->setEnabled(true);
-    //        waitAnswerIntervalValueBoxTitleLabel->setEnabled(true);
-    //        waitAnswerIntervalValueBox->setEnabled(true);
-    //        setWaitAnswerIntervalButton->setEnabled(true);
-    //        selectBaseForWorkTitleLabel->setEnabled(true);
-    //        baseForWorkValueBox->setEnabled(true);
-    //        selectBaseForWorkButton->setEnabled(true);
-    //        inputYourMessageTitleLabel->setEnabled(true);
-    //        lineSentMessageTextEdit->setEnabled(true);
-    //        sendButton->setEnabled(true);
-    //        addrOYTitleLabel->setEnabled(true);
-    //        addrYOValueBox->setEnabled(true);
-    //        subAddrOYTitleLabel->setEnabled(true);
-    //        subAddrYOValueBox->setEnabled(true);
-    //        readDataFromSubaddrTitleLabel->setEnabled(true);
-    //        dataWordNumberLabel->setEnabled(true);
-    //        dataWordValueBox->setEnabled(true);
-    //        readDataFromSubaddrButton->setEnabled(true);
-    //        readDataTextEdit->setEnabled(true);
-    //        sendStatusLabel->setEnabled(true);
-    //        readStatusLabel->setEnabled(true);
-    //        sendStatusLabel->setHidden(true);
-    //        readStatusLabel->setHidden(true);
-    //        cycleSendStatusLabel->setHidden(true);
-    //        lastSendDescriptionTitleLabel->setEnabled(true);
-    //        lastSendDescriptionTextEdit->setEnabled(true);
-    //        emit cycleSendProcessFinish();
-    //    }
-}
-
-void MainWindow::cycleSendProcessHandlerSlot()
-{
-    //    int result = bcdefbus(BUS_A);
-    //    if(result != 0) {
-    //        bcdefbus(BUS_B);
-    //    }
-    //    if(result != 0) {
-    //        QMessageBox *msgBox = new QMessageBox(this);
-    //        msgBox->setText("Не удалось пропинговать ни основную, ни резервную ЛПИ");
-    //        msgBox->setDefaultButton(QMessageBox::Ok);
-    //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //        msgBox->show();
-    //        disconnectDriverButtonSlot();
-    //        return;
-    //    }
-
-    //    QStringList dataStringList = lineSentMessageTextEdit->toPlainText().split(";");
-    //    wLen = 0;
-    //    for(; wLen < dataStringList.count(); wLen++) {
-    //        if(wLen == (dataStringList.count() - 1)) {
-    //            if(!dataStringList.at(wLen).isEmpty()) {
-    //                if(wLen < 32) {
-    //                    std::istringstream iss(dataStringList.at(wLen).trimmed().toStdString());
-    //                    iss >> std::hex >> awBuf[wLen];
-    //                } else {
-    //                    qDebug() << "Размер отправляемых данных превышает допускаемый для одной транзакции\n[одной транзакцией не более 32-ух 16-битных слов]";
-    //                    QMessageBox *msgBox = new QMessageBox(this);
-    //                    msgBox->setText("Размер отправляемых данных превышает допускаемый для одной транзакции\n[одной транзакцией не более 32-ух 16-битных слов]");
-    //                    msgBox->setDefaultButton(QMessageBox::Ok);
-    //                    msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //                    msgBox->show();
-    //                    return;
-    //                }
-    //            } else {
-    //                break;
-    //            }
-    //        }
-    //        if(wLen < 32) {
-    //            std::istringstream iss(dataStringList.at(wLen).trimmed().toStdString());
-    //            iss >> std::hex >> awBuf[wLen];
-    //        } else {
-    //            qDebug() << "Размер отправляемых данных превышает допускаемый для одной транзакции\n[одной транзакцией не более 32-ух 16-битных слов]";
-    //            QMessageBox *msgBox = new QMessageBox(this);
-    //            msgBox->setText("Размер отправляемых данных превышает допускаемый для одной транзакции\n[одной транзакцией не более 32-ух 16-битных слов]");
-    //            msgBox->setDefaultButton(QMessageBox::Ok);
-    //            msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //            msgBox->show();
-    //            return;
-    //        }
-    //    }
-
-    //    RT_ADDR = addrYOValueBox->value();
-    //    wSubAddr = subAddrYOValueBox->value();
-    //    int tryNumber;
-    //    int timeout = cycleSendIntervalValueBox->value();
-    //    QString logStr;
-
-    //    if(deviceMode == KK_DEVICE_MODE && RT_ADDR != 0) {
-    //        fileCycleSendLogs.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    //        if(!fileCycleSendLogs.isOpen())
-    //            qDebug() << "Ошибка предварительной очистки файла fileCycleSendLogs.txt...";
-    //        fileCycleSendLogs.close();
-    //        fileCycleSendLogs.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-    //        if(!fileCycleSendLogs.isOpen())
-    //            qDebug() << "Ошибка открытия файла fileCycleSendLogs.txt...";
-    //        QTextStream stream(&fileCycleSendLogs);
-
-    //        /* Пытаемся отправить(десять попыток, если что) */
-    //        bcputw(0, CW(RT_ADDR, RT_RECEIVE, wSubAddr, wLen));
-    //        bcputblk(1, awBuf, wLen);
-    //        do
-    //        {
-    //            tryNumber = 0;
-    //            do
-    //            {
-    //                bcstartx(wBase, DATA_BC_RT | CX_STOP | CX_BUS_A | CX_NOSIG);
-    //                qDebug() << tryNumber;
-    //                if (WaitInt(DATA_BC_RT)) {
-    //                    qDebug() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts) + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
-    //                    //_______________________________________________________________________________________________________________
-    //                    logStr = "";
-    //                    logStr = "WRITE: (Addr:" + QString::number(RT_ADDR) + ";" + "SubAddr:" + QString::number(wSubAddr) + ";"
-    //                            + "data:[" + lineSentMessageTextEdit->toPlainText() + "]" + ";" + QDateTime::currentDateTime().toString() + ")"
-    //                            + " RESULT: INTERRUPT_ERROR";
-    //                    stream << (logStr + "\n");
-    //                    //_______________________________________________________________________________________________________________
-    //                    QMessageBox *msgBox = new QMessageBox(this);
-    //                    msgBox->setText("Выбранное ОУ не отвечает!\nЗначение tmkError == " + QString::number(tmkError) +
-    //                                    "\nПроверьте введенные вами значения и/или номер ОУ и попытайтесь запустить циклическую отправку снова...");
-    //                    msgBox->setDefaultButton(QMessageBox::Ok);
-    //                    msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //                    msgBox->show();
-    //                    cycleSendProcessButtonSlot();
-    //                    break;
-    //                }
-    //                if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0) {
-    //                    //_______________________________________________________________________________________________________________
-    //                    logStr = "";
-    //                    logStr = "WRITE: (Addr:" + QString::number(RT_ADDR) + ";" + "SubAddr:" + QString::number(wSubAddr) + ";"
-    //                            + "data:[" + lineSentMessageTextEdit->toPlainText() + "]" + ";" + QDateTime::currentDateTime().toString() + ")"
-    //                            + " RESULT: OK";
-    //                    stream << (logStr + "\n");
-    //                    //_______________________________________________________________________________________________________________
-    //                    cycleSendStatusLabel->setEnabled(true);
-    //                    cycleSendStatusLabel->setText(statusList.at(4));
-    //                    cycleSendStatusLabel->setStyleSheet("QLabel{color:green;}");
-    //                    cycleSendStatusLabel->setHidden(false);
-    //                    cycleSendStatusLabel->setToolTip("Данные успешно передаются в ОУ!");
-    //                } else {
-    //                    //_______________________________________________________________________________________________________________
-    //                    logStr = "";
-    //                    logStr = "WRITE: (Addr:" + QString::number(RT_ADDR) + ";" + "SubAddr:" + QString::number(wSubAddr) + ";"
-    //                            + "data:[" + lineSentMessageTextEdit->toPlainText() + "]" + ";" + QDateTime::currentDateTime().toString() + ")"
-    //                            + " RESULT: WRONG_ADDRESS/SUBADDRESS_OR_ERROR_CONNECT_LINE/DEVICE";
-    //                    stream << (logStr + "\n");
-    //                    //_______________________________________________________________________________________________________________
-    //                    cycleSendStatusLabel->setEnabled(true);
-    //                    cycleSendStatusLabel->setText(statusList.at(5));
-    //                    cycleSendStatusLabel->setStyleSheet("QLabel{color:red;}");
-    //                    cycleSendStatusLabel->setHidden(false);
-    //                    cycleSendStatusLabel->setToolTip("В ответном слове ОУ установлен бит!"
-    //                                                     "\nПроверьте адрес и/или подадрес выбранного ОУ, состояние приемо-передающего тракта и попытайтесь запустить циклическую отправку снова...");
-    //                }
-    //                sleepCurrentThread(timeout);
-    //                tryNumber++;
-    //            }
-    //            while (tryNumber < 10 && cycleSendIsActive);
-    //        }
-    //        while(cycleSendIsActive);
-    //        fileCycleSendLogs.close();
-    //        if(stream.status() != QTextStream::Ok)
-    //            qDebug() << "File write textStream error...";
-    //    } else {
-    //        QMessageBox *msgBox = new QMessageBox(this);
-    //        msgBox->setText("Циклическая отправка исключает использование группового адреса ОУ!\nПожалуйста, укажите адрес конкретного ОУ и попытайтесь запустить циклическую отправку снова...");
-    //        msgBox->setDefaultButton(QMessageBox::Ok);
-    //        msgBox->setWindowModality(Qt::WindowModality::WindowModal);
-    //        msgBox->show();
-    //        cycleSendProcessButtonSlot();
-    //    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -442,25 +213,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
         {
             m_serialMonitorWindow->close();
         }
+        isCycleSendingActive = false;
+        emit setCycleSendingSignal(isCycleSendingActive);
         event->accept();
     }
     else
     {
         event->ignore();
     }
-    //    Q_UNUSED(event);
-    //    if(cycleSendButton->text() == cycleSendButtonNameList.at(1)) {
-    //        cycleSendProcessButtonSlot();
-    //    }
-    //    bcreset();
-    //#ifdef _WIN32
-    //    CloseHandle(hBcEvent);
-    //#endif
-    //    tmkdone(ALL_TMKS);
-    //    TmkClose();
-    //    if(connectionStatusLabel->text() == connectionStatusVariants.at(1))
-    //        connectionUARTButtonSlot();
-    //    this->close();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -543,6 +303,7 @@ void MainWindow::serialMonitorOpenActionSlot()
     }
 
     if (!m_serialMonitorWindow->isVisible()) {
+        m_serialMonitorWindow->updatePortNameListSlot(0);
         m_serialMonitorWindow->setVisible(true);
     }
 
@@ -796,6 +557,122 @@ void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
     msgBox.exec();
 }
 
+bool MainWindow::checkMpiLine()
+{
+    if(bcdefbus(BUS_A)) {
+        if(bcdefbus(BUS_B)) {
+            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
+                                              "\nАктивируйте линию передачи и попытайтесь снова"));
+            stopMpi();
+            isCycleSendingActive = false;
+            emit setCycleSendingSignal(isCycleSendingActive);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void MainWindow::mpiWriteDataSlot()
+{
+    if(checkMpiLine())
+    {
+        QStringList sentWordsStringList = ui->inputMpiWriteDataLineEdit->text().trimmed().split(" ");
+        if(sentWordsStringList.count() > sizeof(awBuf) / sizeof(unsigned short))
+        {
+            emit qMessageBoxNeedShowSignal(tr("Размер записываемых в ОУ слов превышает установленный лимит\n"
+                                              "[одной транзакцией не более 32-ух 16-битных слов]"));
+            return;
+        }
+        wLen = 0;
+        bool ok;
+        QString hex16SentDataView;
+        QString logLine = QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
+        memset(&awBuf, 0, sizeof(awBuf));
+        if(ui->decimalFormatCheckBox->isChecked())
+        {
+            for(; wLen < sentWordsStringList.count(); ++wLen)
+            {
+                awBuf[wLen] = static_cast<unsigned short>(sentWordsStringList.at(wLen).trimmed().toInt(&ok));
+                if(!ok)
+                {
+                    emit qMessageBoxNeedShowSignal(tr("Ошибка записи слов в ОУ!\n"
+                                                      "Проверьте введенные данные и попробуйте снова..."));
+                    return;
+                }
+            }
+            logLine.append(ui->inputMpiWriteDataLineEdit->text().trimmed() + ";");
+        }
+        else if (ui->hexFormatCheckBox->isChecked())
+        {
+            for(; wLen < sentWordsStringList.count(); ++wLen)
+            {
+                awBuf[wLen] = static_cast<unsigned short>(sentWordsStringList.at(wLen).trimmed().toInt(&ok, 16));
+                hex16SentDataView.append((wLen == 0 ? "0x" : " 0x") + sentWordsStringList.at(wLen).trimmed().toUpper());
+                if(!ok)
+                {
+                    emit qMessageBoxNeedShowSignal(tr("Ошибка записи слов в ОУ!\n"
+                                                      "Проверьте введенные данные и попробуйте снова..."));
+                    return;
+                }
+            }
+            logLine.append(hex16SentDataView + ";");
+        }
+
+        wAddr = ui->deviceAddrSpinBox->value();
+        bcputw(0, CW(RT_ADDR, RT_RECEIVE, wSubAddr, wLen));
+        bcputblk(1, awBuf, wLen);
+
+        bcstartx(wBase, DATA_BC_RT | CX_STOP | CX_BUS_A | CX_NOSIG);
+        if (WaitInt(DATA_BC_RT))
+        {
+            qWarning() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts)
+                           + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
+            logLine.append(tr("Ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
+            emit putLogDataSignal(Tx_MPI, logLine);
+            return;
+        }
+
+        if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0)
+        {
+            logLine.append(tr("Ок"));
+            qDebug() << logLine;
+        }
+        else
+        {
+            qWarning() << tmkError;
+            logLine.append(tr("Ошибка;данных о приеме/отказе от приема не получено"));
+        }
+
+        emit putLogDataSignal(Tx_MPI, logLine);
+    }
+}
+
+void MainWindow::cycleSendingThreadSlot()
+{
+    QtConcurrent::run([this]()
+    {
+        while (isCycleSendingActive)
+        {
+            emit mpiWriteDataSignal();
+            sleepCurrentThread(ui->cycleWriteMpiIntervalValueSpinBox->value());
+        }
+    });
+}
+
+void MainWindow::becauseCycleSendingGuiEnabledSlot(bool enable)
+{
+    ui->mpiConnectionGroupBox->setEnabled(enable);
+    ui->addrSettingsGroupBox->setEnabled(enable);
+    ui->generalReadMpiGroupBox->setEnabled(enable);
+    ui->cycleWriteMpiModeCheckBox->setEnabled(enable);
+    ui->hexFormatCheckBox->setEnabled(enable);
+    ui->decimalFormatCheckBox->setEnabled(enable);
+    ui->cycleWriteMpiIntervalValueSpinBox->setEnabled(enable);
+    enable == true ? ui->inputMpiWriteDataButton->setText(tr("Записать"))
+                   : ui->inputMpiWriteDataButton->setText(tr("Остановить запись"));
+}
+
 void MainWindow::on_logWriteClearButton_clicked()
 {
     ui->logWriteMpiViewTextEdit->clear();
@@ -839,152 +716,87 @@ void MainWindow::on_hexFormatCheckBox_stateChanged(int arg1)
 
 void MainWindow::on_inputMpiWriteDataButton_clicked()
 {
-    //    if(bcdefbus(BUS_A)) {
-    //        if(bcdefbus(BUS_B)) {
-    //            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
-    //                                              "\nАктивируйте линию передачи и попытайтесь снова"));
-    //            stopMpi();
-    //            return;
-    //        }
-    //    }
-
-    QStringList sentWordsStringList = ui->inputMpiWriteDataLineEdit->text().trimmed().split(" ");
-    if(sentWordsStringList.count() > sizeof(awBuf) / sizeof(unsigned short))
+    if(checkMpiLine())
     {
-        emit qMessageBoxNeedShowSignal(tr("Размер записываемых в ОУ слов превышает установленный лимит\n"
-                                          "[одной транзакцией не более 32-ух 16-битных слов]"));
-        return;
-    }
-    wLen = 0;
-    bool ok;
-    QString hex16SentDataView;
-    QString logLine = QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
-    memset(&awBuf, 0, sizeof(awBuf));
-    if(ui->decimalFormatCheckBox->isChecked())
-    {
-        for(; wLen < sentWordsStringList.count(); ++wLen)
+        if(ui->cycleWriteMpiModeCheckBox->isChecked() && !isCycleSendingActive)
         {
-            awBuf[wLen] = static_cast<unsigned short>(sentWordsStringList.at(wLen).trimmed().toInt(&ok));
-            if(!ok)
-            {
-                emit qMessageBoxNeedShowSignal(tr("Ошибка записи слов в ОУ!\n"
-                                                  "Проверьте введенные данные и попробуйте снова..."));
-                return;
-            }
+            isCycleSendingActive = true;
+            emit becauseCycleSendingGuiEnabledSignal(false);
+            emit setCycleSendingSignal(isCycleSendingActive);
         }
-        logLine.append(ui->inputMpiWriteDataLineEdit->text().trimmed() + ";");
-    }
-    else if (ui->hexFormatCheckBox->isChecked())
-    {
-        for(; wLen < sentWordsStringList.count(); ++wLen)
+        else if(ui->cycleWriteMpiModeCheckBox->isChecked() && isCycleSendingActive)
         {
-            awBuf[wLen] = static_cast<unsigned short>(sentWordsStringList.at(wLen).trimmed().toInt(&ok, 16));
-            hex16SentDataView.append((wLen == 0 ? "0x" : " 0x") + sentWordsStringList.at(wLen).trimmed().toUpper());
-            if(!ok)
-            {
-                emit qMessageBoxNeedShowSignal(tr("Ошибка записи слов в ОУ!\n"
-                                                  "Проверьте введенные данные и попробуйте снова..."));
-                return;
-            }
+            emit becauseCycleSendingGuiEnabledSignal(true);
+            isCycleSendingActive = false;
         }
-        logLine.append(hex16SentDataView + ";");
+        else
+        {
+            mpiWriteDataSlot();
+        }
     }
-
-    wAddr = ui->deviceAddrSpinBox->value();
-    bcputw(0, CW(RT_ADDR, RT_RECEIVE, wSubAddr, wLen));
-    bcputblk(1, awBuf, wLen);
-
-    bcstartx(wBase, DATA_BC_RT | CX_STOP | CX_BUS_A | CX_NOSIG);
-    if (WaitInt(DATA_BC_RT))
-    {
-        qWarning() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts)
-                       + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
-        logLine.append(tr("Ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
-        emit putLogDataSignal(Tx_MPI, logLine);
-        return;
-    }
-
-    if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0)
-    {
-        logLine.append(tr("Ок"));
-        qDebug() << logLine;
-    }
-    else
-    {
-        qWarning() << tmkError;
-        logLine.append(tr("Ошибка;данных о приеме/отказе от приема не получено"));
-    }
-
-    emit putLogDataSignal(Tx_MPI, logLine);
 }
 
 void MainWindow::on_mpiReadWordsNumberButton_clicked()
 {
-    //    if(bcdefbus(BUS_A)) {
-    //        if(bcdefbus(BUS_B)) {
-    //            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
-    //                                              "\nАктивируйте линию передачи и попытайтесь снова"));
-    //            stopMpi();
-    //            return;
-    //        }
-    //    }
-
-    wAddr = ui->deviceAddrSpinBox->value();
-    wSubAddr = ui->subAddrSpinBox->value();
-    wLen = ui->mpiReadWordsNumberSpinBox->value();
-    memset(&awBuf, 0, sizeof(awBuf));
-
-    QString logLine = QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
-    QString readDataView;
-
-    bcputw(0, CW(RT_ADDR, RT_TRANSMIT, wSubAddr, wLen));
-    bcstartx(wBase, DATA_RT_BC | CX_STOP | CX_BUS_A | CX_NOSIG);
-    if (WaitInt(DATA_RT_BC))
+    if(checkMpiLine())
     {
-        qWarning() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts) + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
-        logLine.append(tr(";Ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
-        emit putLogDataSignal(Rx_MPI, logLine);
-        return;
-    }
+        wAddr = ui->deviceAddrSpinBox->value();
+        wSubAddr = ui->subAddrSpinBox->value();
+        wLen = ui->mpiReadWordsNumberSpinBox->value();
+        memset(&awBuf, 0, sizeof(awBuf));
 
-    if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0)
-    {
-        bcgetblk(2, awBuf, wLen);
-        for (int i = 0; i < wLen; ++i)
+        QString logLine = QDateTime::currentDateTime().toString("hh:mm:ss") + ";";
+        QString readDataView;
+
+        bcputw(0, CW(RT_ADDR, RT_TRANSMIT, wSubAddr, wLen));
+        bcstartx(wBase, DATA_RT_BC | CX_STOP | CX_BUS_A | CX_NOSIG);
+        if (WaitInt(DATA_RT_BC))
         {
-            if(i < wLen - 1)
-            {
-                if(ui->decimalFormatCheckBox->isChecked())
-                {
-                    readDataView.append(QString::number(awBuf[i]).toUpper() + " ");
-                }
-                else if (ui->hexFormatCheckBox->isChecked())
-                {
-                    readDataView.append("0x" + QString::number(awBuf[i], 16).toUpper() + " ");
-                }
-
-            }
-            else
-            {
-                if(ui->decimalFormatCheckBox->isChecked())
-                {
-                    readDataView.append(QString::number(awBuf[i]).toUpper() + ";");
-                }
-                else if (ui->hexFormatCheckBox->isChecked())
-                {
-                    readDataView.append("0x" + QString::number(awBuf[i], 16).toUpper() + ";");
-                }
-            }
-
+            qWarning() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts) + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
+            logLine.append(tr(";Ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
+            emit putLogDataSignal(Rx_MPI, logLine);
+            return;
         }
-        logLine.append(readDataView + tr("Ок"));
-    }
-    else
-    {
-        qWarning() << tmkError;
-        logLine.append(tr(";Ошибка;данных о приеме/отказе от приема запроса на чтение не получено"));
-    }
 
-    emit putLogDataSignal(Rx_MPI, logLine);
+        if((tmkEvD.bcx.wResultX & (SX_ERR_MASK | SX_IB_MASK)) == 0)
+        {
+            bcgetblk(2, awBuf, wLen);
+            for (int i = 0; i < wLen; ++i)
+            {
+                if(i < wLen - 1)
+                {
+                    if(ui->decimalFormatCheckBox->isChecked())
+                    {
+                        readDataView.append(QString::number(awBuf[i]).toUpper() + " ");
+                    }
+                    else if (ui->hexFormatCheckBox->isChecked())
+                    {
+                        readDataView.append("0x" + QString::number(awBuf[i], 16).toUpper() + " ");
+                    }
+
+                }
+                else
+                {
+                    if(ui->decimalFormatCheckBox->isChecked())
+                    {
+                        readDataView.append(QString::number(awBuf[i]).toUpper() + ";");
+                    }
+                    else if (ui->hexFormatCheckBox->isChecked())
+                    {
+                        readDataView.append("0x" + QString::number(awBuf[i], 16).toUpper() + ";");
+                    }
+                }
+
+            }
+            logLine.append(readDataView + tr("Ок"));
+        }
+        else
+        {
+            qWarning() << tmkError;
+            logLine.append(tr(";Ошибка;данных о приеме/отказе от приема запроса на чтение не получено"));
+        }
+
+        emit putLogDataSignal(Rx_MPI, logLine);
+    }
 }
 

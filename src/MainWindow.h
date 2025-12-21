@@ -38,9 +38,6 @@ public:
         Rx_MPI
     } MpiOperationType;
 
-    static int initTmkEvent();
-    static void sleepCurrentThread(const int ms);
-
 signals:
     void startCycleSendProcessSignal();
     void cycleSendProcessFinish();
@@ -48,22 +45,9 @@ signals:
     void connectionGuiSignal(const bool connected);
     void qMessageBoxNeedShowSignal(const QString& message);
     void putLogDataSignal(MpiOperationType operationType, const QString& logData);
-
-public slots:
-    void cycleSendProcessButtonSlot();
-    void cycleSendProcessHandlerSlot();
-
-    //Новый функционал:
-    void driverSettingsDialogOpenActionSlot();
-    void setDriverSettingsSlot(const DriverSettingsDialog::DriverSettingsStruct newDriverSettings);
-    void interfaceSettingsDialogOpenActionSlot();
-    void setInterfaceSettingsSlot();
-    void serialMonitorOpenActionSlot();
-    void switchToEnglish();
-    void switchToRussian();
-    void aboutProgramActionSlot();
-    void connectionGuiSlot(const bool connected);
-    void putLogDataSlot(MpiOperationType operationType, const QString& logData);
+    void setCycleSendingSignal(bool sendingState);
+    void becauseCycleSendingGuiEnabledSignal(bool enable);
+    void mpiWriteDataSignal();
 
 public:
     void closeWindow();
@@ -80,6 +64,18 @@ private slots:
     void on_hexFormatCheckBox_stateChanged(int arg1);
     void on_inputMpiWriteDataButton_clicked();
     void on_mpiReadWordsNumberButton_clicked();
+    void mpiWriteDataSlot();
+    void cycleSendingThreadSlot();
+    void becauseCycleSendingGuiEnabledSlot(bool enable);
+    void qMessageBoxNeedShowSlot(const QString& message);
+    void driverSettingsDialogOpenActionSlot();
+    void setDriverSettingsSlot(const DriverSettingsDialog::DriverSettingsStruct newDriverSettings);
+    void interfaceSettingsDialogOpenActionSlot();
+    void setInterfaceSettingsSlot();
+    void serialMonitorOpenActionSlot();
+    void aboutProgramActionSlot();
+    void connectionGuiSlot(const bool connected);
+    void putLogDataSlot(MpiOperationType operationType, const QString& logData);
 
 private:
     Ui::MainWindow* ui;
@@ -90,15 +86,11 @@ private:
     SerialMonitorWindow* m_serialMonitorWindow;
     QTranslator* m_translator;
 
-    QThread *cycleSendOperationThread;
-    bool cycleSendIsActive;
-    QStringList statusList;
-    QStringList cycleSendButtonNameList;
-
     /*!
      * \brief Флаг состояния модуля сопряжения (вкл / выкл)
      */
     bool m_isMpiStarted = false;
+    bool isCycleSendingActive = false;
     QList<QString> m_connectionStatusVariants {tr("Готов"), tr("Не готов"), tr("Ready"), tr("Not ready")};
 
     /*!
@@ -113,5 +105,10 @@ private:
      * \brief Метод деактивации модуля сопряжения
      */
     void stopMpi();
-    void qMessageBoxNeedShowSlot(const QString& message);
+    bool checkMpiLine();
+
+    static int initTmkEvent();
+    static void sleepCurrentThread(const int ms);
+    void switchToEnglish();
+    void switchToRussian();
 };

@@ -20,7 +20,7 @@ set(CMAKE_AUTORCC ON)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message(STATUS "Building for Linux")
     set(QT_PATH /usr/lib/x86_64-linux-gnu/cmake/Qt5)
-    find_package(Qt5 COMPONENTS Core Gui Widgets SerialPort)
+    find_package(Qt5 COMPONENTS Core Gui Widgets SerialPort Concurrent)
     set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp
@@ -49,7 +49,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     add_link_options(-Wl,-rpath-link,/usr/lib)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     message(STATUS "Building for Windows")
-    find_package(Qt5 COMPONENTS Core Gui Widgets SerialPort)
+    find_package(Qt5 COMPONENTS Core Gui Widgets SerialPort Concurrent)
     if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
         enable_language("RC")
         set (WIN32_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/resources/icons/icon.rc)
@@ -99,10 +99,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::SerialPort
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::SerialPort
+    Qt${QT_VERSION_MAJOR}::Concurrent
 )
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
