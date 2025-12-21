@@ -99,7 +99,7 @@
     </message>
     <message>
         <source>Активация / деактивация модуля сопряжения</source>
-        <translation>Активация / деактивация модуля сопряжения</translation>
+        <translation type="vanished">Активация / деактивация модуля сопряжения</translation>
     </message>
     <message>
         <source>Активировать</source>
@@ -163,7 +163,7 @@
     </message>
     <message>
         <source>Запись данных в подадрес</source>
-        <translation>Запись данных в подадрес</translation>
+        <translation type="vanished">Запись данных в подадрес</translation>
     </message>
     <message>
         <source>Записать</source>
@@ -175,7 +175,7 @@
     </message>
     <message>
         <source>Очистка лога записи данных</source>
-        <translation>Очистка лога записи данных</translation>
+        <translation type="vanished">Очистка лога записи данных</translation>
     </message>
     <message>
         <source>Очистить</source>
@@ -195,7 +195,7 @@
     </message>
     <message>
         <source>Запросить данные из подадреса</source>
-        <translation>Запросить данные из подадреса</translation>
+        <translation type="vanished">Запросить данные из подадреса</translation>
     </message>
     <message>
         <source>Вычитать</source>
@@ -203,7 +203,7 @@
     </message>
     <message>
         <source>Очистка лога вычитки данных</source>
-        <translation>Очистка лога вычитки данных</translation>
+        <translation type="vanished">Очистка лога вычитки данных</translation>
     </message>
     <message>
         <source>Инструменты</source>
@@ -348,6 +348,36 @@
     <message>
         <source>;Ошибка;данных о приеме/отказе от приема запроса на чтение не получено</source>
         <translation>;Ошибка;данных о приеме/отказе от приема запроса на чтение не получено</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Активировать / деактивировать модуль сопряжения&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Активировать / деактивировать модуль сопряжени</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Записать данные в подадрес&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Записать данные в подадрес</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить лог записи данных&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Очистить лог записи данных</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вычитать данные из подадреса&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Вычитать данные из подадреса</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить лог вычитки данных&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Очистить лог вычитки данных</translation>
+    </message>
+    <message>
+        <source>Ни основную, ни резервную ЛПИ активировать не удалось...
+Активируйте линию передачи и попытайтесь снова</source>
+        <translation>Ни основную, ни резервную ЛПИ активировать не удалось...
+Активируйте линию передачи и попытайтесь снова</translation>
+    </message>
+    <message>
+        <source>Остановить запись</source>
+        <translation>Остановить запись</translation>
     </message>
 </context>
 <context>

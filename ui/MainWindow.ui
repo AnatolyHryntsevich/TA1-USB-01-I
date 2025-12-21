@@ -89,7 +89,7 @@
               </font>
              </property>
              <property name="toolTip">
-              <string>Активация / деактивация модуля сопряжения</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Активировать / деактивировать модуль сопряжения&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="toolTipDuration">
               <number>-1</number>
@@ -632,7 +632,7 @@ QSpinBox::down-button {
                          </font>
                         </property>
                         <property name="toolTip">
-                         <string>Запись данных в подадрес</string>
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Записать данные в подадрес&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                         </property>
                         <property name="toolTipDuration">
                          <number>-1</number>
@@ -730,7 +730,7 @@ QGroupBox::title {
                          </font>
                         </property>
                         <property name="toolTip">
-                         <string>Очистка лога записи данных</string>
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить лог записи данных&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                         </property>
                         <property name="toolTipDuration">
                          <number>-1</number>
@@ -917,7 +917,7 @@ QSpinBox::down-button {
                          </font>
                         </property>
                         <property name="toolTip">
-                         <string>Запросить данные из подадреса</string>
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вычитать данные из подадреса&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                         </property>
                         <property name="toolTipDuration">
                          <number>-1</number>
@@ -1012,7 +1012,7 @@ QGroupBox::title {
                          </font>
                         </property>
                         <property name="toolTip">
-                         <string>Очистка лога вычитки данных</string>
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить лог вычитки данных&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                         </property>
                         <property name="toolTipDuration">
                          <number>-1</number>

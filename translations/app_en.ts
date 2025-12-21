@@ -99,7 +99,7 @@
     </message>
     <message>
         <source>Активация / деактивация модуля сопряжения</source>
-        <translation>Activating/deactivating the coupling module</translation>
+        <translation type="vanished">Activating/deactivating the coupling module</translation>
     </message>
     <message>
         <source>Активировать</source>
@@ -163,7 +163,7 @@
     </message>
     <message>
         <source>Запись данных в подадрес</source>
-        <translation>Writing data to a subaddress</translation>
+        <translation type="vanished">Writing data to a subaddress</translation>
     </message>
     <message>
         <source>Записать</source>
@@ -175,7 +175,7 @@
     </message>
     <message>
         <source>Очистка лога записи данных</source>
-        <translation>Clearing the data write log</translation>
+        <translation type="vanished">Clearing the data write log</translation>
     </message>
     <message>
         <source>Очистить</source>
@@ -195,7 +195,7 @@
     </message>
     <message>
         <source>Запросить данные из подадреса</source>
-        <translation>Request data from a subaddress</translation>
+        <translation type="vanished">Request data from a subaddress</translation>
     </message>
     <message>
         <source>Вычитать</source>
@@ -203,7 +203,7 @@
     </message>
     <message>
         <source>Очистка лога вычитки данных</source>
-        <translation>Clearing the data reading log</translation>
+        <translation type="vanished">Clearing the data reading log</translation>
     </message>
     <message>
         <source>Инструменты</source>
@@ -348,6 +348,36 @@ Check your input and try again...</translation>
     <message>
         <source>;Ошибка;данных о приеме/отказе от приема запроса на чтение не получено</source>
         <translation>;Error;no data was received regarding acceptance/rejection of the read request</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Активировать / деактивировать модуль сопряжения&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Activate/deactivate the connection module</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Записать данные в подадрес&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Write data to a subaddress</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить лог записи данных&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Clear the data write log</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вычитать данные из подадреса&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Read data from a subaddress</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Очистить лог вычитки данных&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Clear the data reading log</translation>
+    </message>
+    <message>
+        <source>Ни основную, ни резервную ЛПИ активировать не удалось...
+Активируйте линию передачи и попытайтесь снова</source>
+        <translation>Neither the primary nor the backup LPI could be activated...
+Activate the transmission line and try again</translation>
+    </message>
+    <message>
+        <source>Остановить запись</source>
+        <translation>Stop recording</translation>
     </message>
 </context>
 <context>
