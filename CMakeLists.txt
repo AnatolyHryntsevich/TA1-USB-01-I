@@ -17,6 +17,8 @@ set(CMAKE_AUTOUIC OFF)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+set(WIN32_OPTION "")
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message(STATUS "Building for Linux")
     set(QT_PATH /usr/lib/x86_64-linux-gnu/cmake/Qt5)
@@ -50,10 +52,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     message(STATUS "Building for Windows")
     find_package(Qt5 COMPONENTS Core Gui Widgets SerialPort Concurrent)
-    if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-        enable_language("RC")
-        set (WIN32_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/resources/icons/icon.rc)
-    endif()
+    set(WIN32_OPTION "WIN32")
+    enable_language("RC")
+    set (WIN32_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/resources/icons/icon.rc)
     set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.cpp
@@ -83,7 +84,14 @@ endif()
 qt5_wrap_ui(UI_HEADERS ${FORMS})
 qt5_add_resources(RESOURCES resources.qrc)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${FORMS} ${UI_HEADERS} ${RESOURCES})
+add_executable(${PROJECT_NAME}
+    ${WIN32_OPTION}
+    ${SOURCES}
+    ${HEADERS}
+    ${FORMS}
+    ${UI_HEADERS}
+    ${RESOURCES}
+)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -110,5 +118,5 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/mil-std-1553b-usb-terminal
 )
