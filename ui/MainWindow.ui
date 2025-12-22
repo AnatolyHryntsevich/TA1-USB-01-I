@@ -382,7 +382,7 @@ QGroupBox::title {
                      <number>3</number>
                     </property>
                     <property name="topMargin">
-                     <number>0</number>
+                     <number>3</number>
                     </property>
                     <property name="rightMargin">
                      <number>3</number>
@@ -813,7 +813,7 @@ QGroupBox::title {
                      <number>0</number>
                     </property>
                     <property name="topMargin">
-                     <number>2</number>
+                     <number>3</number>
                     </property>
                     <property name="rightMargin">
                      <number>3</number>
@@ -1055,7 +1055,7 @@ QGroupBox::title {
      <x>0</x>
      <y>0</y>
      <width>676</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="toolsMenu">
