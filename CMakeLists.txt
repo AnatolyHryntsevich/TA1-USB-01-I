@@ -61,7 +61,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialMonitorWindow.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32/WDMTMKv2.cpp
+        # ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32/WDMTMKv2.cpp
     )
     set(FORMS
         ${CMAKE_CURRENT_SOURCE_DIR}/ui/MainWindow.ui
@@ -76,7 +76,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialMonitorWindow.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32/WDMTMKv2.h
+        # ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32/WDMTMKv2.h
     )
 endif()
 

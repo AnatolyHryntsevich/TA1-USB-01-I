@@ -1,9 +1,11 @@
 /*****************************************************************************/
 /*    WDMTMK API v4.08 for Microsoft Windows. ELCUS, 1998, 2011.             */
 /*    Interface to driver TMK1553B.SYS v4.08                                 */
-/*    Interface to driver USB_TA_DRV.dll v1.9.2 for Windows 98/ME/2000/XP    */ 
+/*    Interface to driver USB_TA_DRV.dll v1.9.2 for Windows 98/ME/2000/XP    */
 /*    for Windows 98/ME/2000/XP/Vista/7                                      */
 /*****************************************************************************/
+
+#include <windows.h>
 
 //#ifndef _TMK1553B_
 //#define _TMK1553B_
@@ -368,7 +370,7 @@
 #define VTMK_rtgetmsgtime 99
 
 #define VTMK_tmkgethwver 100
- 
+
 #define VTMK_tmkgetevtime 101
 #define VTMK_tmkswtimer 102
 #define VTMK_tmkgetswtimer 103

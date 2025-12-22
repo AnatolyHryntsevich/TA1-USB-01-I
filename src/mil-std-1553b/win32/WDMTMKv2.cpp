@@ -7,7 +7,6 @@
 
 //#ifndef _TMK1553B_
 //#define _TMK1553B_
-#include <windows.h>
 #include <stdio.h>
 #include "WDMTMKv2.h"
 

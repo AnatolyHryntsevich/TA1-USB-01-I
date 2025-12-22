@@ -23,11 +23,7 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QScrollBar>
-#include <QtConcurrent>
-
-#include <iostream>
-#include <string>
-#include <sstream>
+#include <qtconcurrentrun.h>
 
 #ifdef __unix__
 extern "C" {
@@ -39,9 +35,7 @@ int hTmk;
 #endif
 
 #ifdef _WIN32
-#include <windows.h>
-#include <conio.h>
-#include "WDMTMKv2.cpp" //в хедере не размещать, дабы не нарваться на multiple definition
+#include "WDMTMKv2.cpp"
 HANDLE hBcEvent;
 #endif
 
@@ -550,6 +544,7 @@ void MainWindow::stopMpi()
 void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
 {
     QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Warning);
     msgBox.setText(message);
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.setWindowModality(Qt::WindowModality::WindowModal);

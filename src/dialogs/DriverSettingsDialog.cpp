@@ -2,11 +2,11 @@
 #include "ui_DriverSettingsDialog.h"
 
 #ifdef __unix__
-#include "ltmk.h" //в хедере не размещать, дабы не нарваться на multiple definition
+#include "ltmk.h"
 #endif
 
 #ifdef _WIN32
-#include "WDMTMKv2.cpp" //в хедере не размещать, дабы не нарваться на multiple definition
+#define MAX_TMK_NUMBER 71
 #endif
 
 DriverSettingsDialog::DriverSettingsDialog(QWidget *parent) :
