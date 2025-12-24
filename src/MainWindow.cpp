@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
     on_hexFormatCheckBox_stateChanged(true);
     ui->inputMpiWriteDataLineEdit->installEventFilter(m_undoBlocker);
-//    connectionGuiSlot(false);
+   // connectionGuiSlot(false);
 
     connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::driverSettingsDialogOpenActionSlot);
     connect(m_driverSettingsDialog, &DriverSettingsDialog::setDriverSettingsSignal, this, &MainWindow::setDriverSettingsSlot);
@@ -77,11 +77,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::retranslateUiSignal, m_serialMonitorWindow, &SerialMonitorWindow::retranslateUiSlot);
     connect(ui->serialMonitorOpenAction, &QAction::triggered, this, &MainWindow::serialMonitorOpenActionSlot);
     connect(ui->aboutProgramAction, &QAction::triggered, this, &MainWindow::aboutProgramActionSlot);
-
     connect(this, &MainWindow::qMessageBoxNeedShowSignal, this, &MainWindow::qMessageBoxNeedShowSlot);
     connect(this, &MainWindow::connectionGuiSignal, this, &MainWindow::connectionGuiSlot);
     connect(this, &MainWindow::putLogDataSignal, this, &MainWindow::putLogDataSlot);
-
     connect(this, &MainWindow::setCycleSendingSignal, this, &MainWindow::cycleSendingThreadSlot);
     connect(this, &MainWindow::becauseCycleSendingGuiEnabledSignal, this, &MainWindow::becauseCycleSendingGuiEnabledSlot);
     connect(this, &MainWindow::mpiWriteDataSignal, this, &MainWindow::mpiWriteDataSlot);
@@ -371,7 +369,7 @@ void MainWindow::aboutProgramActionSlot()
 
     aboutBox.setText(tr(
                          "<h3>mil-std-1553b-usb-terminal</h3>"
-                         "<p><b>Программа управления шиной MIL-STD-1553 (ГОСТ Р 52070-2003) через USB-интерфейс</b></p>"
+                         "<p><b>Терминал шины MIL-STD-1553 (ГОСТ Р 52070-2003) через USB-интерфейс</b></p>"
                          "<p>Предназначена для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API "
                          "драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» "
                          "(<a href='http://www.elcus.ru'>http://www.elcus.ru/boards.php</a>)</p>"
@@ -554,16 +552,16 @@ void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
 
 bool MainWindow::checkMpiLine()
 {
-    if(bcdefbus(BUS_A)) {
-        if(bcdefbus(BUS_B)) {
-            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
-                                              "\nАктивируйте линию передачи и попытайтесь снова"));
-            stopMpi();
-            isCycleSendingActive = false;
-            emit setCycleSendingSignal(isCycleSendingActive);
-            return false;
-        }
-    }
+    // if(bcdefbus(BUS_A)) {
+    //     if(bcdefbus(BUS_B)) {
+    //         emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
+    //                                           "\nАктивируйте линию передачи и попытайтесь снова"));
+    //         stopMpi();
+    //         isCycleSendingActive = false;
+    //         emit setCycleSendingSignal(isCycleSendingActive);
+    //         return false;
+    //     }
+    // }
 
     return true;
 }
@@ -702,8 +700,9 @@ void MainWindow::on_hexFormatCheckBox_stateChanged(int arg1)
 {
     if(arg1)
     {
-        QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression("^([0-9A-Fa-f]{4}( [0-9A-Fa-f]{4}){0,31})?$"), this);
+        QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression("^([0-9A-Fa-f]{1,4}( [0-9A-Fa-f]{1,4}){0,31})?$"), this);
         ui->inputMpiWriteDataLineEdit->setValidator(validator);
+        ui->inputMpiWriteDataLineEdit->setMaxLength(4 * 32 + 31);
         ui->inputMpiWriteDataLineEdit->clear();
         ui->decimalFormatCheckBox->setChecked(false);
     }
