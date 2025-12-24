@@ -369,8 +369,8 @@ void MainWindow::aboutProgramActionSlot()
 
     aboutBox.setText(tr(
                          "<h3>mil-std-1553b-usb-terminal</h3>"
-                         "<p><b>Терминал шины MIL-STD-1553 (ГОСТ Р 52070-2003) через USB-интерфейс</b></p>"
-                         "<p>Предназначена для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API "
+                         "<p><b>Терминал шины MIL-STD-1553 (ГОСТ Р 52070-2003) - USB</b></p>"
+                         "<p>Предназначен для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API "
                          "драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» "
                          "(<a href='http://www.elcus.ru'>http://www.elcus.ru/boards.php</a>)</p>"
                          "<hr>"
@@ -613,6 +613,8 @@ void MainWindow::mpiWriteDataSlot()
         }
 
         wAddr = ui->deviceAddrSpinBox->value();
+        wSubAddr = ui->writeSubAddrSpinBox->value();
+        memset(&awBuf, 0, sizeof(awBuf));
         bcputw(0, CW(RT_ADDR, RT_RECEIVE, wSubAddr, wLen));
         bcputblk(1, awBuf, wLen);
 
@@ -657,7 +659,6 @@ void MainWindow::becauseCycleSendingGuiEnabledSlot(bool enable)
 {
     ui->mpiConnectionGroupBox->setEnabled(enable);
     ui->addrSettingsGroupBox->setEnabled(enable);
-    ui->generalReadMpiGroupBox->setEnabled(enable);
     ui->cycleWriteMpiModeCheckBox->setEnabled(enable);
     ui->hexFormatCheckBox->setEnabled(enable);
     ui->decimalFormatCheckBox->setEnabled(enable);
@@ -710,7 +711,7 @@ void MainWindow::on_hexFormatCheckBox_stateChanged(int arg1)
 
 void MainWindow::on_inputMpiWriteDataButton_clicked()
 {
-    if(checkMpiLine())
+    if(checkMpiLine() && !ui->inputMpiWriteDataLineEdit->text().trimmed().isEmpty())
     {
         if(ui->cycleWriteMpiModeCheckBox->isChecked() && !isCycleSendingActive)
         {
@@ -735,7 +736,7 @@ void MainWindow::on_mpiReadWordsNumberButton_clicked()
     if(checkMpiLine())
     {
         wAddr = ui->deviceAddrSpinBox->value();
-        wSubAddr = ui->subAddrSpinBox->value();
+        wSubAddr = ui->readSubAddrSpinBox->value();
         wLen = ui->mpiReadWordsNumberSpinBox->value();
         memset(&awBuf, 0, sizeof(awBuf));
 
