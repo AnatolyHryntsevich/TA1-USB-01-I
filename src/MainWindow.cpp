@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
     on_hexFormatCheckBox_stateChanged(true);
     ui->inputMpiWriteDataLineEdit->installEventFilter(m_undoBlocker);
-    // connectionGuiSlot(false);
+    connectionGuiSlot(false);
 
     connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::driverSettingsDialogOpenActionSlot);
     connect(m_driverSettingsDialog, &DriverSettingsDialog::setDriverSettingsSignal, this, &MainWindow::setDriverSettingsSlot);
@@ -579,16 +579,16 @@ void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
 
 bool MainWindow::checkMpiLine()
 {
-    // if(bcdefbus(BUS_A)) {
-    //     if(bcdefbus(BUS_B)) {
-    //         emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
-    //                                           "\nАктивируйте линию передачи и попытайтесь снова"));
-    //         stopMpi();
-    //         isCycleSendingActive = false;
-    //         emit setCycleSendingSignal(isCycleSendingActive);
-    //         return false;
-    //     }
-    // }
+    if(bcdefbus(BUS_A)) {
+        if(bcdefbus(BUS_B)) {
+            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
+                                              "\nАктивируйте линию передачи и попытайтесь снова"));
+            stopMpi();
+            isCycleSendingActive = false;
+            emit setCycleSendingSignal(isCycleSendingActive);
+            return false;
+        }
+    }
 
     return true;
 }
