@@ -142,7 +142,7 @@
     <message>
         <location filename="../ui/MainWindow.ui" line="104"/>
         <location filename="../build/ui_MainWindow.h" line="772"/>
-        <location filename="../src/MainWindow.cpp" line="423"/>
+        <location filename="../src/MainWindow.cpp" line="434"/>
         <source>Активировать</source>
         <translation>Активировать</translation>
     </message>
@@ -245,7 +245,7 @@
     <message>
         <location filename="../ui/MainWindow.ui" line="647"/>
         <location filename="../build/ui_MainWindow.h" line="811"/>
-        <location filename="../src/MainWindow.cpp" line="667"/>
+        <location filename="../src/MainWindow.cpp" line="686"/>
         <source>Записать</source>
         <translation>Записать</translation>
     </message>
@@ -348,7 +348,7 @@
         <location filename="../ui/MainWindow.ui" line="1156"/>
         <location filename="../build/ui_MainWindow.h" line="762"/>
         <location filename="../build/ui_MainWindow.h" line="766"/>
-        <location filename="../src/MainWindow.cpp" line="367"/>
+        <location filename="../src/MainWindow.cpp" line="378"/>
         <source>О программе</source>
         <translation>О программе</translation>
     </message>
@@ -367,22 +367,22 @@
         <translation>Внешний вид</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="192"/>
+        <location filename="../src/MainWindow.cpp" line="203"/>
         <source>Подтверждение закрытия</source>
         <translation>Подтверждение закрытия</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="193"/>
+        <location filename="../src/MainWindow.cpp" line="204"/>
         <source>Вы уверены, что хотите закрыть программу?</source>
         <translation>Вы уверены, что хотите закрыть программу?</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="195"/>
+        <location filename="../src/MainWindow.cpp" line="206"/>
         <source>Да</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="196"/>
+        <location filename="../src/MainWindow.cpp" line="207"/>
         <source>Нет</source>
         <translation>Нет</translation>
     </message>
@@ -395,93 +395,109 @@
         <translation type="vanished">&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Терминал шины MIL-STD-1553 (ГОСТ Р 52070-2003) - USB&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначена для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Отображение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="370"/>
+        <location filename="../src/MainWindow.cpp" line="381"/>
         <source>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Терминал шины MIL-STD-1553 (ГОСТ Р 52070-2003) - USB&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначен для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Отображение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Терминал шины MIL-STD-1553 (ГОСТ Р 52070-2003) - USB&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначен для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Отображение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="405"/>
+        <location filename="../src/MainWindow.cpp" line="416"/>
         <source>Деактивировать</source>
         <translation>Деактивировать</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="406"/>
+        <location filename="../src/MainWindow.cpp" line="417"/>
         <source>Деактивировать модуль сопряжения</source>
         <translation>Деактивировать модуль сопряжения</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="412"/>
+        <location filename="../src/MainWindow.cpp" line="423"/>
         <source>Deactivate</source>
         <translation>Deactivate</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="413"/>
+        <location filename="../src/MainWindow.cpp" line="424"/>
         <source>Deactivate the coupling module</source>
         <translation>Deactivate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="424"/>
+        <location filename="../src/MainWindow.cpp" line="435"/>
         <source>Активировать модуль сопряжения</source>
         <translation>Активировать модуль сопряжения</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="430"/>
+        <location filename="../src/MainWindow.cpp" line="441"/>
         <source>Activate</source>
         <translation>Activate</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="431"/>
+        <location filename="../src/MainWindow.cpp" line="442"/>
         <source>Activate the coupling module</source>
         <translation>Activate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="522"/>
+        <location filename="../src/MainWindow.cpp" line="533"/>
         <source>Доступных модулей TA1-USB на хосте не обнаружено!</source>
         <translation>Доступных модулей TA1-USB на хосте не обнаружено!</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="576"/>
+        <source>Ни основную, ни резервную ЛПИ активировать не удалось...
+Активируйте линию передачи и попытайтесь снова</source>
+        <translation type="vanished">Ни основную, ни резервную ЛПИ активировать не удалось...
+Активируйте линию передачи и попытайтесь снова</translation>
+    </message>
+    <message>
+        <location filename="../src/MainWindow.cpp" line="587"/>
         <source>Размер записываемых в ОУ слов превышает установленный лимит
 [одной транзакцией не более 32-ух 16-битных слов]</source>
         <translation>Размер записываемых в ОУ слов превышает установленный лимит
 [одной транзакцией не более 32-ух 16-битных слов]</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="592"/>
-        <location filename="../src/MainWindow.cpp" line="607"/>
+        <location filename="../src/MainWindow.cpp" line="603"/>
+        <location filename="../src/MainWindow.cpp" line="618"/>
         <source>Ошибка записи слов в ОУ!
 Проверьте введенные данные и попробуйте снова...</source>
         <translation>Ошибка записи слов в ОУ!
 Проверьте введенные данные и попробуйте снова...</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="626"/>
+        <location filename="../src/MainWindow.cpp" line="637"/>
         <source>Ошибка;время ожидания ответного события драйвера TA1-USB истекло</source>
         <translation>Ошибка;время ожидания ответного события драйвера TA1-USB истекло</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="633"/>
-        <location filename="../src/MainWindow.cpp" line="787"/>
+        <location filename="../src/MainWindow.cpp" line="644"/>
+        <location filename="../src/MainWindow.cpp" line="819"/>
         <source>Ок</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="639"/>
+        <location filename="../src/MainWindow.cpp" line="650"/>
         <source>Ошибка;данных о приеме/отказе от приема не получено</source>
         <translation>Ошибка;данных о приеме/отказе от приема не получено</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="668"/>
+        <location filename="../src/MainWindow.cpp" line="682"/>
         <source>Остановить запись</source>
         <translation>Остановить запись</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="752"/>
+        <location filename="../src/MainWindow.cpp" line="694"/>
+        <source>Stop writing</source>
+        <translation>Stop writing</translation>
+    </message>
+    <message>
+        <location filename="../src/MainWindow.cpp" line="698"/>
+        <source>Write</source>
+        <translation>Write</translation>
+    </message>
+    <message>
+        <location filename="../src/MainWindow.cpp" line="784"/>
         <source>;Ошибка;время ожидания ответного события драйвера TA1-USB истекло</source>
         <translation>;Ошибка;время ожидания ответного события драйвера TA1-USB истекло</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="792"/>
+        <location filename="../src/MainWindow.cpp" line="824"/>
         <source>;Ошибка;данных о приеме/отказе от приема запроса на чтение не получено</source>
         <translation>;Ошибка;данных о приеме/отказе от приема запроса на чтение не получено</translation>
     </message>

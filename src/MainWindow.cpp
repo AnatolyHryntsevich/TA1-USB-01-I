@@ -138,16 +138,24 @@ static int WaitInt(TMK_DATA wCtrlCode)
 #elif defined __unix__
     events = tmkwaitevents(1<<hTmk, 1000);
     if (events < 0)
+    {
         printf("Error occured during interrupt waiting!\n");
-    return 1;
+        return 1;
+    }
     else if (events == 0)
+    {
         printf("We didn't get interrupt!\n");
-    return 1;
+        return 1;
+    }
     else if (events == (1<<hTmk))
+    {
         printf("We got interrupt!\n");
+    }
     else
+    {
         printf("We got very strange interrupt!\n");
-    return 1;
+        return 1;
+    }
 #endif
 
     tmkgetevd(&tmkEvD);
@@ -280,11 +288,27 @@ void MainWindow::setInterfaceSettingsSlot()
         == InterfaceParamenetsDialog::LanguageEnum::English_language)
     {
         switchToEnglish();
+        if(isCycleSendingActive)
+        {
+            ui->inputMpiWriteDataButton->setText(tr("Stop writing"));
+        }
+        else
+        {
+            ui->inputMpiWriteDataButton->setText(tr("Write"));
+        }
     }
     else if (m_interfaceSettingsDialog->getCurrentInterfaceSettings().language
              == InterfaceParamenetsDialog::LanguageEnum::Russian_language)
     {
         switchToRussian();
+        if(isCycleSendingActive)
+        {
+            ui->inputMpiWriteDataButton->setText(tr("Остановить запись"));
+        }
+        else
+        {
+            ui->inputMpiWriteDataButton->setText(tr("Записать"));
+        }
     }
 }
 
@@ -555,16 +579,16 @@ void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
 
 bool MainWindow::checkMpiLine()
 {
-    if(bcdefbus(BUS_A)) {
-        if(bcdefbus(BUS_B)) {
-            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
-                                              "\nАктивируйте линию передачи и попытайтесь снова"));
-            stopMpi();
-            isCycleSendingActive = false;
-            emit setCycleSendingSignal(isCycleSendingActive);
-            return false;
-        }
-    }
+    // if(bcdefbus(BUS_A)) {
+    //     if(bcdefbus(BUS_B)) {
+    //         emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
+    //                                           "\nАктивируйте линию передачи и попытайтесь снова"));
+    //         stopMpi();
+    //         isCycleSendingActive = false;
+    //         emit setCycleSendingSignal(isCycleSendingActive);
+    //         return false;
+    //     }
+    // }
 
     return true;
 }

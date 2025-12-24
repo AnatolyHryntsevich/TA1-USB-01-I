@@ -141,7 +141,7 @@
     <message>
         <location filename="../ui/MainWindow.ui" line="104"/>
         <location filename="../build/ui_MainWindow.h" line="772"/>
-        <location filename="../src/MainWindow.cpp" line="423"/>
+        <location filename="../src/MainWindow.cpp" line="434"/>
         <source>Активировать</source>
         <translation>Activate</translation>
     </message>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../ui/MainWindow.ui" line="647"/>
         <location filename="../build/ui_MainWindow.h" line="811"/>
-        <location filename="../src/MainWindow.cpp" line="667"/>
+        <location filename="../src/MainWindow.cpp" line="686"/>
         <source>Записать</source>
         <translation>Write</translation>
     </message>
@@ -321,7 +321,7 @@
         <location filename="../ui/MainWindow.ui" line="1156"/>
         <location filename="../build/ui_MainWindow.h" line="762"/>
         <location filename="../build/ui_MainWindow.h" line="766"/>
-        <location filename="../src/MainWindow.cpp" line="367"/>
+        <location filename="../src/MainWindow.cpp" line="378"/>
         <source>О программе</source>
         <translation>About this program</translation>
     </message>
@@ -354,22 +354,22 @@
         <translation type="vanished">&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;MIL-STD-1553 (GOST R 52070-2003) bus control program via USB interface&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to the subaddresses of the SD (Slave devices)&lt;/li&gt;&lt;li&gt;Reading data from SD subaddresses&lt;/li&gt;&lt;li&gt;Saving the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="192"/>
+        <location filename="../src/MainWindow.cpp" line="203"/>
         <source>Подтверждение закрытия</source>
         <translation>Closing confirmation</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="193"/>
+        <location filename="../src/MainWindow.cpp" line="204"/>
         <source>Вы уверены, что хотите закрыть программу?</source>
         <translation>Are you sure you want to close the program?</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="195"/>
+        <location filename="../src/MainWindow.cpp" line="206"/>
         <source>Да</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="196"/>
+        <location filename="../src/MainWindow.cpp" line="207"/>
         <source>Нет</source>
         <translation>No</translation>
     </message>
@@ -390,47 +390,47 @@
 Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to subaddresses of EDs (End Devices)&lt;/li&gt;&lt;li&gt;Reading data from OU subaddresses&lt;/li&gt;&lt;li&gt;Displaying the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="370"/>
+        <location filename="../src/MainWindow.cpp" line="381"/>
         <source>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Терминал шины MIL-STD-1553 (ГОСТ Р 52070-2003) - USB&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначен для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Отображение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Bus terminal MIL-STD-1553 (GOST R 52070-2003) - USB&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to subaddresses of SD (Slave Devices)&lt;/li&gt;&lt;li&gt;Reading data from SD subaddresses&lt;/li&gt;&lt;li&gt;Displaying the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="405"/>
+        <location filename="../src/MainWindow.cpp" line="416"/>
         <source>Деактивировать</source>
         <translation>Deactivate</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="406"/>
+        <location filename="../src/MainWindow.cpp" line="417"/>
         <source>Деактивировать модуль сопряжения</source>
         <translation>Deactivate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="412"/>
+        <location filename="../src/MainWindow.cpp" line="423"/>
         <source>Deactivate</source>
         <translation>Deactivate</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="413"/>
+        <location filename="../src/MainWindow.cpp" line="424"/>
         <source>Deactivate the coupling module</source>
         <translation>Deactivate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="424"/>
+        <location filename="../src/MainWindow.cpp" line="435"/>
         <source>Активировать модуль сопряжения</source>
         <translation>Activate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="430"/>
+        <location filename="../src/MainWindow.cpp" line="441"/>
         <source>Activate</source>
         <translation>Activate</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="431"/>
+        <location filename="../src/MainWindow.cpp" line="442"/>
         <source>Activate the coupling module</source>
         <translation>Activate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="522"/>
+        <location filename="../src/MainWindow.cpp" line="533"/>
         <source>Доступных модулей TA1-USB на хосте не обнаружено!</source>
         <translation>No available TA1-USB modules found on the host!</translation>
     </message>
@@ -454,43 +454,53 @@ Designed for debugging and testing computers operating on a MIL-STD-1553 network
         <translation type="vanished">&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;MIL-STD-1553 (GOST R 52070-2003) bus control program via USB interface&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to the subaddresses of the Slave (Slave devices)&lt;/li&gt;&lt;li&gt;Reading data from Slave subaddresses&lt;/li&gt;&lt;li&gt;Displaying the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="576"/>
+        <location filename="../src/MainWindow.cpp" line="587"/>
         <source>Размер записываемых в ОУ слов превышает установленный лимит
 [одной транзакцией не более 32-ух 16-битных слов]</source>
         <translation>The size of words written to the Slave exceeds the established limit
 [no more than 32 16-bit words per transaction]</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="592"/>
-        <location filename="../src/MainWindow.cpp" line="607"/>
+        <location filename="../src/MainWindow.cpp" line="603"/>
+        <location filename="../src/MainWindow.cpp" line="618"/>
         <source>Ошибка записи слов в ОУ!
 Проверьте введенные данные и попробуйте снова...</source>
         <translation>Error writing words to Slave!
 Check your input and try again...</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="626"/>
+        <location filename="../src/MainWindow.cpp" line="637"/>
         <source>Ошибка;время ожидания ответного события драйвера TA1-USB истекло</source>
         <translation>Error: TA1-USB driver response event timed out</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="633"/>
-        <location filename="../src/MainWindow.cpp" line="787"/>
+        <location filename="../src/MainWindow.cpp" line="644"/>
+        <location filename="../src/MainWindow.cpp" line="819"/>
         <source>Ок</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="639"/>
+        <location filename="../src/MainWindow.cpp" line="650"/>
         <source>Ошибка;данных о приеме/отказе от приема не получено</source>
         <translation>Error; no acceptance/rejection data received</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="752"/>
+        <location filename="../src/MainWindow.cpp" line="694"/>
+        <source>Stop writing</source>
+        <translation>Stop writing</translation>
+    </message>
+    <message>
+        <location filename="../src/MainWindow.cpp" line="698"/>
+        <source>Write</source>
+        <translation>Write</translation>
+    </message>
+    <message>
+        <location filename="../src/MainWindow.cpp" line="784"/>
         <source>;Ошибка;время ожидания ответного события драйвера TA1-USB истекло</source>
         <translation>;Error; TA1-USB driver response event timed out</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="792"/>
+        <location filename="../src/MainWindow.cpp" line="824"/>
         <source>;Ошибка;данных о приеме/отказе от приема запроса на чтение не получено</source>
         <translation>;Error;no data was received regarding acceptance/rejection of the read request</translation>
     </message>
@@ -555,7 +565,7 @@ Check your input and try again...</translation>
 Activate the transmission line and try again</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="668"/>
+        <location filename="../src/MainWindow.cpp" line="682"/>
         <source>Остановить запись</source>
         <translation>Stop recording</translation>
     </message>
