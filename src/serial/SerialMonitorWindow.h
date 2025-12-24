@@ -2,7 +2,7 @@
 
 #include <QWidget>
 
-#define SERIAL_LOG_DATA_LINE_LIMIT 1000
+#define SERIAL_LOG_DATA_LINE_LIMIT 10000
 
 namespace Ui {
 class SerialMonitorWindow;

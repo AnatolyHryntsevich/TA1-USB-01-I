@@ -54,19 +54,19 @@ unsigned long dwStarts = 0L;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::MainWindow),
-      m_driverSettingsDialog(new DriverSettingsDialog(this)),
-      m_interfaceSettingsDialog(new InterfaceParamenetsDialog(this)),
-      m_serialMonitorWindow(new SerialMonitorWindow()),
-      m_translator(nullptr),
-      m_undoBlocker(new UndoBlocker(this))
+    ui(new Ui::MainWindow),
+    m_driverSettingsDialog(new DriverSettingsDialog(this)),
+    m_interfaceSettingsDialog(new InterfaceParamenetsDialog(this)),
+    m_serialMonitorWindow(new SerialMonitorWindow()),
+    m_translator(nullptr),
+    m_undoBlocker(new UndoBlocker(this))
 {
     ui->setupUi(this);
 
     m_currentDriverSettings = m_driverSettingsDialog->currentDriverSettings();
     on_hexFormatCheckBox_stateChanged(true);
     ui->inputMpiWriteDataLineEdit->installEventFilter(m_undoBlocker);
-   // connectionGuiSlot(false);
+    // connectionGuiSlot(false);
 
     connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::driverSettingsDialogOpenActionSlot);
     connect(m_driverSettingsDialog, &DriverSettingsDialog::setDriverSettingsSignal, this, &MainWindow::setDriverSettingsSlot);
@@ -139,12 +139,15 @@ static int WaitInt(TMK_DATA wCtrlCode)
     events = tmkwaitevents(1<<hTmk, 1000);
     if (events < 0)
         printf("Error occured during interrupt waiting!\n");
+    return 1;
     else if (events == 0)
         printf("We didn't get interrupt!\n");
+    return 1;
     else if (events == (1<<hTmk))
         printf("We got interrupt!\n");
     else
         printf("We got very strange interrupt!\n");
+    return 1;
 #endif
 
     tmkgetevd(&tmkEvD);
@@ -152,7 +155,7 @@ static int WaitInt(TMK_DATA wCtrlCode)
     if (tmkEvD.bcx.wResultX & SX_IB_MASK)
     {
         if (((tmkEvD.bcx.wResultX & SX_ERR_MASK) == SX_NOERR) ||
-                ((tmkEvD.bcx.wResultX & SX_ERR_MASK) == SX_TOD))
+            ((tmkEvD.bcx.wResultX & SX_ERR_MASK) == SX_TOD))
         {
             wStatus = bcgetansw(wCtrlCode);
             if (wStatus & BUSY_MASK)
@@ -263,18 +266,18 @@ void MainWindow::setInterfaceSettingsSlot()
     static QString originalStyleSheet = qApp->styleSheet();
 
     QString newStyleSheet = originalStyleSheet + QString(
-                "\n"
-                "QLabel, QPushButton, QComboBox, QCheckBox, "
-                "QRadioButton, QGroupBox, QTabWidget, QMenu, "
-                "QMenuBar, QToolBar {"
-                "    font-size: %1pt;"
-                "}"
-                ).arg(m_interfaceSettingsDialog->getCurrentInterfaceSettings().fontSize);
+                                                     "\n"
+                                                     "QLabel, QPushButton, QComboBox, QCheckBox, "
+                                                     "QRadioButton, QGroupBox, QTabWidget, QMenu, "
+                                                     "QMenuBar, QToolBar {"
+                                                     "    font-size: %1pt;"
+                                                     "}"
+                                                     ).arg(m_interfaceSettingsDialog->getCurrentInterfaceSettings().fontSize);
 
     qApp->setStyleSheet(newStyleSheet);
 
     if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language
-            == InterfaceParamenetsDialog::LanguageEnum::English_language)
+        == InterfaceParamenetsDialog::LanguageEnum::English_language)
     {
         switchToEnglish();
     }
@@ -315,8 +318,8 @@ void MainWindow::switchToEnglish()
     m_translator = new QTranslator;
 
     if (m_translator->load("translations/app_en.qm") ||
-            m_translator->load("app_en.qm") ||
-            m_translator->load("../translations/app_en.qm"))
+        m_translator->load("app_en.qm") ||
+        m_translator->load("../translations/app_en.qm"))
     {
         qApp->installTranslator(m_translator);
         QSettings settings;
@@ -343,8 +346,8 @@ void MainWindow::switchToRussian()
     m_translator = new QTranslator;
 
     if (m_translator->load("translations/app_ru.qm") ||
-            m_translator->load("app_ru.qm") ||
-            m_translator->load("../translations/app_ru.qm")) {
+        m_translator->load("app_ru.qm") ||
+        m_translator->load("../translations/app_ru.qm")) {
 
         qApp->installTranslator(m_translator);
         QSettings settings;
@@ -399,7 +402,7 @@ void MainWindow::connectionGuiSlot(const bool connected)
     if(connected)
     {
         if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
-                InterfaceParamenetsDialog::Russian_language)
+            InterfaceParamenetsDialog::Russian_language)
         {
             ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(0));
             ui->connectionButton->setText(tr("Деактивировать"));
@@ -417,7 +420,7 @@ void MainWindow::connectionGuiSlot(const bool connected)
     else
     {
         if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
-                InterfaceParamenetsDialog::Russian_language)
+            InterfaceParamenetsDialog::Russian_language)
         {
             ui->connectionStatusLabel->setText(m_connectionStatusVariants.at(1));
             ui->connectionButton->setText(tr("Активировать"));
@@ -441,7 +444,7 @@ void MainWindow::putLogDataSlot(MpiOperationType operationType, const QString &l
         case Tx_MPI:
         {
             bool isBottom = ui->logWriteMpiViewTextEdit->verticalScrollBar()->value() ==
-                    ui->logWriteMpiViewTextEdit->verticalScrollBar()->maximum();
+                            ui->logWriteMpiViewTextEdit->verticalScrollBar()->maximum();
             int savedScroll = isBottom ? -1 : ui->logWriteMpiViewTextEdit->verticalScrollBar()->value();
             ui->logWriteMpiViewTextEdit->append(logData);
             QStringList logDataList = ui->logWriteMpiViewTextEdit->toPlainText().split("\n");
@@ -454,11 +457,11 @@ void MainWindow::putLogDataSlot(MpiOperationType operationType, const QString &l
                 ui->logWriteMpiViewTextEdit->verticalScrollBar()->setValue(savedScroll);
             }
         }
-            break;
+        break;
         case Rx_MPI:
         {
             bool isBottom = ui->logReadMpiViewTextEdit->verticalScrollBar()->value() ==
-                    ui->logReadMpiViewTextEdit->verticalScrollBar()->maximum();
+                            ui->logReadMpiViewTextEdit->verticalScrollBar()->maximum();
             int savedScroll = isBottom ? -1 : ui->logReadMpiViewTextEdit->verticalScrollBar()->value();
             ui->logReadMpiViewTextEdit->append(logData);
             QStringList logDataList = ui->logReadMpiViewTextEdit->toPlainText().split("\n");
@@ -471,7 +474,7 @@ void MainWindow::putLogDataSlot(MpiOperationType operationType, const QString &l
                 ui->logReadMpiViewTextEdit->verticalScrollBar()->setValue(savedScroll);
             }
         }
-            break;
+        break;
         }
     }
 }
@@ -479,8 +482,8 @@ void MainWindow::putLogDataSlot(MpiOperationType operationType, const QString &l
 void MainWindow::on_connectionButton_clicked()
 {
     if(startMpi(m_driverSettingsDialog->currentDriverSettings().deviceNumber,
-                m_driverSettingsDialog->currentDriverSettings().answerWaitTimeout,
-                m_driverSettingsDialog->currentDriverSettings().memBaseNumber))
+                 m_driverSettingsDialog->currentDriverSettings().answerWaitTimeout,
+                 m_driverSettingsDialog->currentDriverSettings().memBaseNumber))
     {
         emit connectionGuiSignal(true);
         qDebug() << "MPI module is enabled";
@@ -552,16 +555,16 @@ void MainWindow::qMessageBoxNeedShowSlot(const QString &message)
 
 bool MainWindow::checkMpiLine()
 {
-    // if(bcdefbus(BUS_A)) {
-    //     if(bcdefbus(BUS_B)) {
-    //         emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
-    //                                           "\nАктивируйте линию передачи и попытайтесь снова"));
-    //         stopMpi();
-    //         isCycleSendingActive = false;
-    //         emit setCycleSendingSignal(isCycleSendingActive);
-    //         return false;
-    //     }
-    // }
+    if(bcdefbus(BUS_A)) {
+        if(bcdefbus(BUS_B)) {
+            emit qMessageBoxNeedShowSignal(tr("Ни основную, ни резервную ЛПИ активировать не удалось..."
+                                              "\nАктивируйте линию передачи и попытайтесь снова"));
+            stopMpi();
+            isCycleSendingActive = false;
+            emit setCycleSendingSignal(isCycleSendingActive);
+            return false;
+        }
+    }
 
     return true;
 }
@@ -622,7 +625,7 @@ void MainWindow::mpiWriteDataSlot()
         if (WaitInt(DATA_BC_RT))
         {
             qWarning() <<  "\rGood:" +  QString::number(dwGoodStarts) + "Busy:" + QString::number(dwBusyStarts)
-                           + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
+            + "Error:" + QString::number(dwErrStarts) + "Status:" + QString::number(dwStatStarts);
             logLine.append(tr("Ошибка;время ожидания ответного события драйвера TA1-USB истекло"));
             emit putLogDataSignal(Tx_MPI, logLine);
             return;
@@ -646,13 +649,13 @@ void MainWindow::mpiWriteDataSlot()
 void MainWindow::cycleSendingThreadSlot()
 {
     QtConcurrent::run([this]()
-    {
-        while (isCycleSendingActive)
-        {
-            emit mpiWriteDataSignal();
-            sleepCurrentThread(ui->cycleWriteMpiIntervalValueSpinBox->value());
-        }
-    });
+                      {
+                          while (isCycleSendingActive)
+                          {
+                              emit mpiWriteDataSignal();
+                              sleepCurrentThread(ui->cycleWriteMpiIntervalValueSpinBox->value());
+                          }
+                      });
 }
 
 void MainWindow::becauseCycleSendingGuiEnabledSlot(bool enable)
@@ -663,8 +666,30 @@ void MainWindow::becauseCycleSendingGuiEnabledSlot(bool enable)
     ui->hexFormatCheckBox->setEnabled(enable);
     ui->decimalFormatCheckBox->setEnabled(enable);
     ui->cycleWriteMpiIntervalValueSpinBox->setEnabled(enable);
-    enable == true ? ui->inputMpiWriteDataButton->setText(tr("Записать"))
-                   : ui->inputMpiWriteDataButton->setText(tr("Остановить запись"));
+    if(m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
+        InterfaceParamenetsDialog::Russian_language)
+    {
+        if(isCycleSendingActive)
+        {
+            ui->inputMpiWriteDataButton->setText(tr("Остановить запись"));
+        }
+        else
+        {
+            ui->inputMpiWriteDataButton->setText(tr("Записать"));
+        }
+    }
+    else if (m_interfaceSettingsDialog->getCurrentInterfaceSettings().language ==
+             InterfaceParamenetsDialog::English_language)
+    {
+        if(isCycleSendingActive)
+        {
+            ui->inputMpiWriteDataButton->setText(tr("Stop writing"));
+        }
+        else
+        {
+            ui->inputMpiWriteDataButton->setText(tr("Write"));
+        }
+    }
 }
 
 void MainWindow::on_logWriteClearButton_clicked()
@@ -682,12 +707,12 @@ void MainWindow::on_decimalFormatCheckBox_stateChanged(int arg1)
     if(arg1)
     {
         const QString DEC_NUMBER =
-                "(6553[0-5]|"          // 65530-65535
-                "655[0-2]\\d|"         // 65500-65529
-                "65[0-4]\\d\\d|"       // 65000-65499
-                "6[0-4]\\d{3}|"        // 60000-64999
-                "[1-5]\\d{4}|"         // 10000-59999
-                "\\d{1,4})";           // 0-9999
+            "(6553[0-5]|"          // 65530-65535
+            "655[0-2]\\d|"         // 65500-65529
+            "65[0-4]\\d\\d|"       // 65000-65499
+            "6[0-4]\\d{3}|"        // 60000-64999
+            "[1-5]\\d{4}|"         // 10000-59999
+            "\\d{1,4})";           // 0-9999
 
         QString pattern = QString("^%1( %1){0,31}$").arg(DEC_NUMBER);
         QRegularExpressionValidator *validator = new QRegularExpressionValidator(QRegularExpression(pattern), this);
@@ -721,8 +746,8 @@ void MainWindow::on_inputMpiWriteDataButton_clicked()
         }
         else if(ui->cycleWriteMpiModeCheckBox->isChecked() && isCycleSendingActive)
         {
-            emit becauseCycleSendingGuiEnabledSignal(true);
             isCycleSendingActive = false;
+            emit becauseCycleSendingGuiEnabledSignal(true);
         }
         else
         {

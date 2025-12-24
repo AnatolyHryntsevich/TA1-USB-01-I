@@ -21,7 +21,7 @@ SerialMonitorWindow::SerialMonitorWindow(QWidget *parent) :
     ui->logTextEdit->setUndoRedoEnabled(false);
     ui->logTextEdit->setReadOnly(true);
     QRegularExpressionValidator *validator = new QRegularExpressionValidator(
-                QRegularExpression("^([0-9A-Fa-f]{2}( [0-9A-Fa-f]{2})*)?$"),
+                QRegularExpression("^([0-9A-Fa-f]{1,2}( [0-9A-Fa-f]{1,2}){0,1000})?\\s*$"),
                 parent
                 );
     ui->sendInputLineEdit->setValidator(validator);
@@ -182,11 +182,17 @@ void SerialMonitorWindow::on_clearButton_clicked()
 
 void SerialMonitorWindow::on_sendButton_clicked()
 {
-    QString dataString = ui->sendInputLineEdit->text().trimmed();
+    QString data = ui->sendInputLineEdit->text().trimmed();
 
-    if(!dataString.isEmpty())
+    if(!data.isEmpty())
     {
-        QByteArray sendData = QByteArray::fromHex(dataString.remove(' ').toLatin1());
+        QStringList dataList = data.split(" ");
+        QByteArray sendData;
+        bool ok;
+        for(QString& byte: dataList)
+        {
+            sendData.append(byte.toInt(&ok, 16));
+        }
 
         if(m_serialTransfer)
         {

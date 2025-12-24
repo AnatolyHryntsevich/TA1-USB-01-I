@@ -11,7 +11,7 @@
 #include "InterfaceParamenetsDialog.h"
 
 #define VERSION_NUMBER "1.0.0"
-#define LOG_DATA_LINE_LIMIT 1000
+#define LOG_DATA_LINE_LIMIT 50000
 
 class QWidget;
 class QGridLayout;
