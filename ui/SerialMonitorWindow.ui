@@ -43,6 +43,12 @@
          <layout class="QVBoxLayout" name="mainConnectionLayout">
           <item>
            <widget class="QGroupBox" name="connectionGroupBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="title">
              <string/>
             </property>
@@ -285,6 +291,12 @@ QGroupBox::title {
         </property>
         <item>
          <widget class="QGroupBox" name="sendGroupBox">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string/>
           </property>

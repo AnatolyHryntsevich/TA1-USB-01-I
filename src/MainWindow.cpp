@@ -528,7 +528,6 @@ bool MainWindow::startMpi(quint64 deviceNumber, quint64 answerWaitTimeout, quint
         {
             wMaxBase = bcgetmaxbase();
             tmktimeout(answerWaitTimeout);
-            wMaxBase = bcgetmaxbase();
             wBase = memBaseNumber;
             bcreset();
             if(!bcdefbase(wBase))
@@ -556,10 +555,10 @@ bool MainWindow::startMpi(quint64 deviceNumber, quint64 answerWaitTimeout, quint
 void MainWindow::stopMpi()
 {
     if(m_isMpiStarted) {
-        bcreset();
 #ifdef _WIN32
         CloseHandle(hBcEvent);
 #endif
+        bcstop();
         tmkdone(ALL_TMKS);
         TmkClose();
         m_isMpiStarted = false;
@@ -641,7 +640,6 @@ void MainWindow::mpiWriteDataSlot()
 
         wAddr = ui->deviceAddrSpinBox->value();
         wSubAddr = ui->writeSubAddrSpinBox->value();
-        memset(&awBuf, 0, sizeof(awBuf));
         bcputw(0, CW(RT_ADDR, RT_RECEIVE, wSubAddr, wLen));
         bcputblk(1, awBuf, wLen);
 

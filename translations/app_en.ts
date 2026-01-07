@@ -48,14 +48,22 @@
     <message>
         <location filename="../ui/DriverSettingsDialog.ui" line="246"/>
         <location filename="../build/ui_DriverSettingsDialog.h" line="234"/>
-        <source>Время ожидания ответного слова:</source>
-        <translation>Response timeout:</translation>
+        <source>Время ожидания ответного слова (мкс):</source>
+        <translation>Response word waiting time (µs):</translation>
     </message>
     <message>
         <location filename="../ui/DriverSettingsDialog.ui" line="271"/>
         <location filename="../build/ui_DriverSettingsDialog.h" line="236"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Таймаут ожидания ответного слова на отправленный запрос (мкс)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Timeout waiting for a response word to a sent request (µs)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Время ожидания ответного слова:</source>
+        <translation type="vanished">Response timeout:</translation>
+    </message>
+    <message>
         <source>Таймаут ожидания ответного слова на отправленный запрос (мс)</source>
-        <translation>Timeout for waiting for a response word to a sent request (ms)</translation>
+        <translation type="vanished">Timeout for waiting for a response word to a sent request (ms)</translation>
     </message>
     <message>
         <location filename="../ui/DriverSettingsDialog.ui" line="296"/>
@@ -141,7 +149,7 @@
     <message>
         <location filename="../ui/MainWindow.ui" line="104"/>
         <location filename="../build/ui_MainWindow.h" line="772"/>
-        <location filename="../src/MainWindow.cpp" line="434"/>
+        <location filename="../src/MainWindow.cpp" line="450"/>
         <source>Активировать</source>
         <translation>Activate</translation>
     </message>
@@ -232,7 +240,8 @@
     <message>
         <location filename="../ui/MainWindow.ui" line="647"/>
         <location filename="../build/ui_MainWindow.h" line="811"/>
-        <location filename="../src/MainWindow.cpp" line="686"/>
+        <location filename="../src/MainWindow.cpp" line="310"/>
+        <location filename="../src/MainWindow.cpp" line="700"/>
         <source>Записать</source>
         <translation>Write</translation>
     </message>
@@ -321,7 +330,7 @@
         <location filename="../ui/MainWindow.ui" line="1156"/>
         <location filename="../build/ui_MainWindow.h" line="762"/>
         <location filename="../build/ui_MainWindow.h" line="766"/>
-        <location filename="../src/MainWindow.cpp" line="378"/>
+        <location filename="../src/MainWindow.cpp" line="394"/>
         <source>О программе</source>
         <translation>About this program</translation>
     </message>
@@ -390,47 +399,47 @@
 Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to subaddresses of EDs (End Devices)&lt;/li&gt;&lt;li&gt;Reading data from OU subaddresses&lt;/li&gt;&lt;li&gt;Displaying the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="381"/>
+        <location filename="../src/MainWindow.cpp" line="397"/>
         <source>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Терминал шины MIL-STD-1553 (ГОСТ Р 52070-2003) - USB&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Предназначен для отладки и тестирования ЭВМ, работающих в сети MIL-STD-1553. Является реализацией API драйвера модуля сопряжения с шиной MIL-STD-1553 TA1-USB производства АО «Элкус» (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Возможности:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Сопряжение USB с резервированным мультиплексным каналом посредством модуля TA1-USB в режиме КК (Контроллер канала)&lt;/li&gt;&lt;li&gt;Запись данных в подадреса ОУ (Оконечных устройств)&lt;/li&gt;&lt;li&gt;Чтение данных из подадресов ОУ&lt;/li&gt;&lt;li&gt;Отображение лога работы&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Описание модуля на сайте производителя:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Версия программы:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Дата сборки:&lt;/b&gt; %2&lt;/p&gt;</source>
         <translation>&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;Bus terminal MIL-STD-1553 (GOST R 52070-2003) - USB&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to subaddresses of SD (Slave Devices)&lt;/li&gt;&lt;li&gt;Reading data from SD subaddresses&lt;/li&gt;&lt;li&gt;Displaying the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="416"/>
+        <location filename="../src/MainWindow.cpp" line="432"/>
         <source>Деактивировать</source>
         <translation>Deactivate</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="417"/>
+        <location filename="../src/MainWindow.cpp" line="433"/>
         <source>Деактивировать модуль сопряжения</source>
         <translation>Deactivate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="423"/>
+        <location filename="../src/MainWindow.cpp" line="439"/>
         <source>Deactivate</source>
         <translation>Deactivate</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="424"/>
+        <location filename="../src/MainWindow.cpp" line="440"/>
         <source>Deactivate the coupling module</source>
         <translation>Deactivate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="435"/>
+        <location filename="../src/MainWindow.cpp" line="451"/>
         <source>Активировать модуль сопряжения</source>
         <translation>Activate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="441"/>
+        <location filename="../src/MainWindow.cpp" line="457"/>
         <source>Activate</source>
         <translation>Activate</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="442"/>
+        <location filename="../src/MainWindow.cpp" line="458"/>
         <source>Activate the coupling module</source>
         <translation>Activate the coupling module</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="533"/>
+        <location filename="../src/MainWindow.cpp" line="548"/>
         <source>Доступных модулей TA1-USB на хосте не обнаружено!</source>
         <translation>No available TA1-USB modules found on the host!</translation>
     </message>
@@ -454,53 +463,55 @@ Designed for debugging and testing computers operating on a MIL-STD-1553 network
         <translation type="vanished">&lt;h3&gt;mil-std-1553b-usb-terminal&lt;/h3&gt;&lt;p&gt;&lt;b&gt;MIL-STD-1553 (GOST R 52070-2003) bus control program via USB interface&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Designed for debugging and testing computers operating on a MIL-STD-1553 network. It is an implementation of the API driver for the MIL-STD-1553 TA1-USB bus interface module manufactured by Elkus JSC (&lt;a href=&apos;http://www.elcus.ru&apos;&gt;http://www.elcus.ru/boards.php&lt;/a&gt;)&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;b&gt;Possibilities:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;USB interfacing with a redundant multiplex channel via the TA1-USB module in Channel Controller mode (CC)&lt;/li&gt;&lt;li&gt;Writing data to the subaddresses of the Slave (Slave devices)&lt;/li&gt;&lt;li&gt;Reading data from Slave subaddresses&lt;/li&gt;&lt;li&gt;Displaying the work log&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;b&gt;Description of the module on the manufacturer&apos;s website:&lt;/b&gt; &lt;a href=&apos;http://www.elcus.ru/boards.php?ID=ta1-usb&apos;&gt;http://www.elcus.ru/boards.php?ID=ta1-usb&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Program version:&lt;/b&gt; %1&lt;/p&gt;&lt;b&gt;Build date:&lt;/b&gt; %2&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="587"/>
+        <location filename="../src/MainWindow.cpp" line="602"/>
         <source>Размер записываемых в ОУ слов превышает установленный лимит
 [одной транзакцией не более 32-ух 16-битных слов]</source>
         <translation>The size of words written to the Slave exceeds the established limit
 [no more than 32 16-bit words per transaction]</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="603"/>
         <location filename="../src/MainWindow.cpp" line="618"/>
+        <location filename="../src/MainWindow.cpp" line="633"/>
         <source>Ошибка записи слов в ОУ!
 Проверьте введенные данные и попробуйте снова...</source>
         <translation>Error writing words to Slave!
 Check your input and try again...</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="637"/>
+        <location filename="../src/MainWindow.cpp" line="651"/>
         <source>Ошибка;время ожидания ответного события драйвера TA1-USB истекло</source>
         <translation>Error: TA1-USB driver response event timed out</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="644"/>
-        <location filename="../src/MainWindow.cpp" line="819"/>
+        <location filename="../src/MainWindow.cpp" line="658"/>
+        <location filename="../src/MainWindow.cpp" line="833"/>
         <source>Ок</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="650"/>
+        <location filename="../src/MainWindow.cpp" line="664"/>
         <source>Ошибка;данных о приеме/отказе от приема не получено</source>
         <translation>Error; no acceptance/rejection data received</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="694"/>
+        <location filename="../src/MainWindow.cpp" line="293"/>
+        <location filename="../src/MainWindow.cpp" line="708"/>
         <source>Stop writing</source>
         <translation>Stop writing</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="698"/>
+        <location filename="../src/MainWindow.cpp" line="297"/>
+        <location filename="../src/MainWindow.cpp" line="712"/>
         <source>Write</source>
         <translation>Write</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="784"/>
+        <location filename="../src/MainWindow.cpp" line="798"/>
         <source>;Ошибка;время ожидания ответного события драйвера TA1-USB истекло</source>
         <translation>;Error; TA1-USB driver response event timed out</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="824"/>
+        <location filename="../src/MainWindow.cpp" line="838"/>
         <source>;Ошибка;данных о приеме/отказе от приема запроса на чтение не получено</source>
         <translation>;Error;no data was received regarding acceptance/rejection of the read request</translation>
     </message>
@@ -559,13 +570,15 @@ Check your input and try again...</translation>
         <translation>Serial port</translation>
     </message>
     <message>
+        <location filename="../src/MainWindow.cpp" line="583"/>
         <source>Ни основную, ни резервную ЛПИ активировать не удалось...
 Активируйте линию передачи и попытайтесь снова</source>
-        <translation type="vanished">Neither the primary nor the backup LPI could be activated...
+        <translation>Neither the primary nor the backup LPI could be activated...
 Activate the transmission line and try again</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="682"/>
+        <location filename="../src/MainWindow.cpp" line="306"/>
+        <location filename="../src/MainWindow.cpp" line="696"/>
         <source>Остановить запись</source>
         <translation>Stop recording</translation>
     </message>
@@ -574,96 +587,96 @@ Activate the transmission line and try again</translation>
     <name>SerialMonitorWindow</name>
     <message>
         <location filename="../ui/SerialMonitorWindow.ui" line="19"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="267"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="274"/>
         <source>Последовательный порт</source>
         <translation>Serial port</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="90"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="271"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="96"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="278"/>
         <source>Состояние соединения</source>
         <translation>Connection state</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="93"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="273"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="99"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="280"/>
         <location filename="../src/serial/SerialMonitorWindow.h" line="41"/>
         <source>Не готов</source>
         <translation>Not ready</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="119"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="275"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="125"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="282"/>
         <source>Список доступных портов</source>
         <translation>List of available ports</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="140"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="278"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="146"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="285"/>
         <source>Список поддерживаемых скоростей передачи данных</source>
         <translation>List of supported data transfer rates</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="161"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="281"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="167"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="288"/>
         <location filename="../src/serial/SerialMonitorWindow.cpp" line="92"/>
         <source>Активировать линию последовательной передачи</source>
         <translation>Activate the serial line</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="170"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="283"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="176"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="290"/>
         <location filename="../src/serial/SerialMonitorWindow.cpp" line="70"/>
         <location filename="../src/serial/SerialMonitorWindow.cpp" line="91"/>
         <source>Подключить</source>
         <translation>Connect</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="220"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="284"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="226"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="291"/>
         <source>Лог</source>
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="258"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="289"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="264"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="296"/>
         <source>Очистить лог</source>
         <translation>Log clear</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="267"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="291"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="273"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="298"/>
         <location filename="../src/serial/SerialMonitorWindow.cpp" line="60"/>
         <source>Очистить</source>
         <translation>Clear</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="321"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="293"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="333"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="300"/>
         <source>&gt;</source>
         <translation>&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="334"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="295"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="346"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="302"/>
         <source>hex16: &quot;ff ff ff ff ff ...&quot;</source>
         <translation>hex16: &quot;ff ff ff ff ff ...&quot;</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="356"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="299"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="368"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="306"/>
         <source>Отправить введенные данные</source>
         <translation>Send entered data</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="365"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="301"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="377"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="308"/>
         <source>Отправить</source>
         <translation>Send</translation>
     </message>
     <message>
-        <location filename="../ui/SerialMonitorWindow.ui" line="343"/>
-        <location filename="../build/ui_SerialMonitorWindow.h" line="297"/>
+        <location filename="../ui/SerialMonitorWindow.ui" line="355"/>
+        <location filename="../build/ui_SerialMonitorWindow.h" line="304"/>
         <source>Введите данные для отправки здесь...</source>
         <translation>Please enter data to send here...</translation>
     </message>

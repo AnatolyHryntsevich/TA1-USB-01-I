@@ -243,7 +243,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Время ожидания ответного слова:</string>
+             <string>Время ожидания ответного слова (мкс):</string>
             </property>
            </widget>
           </item>
@@ -268,7 +268,7 @@
              </font>
             </property>
             <property name="toolTip">
-             <string>Таймаут ожидания ответного слова на отправленный запрос (мс)</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Таймаут ожидания ответного слова на отправленный запрос (мкс)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">QComboBox {
