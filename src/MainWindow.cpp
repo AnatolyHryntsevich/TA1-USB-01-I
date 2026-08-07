@@ -70,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->driverSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::driverSettingsDialogOpenActionSlot);
     connect(m_driverSettingsDialog, &DriverSettingsDialog::setDriverSettingsSignal, this, &MainWindow::setDriverSettingsSlot);
+    connect(this, &MainWindow::driverSettingsUpdatedSignal, m_driverSettingsDialog, &DriverSettingsDialog::driverSettingsUpdatedSlot);
     connect(ui->interfaceSettingsDialogOpenAction, &QAction::triggered, this, &MainWindow::interfaceSettingsDialogOpenActionSlot);
     connect(m_interfaceSettingsDialog, &InterfaceParamenetsDialog::setInterfaceSettingsSignal, this, &MainWindow::setInterfaceSettingsSlot);
     connect(this, &MainWindow::retranslateUiSignal, m_driverSettingsDialog, &DriverSettingsDialog::retranslateUiSlot);
@@ -251,8 +252,34 @@ void MainWindow::driverSettingsDialogOpenActionSlot()
 
 void MainWindow::setDriverSettingsSlot(const DriverSettingsDialog::DriverSettingsStruct newDriverSettings)
 {
-    m_currentDriverSettings = newDriverSettings;
-    m_driverSettingsDialog->setVisible(false);
+    if(m_currentDriverSettings == newDriverSettings)
+    {
+        m_driverSettingsDialog->setVisible(false);
+        return;
+    }
+    else
+    {
+        QMessageBox ms(this);
+        QPushButton *yesButton;
+        QPushButton *noButton;
+        ms.setWindowTitle(tr("Требуется перезагрузка"));
+        ms.setText(tr("Для применения пользовательских настроек необходимо перезагрузить программу. Перезапустить?"));
+        ms.setIcon(QMessageBox::Question);
+        yesButton = ms.addButton(tr("Перезапуск"), QMessageBox::YesRole);
+        noButton = ms.addButton(tr("Отмена"), QMessageBox::NoRole);
+        ms.setDefaultButton(noButton);
+        ms.setEscapeButton(noButton);
+
+        ms.exec();
+
+        if (ms.clickedButton() == yesButton)
+        {
+            m_currentDriverSettings = newDriverSettings;
+            emit driverSettingsUpdatedSignal();
+        }
+
+        m_driverSettingsDialog->setVisible(false);
+    }
 }
 
 void MainWindow::interfaceSettingsDialogOpenActionSlot()

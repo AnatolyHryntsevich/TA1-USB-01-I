@@ -52,6 +52,7 @@ signals:
     void setCycleSendingSignal(bool sendingState);
     void becauseCycleSendingGuiEnabledSignal(bool enable);
     void mpiWriteDataSignal();
+    void driverSettingsUpdatedSignal();
 
 public:
     void closeWindow();

@@ -63,15 +63,24 @@ const DriverSettingsDialog::DriverSettingsStruct &DriverSettingsDialog::currentD
 
 void DriverSettingsDialog::on_okButton_clicked()
 {
-    m_currentDriverSettings.deviceNumber = ui->deviceNumberComboBox->currentText().toInt();
-    m_currentDriverSettings.memBaseNumber = ui->memNumberComboBox->currentText().toInt();
-    m_currentDriverSettings.answerWaitTimeout = ui->answerTimeoutComboBox->currentText().toInt();
-    m_currentDriverSettings.workModeName = ui->workModeComboBox->currentText().toInt();
-    emit setDriverSettingsSignal(m_currentDriverSettings);
+   DriverSettingsStruct currentDriverSettings;
+   currentDriverSettings.deviceNumber = ui->deviceNumberComboBox->currentText().toInt();
+   currentDriverSettings.memBaseNumber = ui->memNumberComboBox->currentText().toInt();
+   currentDriverSettings.answerWaitTimeout = ui->answerTimeoutComboBox->currentText().toInt();
+   currentDriverSettings.workModeName = ui->workModeComboBox->currentText().toInt();
+    emit setDriverSettingsSignal(currentDriverSettings);
 }
 
 void DriverSettingsDialog::retranslateUiSlot()
 {
     ui->retranslateUi(this);
+}
+
+void DriverSettingsDialog::driverSettingsUpdatedSlot()
+{
+    m_currentDriverSettings.deviceNumber = ui->deviceNumberComboBox->currentText().toInt();
+    m_currentDriverSettings.memBaseNumber = ui->memNumberComboBox->currentText().toInt();
+    m_currentDriverSettings.answerWaitTimeout = ui->answerTimeoutComboBox->currentText().toInt();
+    m_currentDriverSettings.workModeName = ui->workModeComboBox->currentText().toInt();
 }
 

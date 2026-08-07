@@ -40,7 +40,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
     set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/UndoBlocker.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/service/UndoBlocker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/DriverSettingsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.h
@@ -72,7 +72,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     )
     set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainWindow.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/UndoBlocker.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/service/UndoBlocker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/DriverSettingsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs/InterfaceParamenetsDialog.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/serial/SerialTransfer.h
@@ -98,6 +98,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/dialogs
     ${CMAKE_CURRENT_SOURCE_DIR}/src/serial
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/service
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/win32
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mil-std-1553b/unix
     ${CMAKE_CURRENT_SOURCE_DIR}/ui

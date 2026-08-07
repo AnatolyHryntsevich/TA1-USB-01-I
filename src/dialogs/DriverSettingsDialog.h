@@ -16,12 +16,32 @@ public:
     explicit DriverSettingsDialog(QWidget *parent = nullptr);
     ~DriverSettingsDialog();
 
-    typedef struct {
+    struct DriverSettingsStruct {
         int deviceNumber;
         int memBaseNumber;
         int answerWaitTimeout;
         QString workModeName;
-    } DriverSettingsStruct;
+
+        DriverSettingsStruct& operator=(const DriverSettingsStruct& other)
+        {
+            if (this != &other)
+            {
+                deviceNumber = other.deviceNumber;
+                memBaseNumber = other.memBaseNumber;
+                answerWaitTimeout = other.answerWaitTimeout;
+                workModeName = other.workModeName;
+            }
+            return *this;
+        }
+
+        bool operator==(const DriverSettingsStruct& other) const
+        {
+            return deviceNumber == other.deviceNumber &&
+                   memBaseNumber == other.memBaseNumber &&
+                   answerWaitTimeout == other.answerWaitTimeout &&
+                   workModeName == other.workModeName;
+        }
+    };
 
     void reloadSettingsUiBeforeView();
     void setGuiSate(const bool factor);
@@ -33,6 +53,7 @@ signals:
 
 public slots:
     void retranslateUiSlot();
+    void driverSettingsUpdatedSlot();
 
 private slots:
     void on_okButton_clicked();
